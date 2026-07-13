@@ -1,0 +1,115 @@
+﻿#---------------------------
+# Hexo Theme Fluid - 自定义配置
+#---------------------------
+
+# 导航栏标题
+navbar:
+  blog_title: "艾米"
+
+# 搜索
+search:
+  enable: true
+
+# 首页
+index:
+  banner_img: /img/default.png
+  banner_img_height: 80
+  banner_mask_alpha: 0.3
+  slogan:
+    enable: true
+    text: "记录学习，分享思考，持续成长"
+
+# 文章页
+post:
+  banner_img: /img/default.png
+  banner_img_height: 60
+  banner_mask_alpha: 0.3
+  meta:
+    author:
+      enable: true
+    date:
+      enable: true
+    wordcount:
+      enable: true
+    min2read:
+      enable: true
+    views:
+      enable: false
+  copyright:
+    enable: true
+    license: 'BY-NC-SA'
+    author:
+      enable: true
+  comments:
+    enable: false
+
+# 关于页
+about:
+  enable: true
+  banner_img: /img/default.png
+  banner_img_height: 60
+  banner_mask_alpha: 0.3
+  avatar: /img/avatar.png
+  name: "艾米"
+  intro: "华东理工大学计算机研究生 · 热爱 LLM 与 CV"
+  icons:
+    - { class: "iconfont icon-github-fill", link: "https://github.com/aimi8023", tip: "GitHub" }
+    - { class: "iconfont icon-mail-fill", link: "mailto:2722714532@qq.com", tip: "邮箱" }
+
+# 归档页
+archive:
+  banner_img: /img/default.png
+  banner_img_height: 50
+  banner_mask_alpha: 0.3
+
+# 分类页
+category:
+  enable: true
+  banner_img: /img/default.png
+  banner_img_height: 50
+  banner_mask_alpha: 0.3
+
+# 标签页
+tag:
+  enable: true
+  banner_img: /img/default.png
+  banner_img_height: 50
+  banner_mask_alpha: 0.3
+
+# 自定义页
+page:
+  banner_img: /img/default.png
+  banner_img_height: 50
+  banner_mask_alpha: 0.3
+
+# 页脚
+footer:
+  content: '
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a>
+  '
+  statistics:
+    enable: false
+
+# 暗色模式
+dark_mode:
+  enable: true
+  default: auto
+
+# 代码高亮
+code:
+  highlight:
+    enable: true
+    lib: "highlightjs"
+    highlightjs:
+      style: "github gist"
+      style_dark: "dark"
+
+# 打字机效果
+fun_features:
+  typing:
+    enable: true
+    typeSpeed: 70
+    cursorChar: "_"
+    loop: false
