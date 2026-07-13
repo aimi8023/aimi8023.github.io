@@ -14,10 +14,14 @@ jobs:
           node-version: 22
       - name: Install dependencies
         run: npm ci
+      - name: Debug
+        run: |
+          node --version
+          npm --version
+          ls -la node_modules/.bin/hexo* 2>&1 || true
       - name: Build site
-        run: ./node_modules/.bin/hexo generate
-      - name: Deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v3
+        run: npx --yes hexo generate
+      - uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
