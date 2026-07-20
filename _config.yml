@@ -90,3 +90,19 @@ deploy:
   type: git
   repo: https://github.com/aimi8023/aimi8023.github.io.git
   branch: gh-pages
+
+# RSS
+feed:
+  enable: true
+  type: atom
+  path: atom.xml
+  limit: 20
+  hub:
+  content:
+  content_limit: 140
+  content_limit_delim: ' '
+  order_by: -date
+
+# Sitemap
+sitemap:
+  path: sitemap.xml

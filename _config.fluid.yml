@@ -1,11 +1,17 @@
-﻿#---------------------------
+#---------------------------
 # Hexo Theme Fluid - 自定义配置
 #---------------------------
 
 # 导航栏标题
 navbar:
   blog_title: "艾米"
-
+  menu:
+    - { key: "home", link: "/", icon: "iconfont icon-home-fill" }
+    - { key: "archive", link: "/archives/", icon: "iconfont icon-archive-fill" }
+    - { key: "category", link: "/categories/", icon: "iconfont icon-category-fill" }
+    - { key: "tag", link: "/tags/", icon: "iconfont icon-tags-fill" }
+    - { key: "tools", link: "/tools/", icon: "iconfont icon-appstore-fill", name: "工具" }
+    - { key: "about", link: "/about/", icon: "iconfont icon-user-fill" }
 # 搜索
 search:
   enable: true
@@ -20,6 +26,7 @@ index:
     text: "记录学习，分享思考，持续成长"
 
 # 文章页
+
 post:
   banner_img: /img/default.png
   banner_img_height: 60
@@ -34,7 +41,8 @@ post:
     min2read:
       enable: true
     views:
-      enable: false
+      enable: true
+      source: busuanzi
   copyright:
     enable: true
     license: 'BY-NC-SA'
@@ -90,7 +98,8 @@ footer:
     <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a>
   '
   statistics:
-    enable: false
+    enable: true
+    source: busuanzi
 
 # 暗色模式
 dark_mode:
@@ -113,3 +122,5 @@ fun_features:
     typeSpeed: 70
     cursorChar: "_"
     loop: false
+
+
