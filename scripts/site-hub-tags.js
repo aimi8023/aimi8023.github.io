@@ -189,6 +189,8 @@ hexo.extend.tag.register('projects_index', () => `
 
     <div class="work-catalog">
       <article class="work-card work-card-featured">
+        <a class="work-card-hitarea" href="https://anime.zhanghome.qzz.io/" aria-label="访问作品：追番记录"></a>
+        <a class="work-card-source" href="https://github.com/aimi8023/anime-diary">查看源码 ↗</a>
         <div class="work-card-meta"><span>2026</span><em>在线运行</em></div>
         <div class="work-card-main">
           <p class="section-label">FULL-STACK WEB APP</p>
@@ -196,10 +198,12 @@ hexo.extend.tag.register('projects_index', () => `
           <p>一个按季度整理和浏览番剧的个人记录站。支持名称、年份、标签和评分筛选，包含标签管理、数据导出以及带密码保护的内容管理后台。</p>
           <ul><li>Next.js 16</li><li>TypeScript</li><li>Tailwind CSS 4</li><li>Upstash Redis</li></ul>
         </div>
-        <div class="work-card-links"><a href="https://anime.zhanghome.qzz.io/">访问作品 ↗</a><a href="https://github.com/aimi8023/anime-diary">查看源码 ↗</a></div>
+        <span class="work-card-action" aria-hidden="true">访问作品 ↗</span>
       </article>
 
       <article class="work-card">
+        <a class="work-card-hitarea" href="/" aria-label="访问作品：个人知识与作品站"></a>
+        <a class="work-card-source" href="https://github.com/aimi8023/aimi8023.github.io">查看源码 ↗</a>
         <div class="work-card-meta"><span>2026</span><em>持续维护</em></div>
         <div class="work-card-main">
           <p class="section-label">PERSONAL WEBSITE</p>
@@ -207,7 +211,7 @@ hexo.extend.tag.register('projects_index', () => `
           <p>以 Hexo 和 Fluid 构建的个人知识站，将技术文章、项目作品和在线工具组织在同一个清晰入口中，并加入自动部署与内容质量检查。</p>
           <ul><li>Hexo</li><li>Fluid</li><li>GitHub Actions</li><li>GitHub Pages</li></ul>
         </div>
-        <div class="work-card-links"><a href="/">访问站点</a><a href="https://github.com/aimi8023/aimi8023.github.io">查看源码 ↗</a></div>
+        <span class="work-card-action" aria-hidden="true">访问站点 ↗</span>
       </article>
     </div>
 
