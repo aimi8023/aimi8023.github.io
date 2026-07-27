@@ -32,6 +32,15 @@ body {
   background-position: center 56% !important;
 }
 
+#banner .mask {
+  box-sizing: border-box;
+  padding-top: 4.25rem;
+}
+
+.header-inner {
+  min-height: 190px;
+}
+
 #banner .banner-text .h2 {
   font-weight: 650;
   letter-spacing: 0.04em;
@@ -46,7 +55,6 @@ body:has(.index-card) #banner .banner-text .h2::after {
 
 body:has(.index-card) .header-inner {
   height: 20vh !important;
-  min-height: 150px;
 }
 
 #board {
@@ -1491,8 +1499,16 @@ html[data-user-color-scheme="dark"] #local-search-result .list-group-item {
 }
 
 @media (max-width: 767.98px) {
+  .header-inner {
+    min-height: 230px;
+  }
+
   #banner {
-    min-height: 210px;
+    min-height: 230px;
+  }
+
+  #banner .mask {
+    padding-top: 4.5rem;
   }
 
   #board {
