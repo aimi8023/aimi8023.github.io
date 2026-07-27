@@ -6,6 +6,8 @@ description: 使用 Spring Cloud Alibaba 与 Nacos 搭建服务注册和发现�
 sticky: 100
 tags: [Spring Cloud, Nacos]
 categories: [后端]
+series: Spring Cloud 微服务
+series_order: 2
 ---
 
 # Spring Cloud 服务注册与发现：Nacos
@@ -229,7 +231,6 @@ public class Student {
 ```
 
 - `provider`
-
 
 
 

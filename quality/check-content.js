@@ -18,7 +18,16 @@ for (const name of fs.readdirSync(postsDir).filter((file) => file.endsWith('.md'
     continue;
   }
 
-  for (const field of ['title', 'date', 'updated', 'description', 'tags', 'categories']) {
+  for (const field of [
+    'title',
+    'date',
+    'updated',
+    'description',
+    'tags',
+    'categories',
+    'series',
+    'series_order',
+  ]) {
     if (!new RegExp(`^${field}:\\s*\\S+`, 'm').test(frontMatter[1])) {
       failures.push(`${name}: Front Matter 缺少 ${field}`);
     }
