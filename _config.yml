@@ -4,9 +4,9 @@
 
 # Site
 title: 艾米
-subtitle: '计算机研究生 · AI 学习者'
-description: '艾米的个人博客，分享 LLM、计算机视觉、人工智能领域的学习与实践'
-keywords: [LLM, 计算机视觉, AI, 机器学习, Python]
+subtitle: '全栈与 AI 学习笔记'
+description: '计算机研究生艾米的个人博客，记录后端开发、前端实践、LLM 与计算机视觉的学习和思考'
+keywords: [Java, Spring Cloud, LLM, 计算机视觉, AI, 前端开发, 学习笔记]
 author: 艾米
 language: zh-CN
 timezone: Asia/Shanghai
@@ -28,6 +28,7 @@ category_dir: categories
 code_dir: downloads/code
 i18n_dir: :lang
 skip_render:
+  - robots.txt
 
 # Writing
 new_post_name: :title.md

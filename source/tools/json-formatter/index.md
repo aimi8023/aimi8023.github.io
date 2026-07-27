@@ -1,6 +1,7 @@
 ---
 title: JSON 格式化工具
 date: 2026-07-20 16:30:00
+description: 在浏览器本地格式化、校验、搜索和编辑 JSON 数据，不会上传输入内容。
 ---
 
 <style>
@@ -75,8 +76,10 @@ date: 2026-07-20 16:30:00
 /* ===== Dark ===== */
 html[data-user-color-scheme="dark"] .jtw-pane{background:#1e1e1e;border-color:#444}
 html[data-user-color-scheme="dark"] .jtw-pl{background:#2a2a2a;color:#aaa;border-bottom-color:#444}
-html[data-user-color-scheme="dark"] .jtw-bar button,.upbtn{background:#2a2a2a;border-color:#555;color:#e0e0e0}
-html[data-user-color-scheme="dark"] .jtw-bar button:hover,.upbtn:hover{background:#3a3a3a}
+html[data-user-color-scheme="dark"] .jtw-bar button,
+html[data-user-color-scheme="dark"] .upbtn{background:#2a2a2a;border-color:#555;color:#e0e0e0}
+html[data-user-color-scheme="dark"] .jtw-bar button:hover,
+html[data-user-color-scheme="dark"] .upbtn:hover{background:#3a3a3a}
 html[data-user-color-scheme="dark"] .srch-grp{background:#2a2a2a;border-color:#555}
 html[data-user-color-scheme="dark"] .srch-grp input{background:transparent;color:#e0e0e0}
 html[data-user-color-scheme="dark"] .srch-grp button{background:#333;border-color:#555;color:#e0e0e0}
@@ -100,7 +103,15 @@ html[data-user-color-scheme="dark"] .tni:hover{background:rgba(255,255,255,.06)}
 html[data-user-color-scheme="dark"] .jtw-mbx{background:#1e1e1e}
 html[data-user-color-scheme="dark"] .jtw-mhd{border-color:#444}
 
-@media(max-width:768px){.jtw-body{flex-direction:column;height:auto}.jtw-mo{padding:0}.jtw-mbx{max-height:100vh;border-radius:0}}
+@media(max-width:768px){
+  .jtw-body{flex-direction:column;height:auto}
+  .jtw-pane{min-width:0}
+  .jtw-pane textarea,.jtw-tree{min-height:300px}
+  .jtw-srch{order:2;flex-basis:100%;max-width:none}
+  .jtw-bar .sp{display:none}
+  .jtw-mo{padding:0}
+  .jtw-mbx{max-height:100vh;border-radius:0}
+}
 @media(min-width:769px){.jtw-body{height:520px}}
 </style>
 
@@ -110,17 +121,17 @@ html[data-user-color-scheme="dark"] .jtw-mhd{border-color:#444}
   <button id=bf>格式化</button>
   <button id=bv>校验</button>
   <button id=bc>复制</button>
-  <button class=bi id=bd title="下载">⬇</button>
-  <button class=bi id=bx title="清空">✕</button>
+  <button class=bi id=bd title="下载" aria-label="下载格式化后的 JSON">⬇</button>
+  <button class=bi id=bx title="清空" aria-label="清空输入和输出">✕</button>
   <span class=sp></span>
   <span class=jtw-srch>
     <span class=srch-grp>
-      <input type=text id=si placeholder="搜索…">
+      <input type=text id=si placeholder="搜索…" aria-label="搜索 JSON 键或值">
       <button id=sb>搜索</button>
     </span>
     <span class=srch-nav>
-      <button id=sp style="display:none">▲</button>
-      <button id=sn style="display:none">▼</button>
+      <button id=sp style="display:none" aria-label="上一个搜索结果">▲</button>
+      <button id=sn style="display:none" aria-label="下一个搜索结果">▼</button>
       <span class=cnt id=sc></span>
     </span>
   </span>
@@ -130,10 +141,10 @@ html[data-user-color-scheme="dark"] .jtw-mhd{border-color:#444}
 <div class=jtw-body>
   <div class=jtw-pane id=ip>
     <div class=jtw-pl><span>输入</span></div>
-    <textarea id=ta placeholder="粘贴 JSON 或拖入 .json 文件…" spellcheck=false></textarea>
+    <textarea id=ta placeholder="粘贴 JSON 或拖入 .json 文件…" spellcheck=false aria-label="JSON 输入"></textarea>
   </div>
   <div class=jtw-pane>
-    <div class=jtw-pl><span>输出</span><span class=ha><button id=bex title="全屏">⛶</button></span></div>
+    <div class=jtw-pl><span>输出</span><span class=ha><button id=bex title="全屏" aria-label="全屏查看 JSON 树">⛶</button></span></div>
     <div class=jtw-tree id=tr><span style="color:var(--text-secondary,#999);padding:10px">等待输入…</span></div>
   </div>
 </div>
@@ -143,7 +154,7 @@ html[data-user-color-scheme="dark"] .jtw-mhd{border-color:#444}
 
 <div class=jtw-mo id=mo>
   <div class=jtw-mbx>
-    <div class=jtw-mhd><span>JSON 树形视图</span><button id=mbc>✕</button></div>
+    <div class=jtw-mhd><span>JSON 树形视图</span><button id=mbc aria-label="关闭全屏视图">✕</button></div>
     <div class=jtw-mbd id=mb></div>
   </div>
 </div>

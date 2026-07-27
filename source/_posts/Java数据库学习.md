@@ -1,19 +1,20 @@
 ---
 title: Java数据库学习
 date: 2025-10-11 22:50:00
+updated: 2026-07-27 21:00:00
+description: 从 JDBC、DataSource 到 MyBatis 与 Spring Boot，梳理 Java 数据库访问技术的演进和核心原理。
+sticky: 90
 tags: [Java, 数据库]
 categories: [后端]
 ---
-
-
 
 # Java数据库连接(从JDBC->Mybatis->SpringBoot)
 
 ## Java 无Springboot数据库连接
 
-​		学习Java如何连接数据库，我想 对于什么是jdbc？数据源又为何有那么多，诸如c3p0,druid以及HikariCP等。Mybatis是什么？它有什么作用？
+学习 Java 数据库访问时，经常会遇到 JDBC、数据源、MyBatis 和 Spring Boot 等概念。本文从它们之间的关系出发，逐步梳理各层技术解决的问题。
 
-​		对这些问题有有一个清晰的了解，将会更有利于我们对Java的数据库连接的学习。
+<!-- more -->
 
 ***
 
@@ -21,9 +22,9 @@ categories: [后端]
 
 - JDBC是什么？
 
-​		JDBC全称为 Java DataBase Connectivity(Java 数据库连接)，是Java官方提供的连接数据库的API规范，它是一个API 接口，内部==定义==了连接数据库的接口和方法。但需要注意：**仅仅只是定义了接口和方法，并没有实现这些接口和方法**。
+JDBC全称为 Java DataBase Connectivity(Java 数据库连接)，是Java官方提供的连接数据库的API规范，它是一个API 接口，内部<mark>定义</mark>了连接数据库的接口和方法。但需要注意：**仅仅只是定义了接口和方法，并没有实现这些接口和方法**。
 
-​		比如：
+		比如：
 
 | 函数名                          |     功能      | 由谁定义 |              由谁实现               |
 | :------------------------------ | :-----------: | :------: | :---------------------------------: |
@@ -33,17 +34,17 @@ categories: [后端]
 | Statement.getResultSet();       |  得到结果集   | Java官方 | 数据库厂商（如Mysql、Oracle等官方） |
 | ·······                         |    ·······    | Java官方 | 数据库厂商（如Mysql、Oracle等官方） |
 
-  		上述方法都是由Java官方定义好接口和方法，具体实现由各家数据库厂商去分别针对自家的数据库去实现，数据库厂家提供的JDBC具体实现就是==数据库驱动。==
+上述方法都是由Java官方定义好接口和方法，具体实现由各家数据库厂商去分别针对自家的数据库去实现，数据库厂家提供的JDBC具体实现就是<mark>数据库驱动。</mark>
 
-​			因此，在Java里想要连接数据库，必须先引入对应的数据库驱动。想要使用Mysql就需要引入`mysql-connector-j`依赖，想要使用Oracle就需要引入`ojdbc8`依赖,想要使用SQLite就需要引入`sqlite-jdbc`依赖。作为Java程序员，只需要学习Java定义好的JDBC方法，就能操纵不同的数据库，只需要更换不同的数据库依赖即可。
+			因此，在Java里想要连接数据库，必须先引入对应的数据库驱动。想要使用Mysql就需要引入`mysql-connector-j`依赖，想要使用Oracle就需要引入`ojdbc8`依赖,想要使用SQLite就需要引入`sqlite-jdbc`依赖。作为Java程序员，只需要学习Java定义好的JDBC方法，就能操纵不同的数据库，只需要更换不同的数据库依赖即可。
 
 ![image-20251009143836324](https://raw.githubusercontent.com/2722714532/Typora/main/image20251011224116.png)
 
 ### 2 数据源(DataSource) 是什么？有什么作用？ 
 
-​			既然依靠JDBC和数据库驱动就能操纵数据库，那么数据源`DataSource`又是什么呢？实际上，`DataSource`也是JDBC，不过是对JDBC内部==获取数据库连接==这个特定功能的升级版。
+既然依靠JDBC和数据库驱动就能操纵数据库，那么数据源`DataSource`又是什么呢？实际上，`DataSource`也是JDBC，不过是对JDBC内部<mark>获取数据库连接</mark>这个特定功能的升级版。
 
-​			无论操纵什么数据库，我们首先都需要获取一个数据库连接，传统方式采用`DriverManager`,现在主流使用`DataSource`方式连接数据库，两者有什么区别呢？
+			无论操纵什么数据库，我们首先都需要获取一个数据库连接，传统方式采用`DriverManager`,现在主流使用`DataSource`方式连接数据库，两者有什么区别呢？
 
 `DriverManager:`
 
@@ -89,7 +90,7 @@ public class MyDriverManager {
 
  - 有SQL 监控，有异常统计，配置可结合Spring外置，方便维护。
 
-​	下面是使用Druid数据源的连接方式，需要先在`pom.xml`中引入Druid依赖
+下面是使用 Druid 数据源的连接方式，需要先在 `pom.xml` 中引入 Druid 依赖。
 
 ```xml
 <dependency>
@@ -125,19 +126,19 @@ public class MyDataSourceTest {
 
 ```
 
-​		以上是使用了阿里巴巴的`Druid`数据源,也可以选择其他的`c3p0`、`DBCP`、`HikariCP`等数据源，在使用时并没有大的差别。
+		以上是使用了阿里巴巴的`Druid`数据源,也可以选择其他的`c3p0`、`DBCP`、`HikariCP`等数据源，在使用时并没有大的差别。
 
-​		使用`Datasource`需要引入对应的数据源依赖，单纯的`Java maven`项目看不出来数据源的重要性和便捷性，在下文使用`Springboot`时我们可以体会到数据源的强大，它可以跟踪Sql的执行过程，直接在配置文件中配置更加简便等功能。
+		使用`Datasource`需要引入对应的数据源依赖，单纯的`Java maven`项目看不出来数据源的重要性和便捷性，在下文使用`Springboot`时我们可以体会到数据源的强大，它可以跟踪Sql的执行过程，直接在配置文件中配置更加简便等功能。
 
 ### 3 Mybatis 对JDBC的再封装
 
 #### 		Mybatis 介绍
 
-​      		官网： [MyBatis 官网介绍](https://mybatis.org/mybatis-3/zh_CN/index.html)
+官网：[MyBatis 官方介绍](https://mybatis.org/mybatis-3/zh_CN/index.html)
 
-​		 接下来是`Mybatis`的出现，它是做什么的呢？直接使用JDBC我们也发现了，需要==配置数据源->获取数据库连接->Sql语句执行->获取结果集==，而且还要在java代码中写sql语句，这实际上非常不符合应用开发的解耦性；因此，Mybatis对JDBC进行了再封装，让我们在写java代码时只关注Java，写sql语言时就只是写Sql（:fearful:虽然我感觉也并不简便）。但要明白：**Mybatis只是对Jdbc的再封装，实际上底层依然是调用JDBC的接口操纵数据库。**
+接下来是`Mybatis`的出现，它是做什么的呢？直接使用JDBC我们也发现了，需要<mark>配置数据源->获取数据库连接->Sql语句执行->获取结果集</mark>，而且还要在java代码中写sql语句，这实际上非常不符合应用开发的解耦性；因此，Mybatis对JDBC进行了再封装，让我们在写java代码时只关注Java，写sql语言时就只是写Sql（:fearful:虽然我感觉也并不简便）。但要明白：**Mybatis只是对Jdbc的再封装，实际上底层依然是调用JDBC的接口操纵数据库。**
 
-​		由于单纯的`Mybatis 不结合Springboot`过于麻烦，因此这里只做简单讲解。下文结合Springboot的Mybatis使用简便不少而且常用。
+		由于单纯的`Mybatis 不结合Springboot`过于麻烦，因此这里只做简单讲解。下文结合Springboot的Mybatis使用简便不少而且常用。
 
 #### 	**Mybatis的使用**
 
@@ -147,7 +148,7 @@ public class MyDataSourceTest {
 
 ##### 			1 引入Mybatis依赖 以及 src/java/下静态资源导出问题
 
-​		pom.xml 中增加Mybatis依赖：
+		pom.xml 中增加Mybatis依赖：
 
 ```xml
 <dependency>
@@ -157,7 +158,7 @@ public class MyDataSourceTest {
 </dependency>
 ```
 
-​		因为Mybatis需要我们在`src/Java`目录下写配置文件`/mapper/*.xml`（~~虽然你也可以选写在`Resource/`下，但是....这里不多说~~）;maven的默认配置是不会将`src/Java/`下的静态资源导出的，所以需要为<build>添加一些额外配置。请在<build>中加入`<resources>`标签包括的内容。
+		因为Mybatis需要我们在`src/Java`目录下写配置文件`/mapper/*.xml`（~~虽然你也可以选写在`Resource/`下，但是....这里不多说~~）;maven的默认配置是不会将`src/Java/`下的静态资源导出的，所以需要为<build>添加一些额外配置。请在<build>中加入`<resources>`标签包括的内容。
 
 ```xml
 
@@ -188,7 +189,7 @@ public class MyDataSourceTest {
 
 #####        2 编写`Mybatis-config.xml`配置文件
 
-​		在`resources/`下添加Mybatis-config.xml 文件，内容如下，请自行更改url，username和password
+		在`resources/`下添加Mybatis-config.xml 文件，内容如下，请自行更改url，username和password
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -215,7 +216,7 @@ public class MyDataSourceTest {
 
 ##### 		3 建数据库表对应的实体类和操纵接口
 
-​		**User实体类：**(用了lombok的注解需要引入lombok的依赖)
+		**User实体类：**(用了lombok的注解需要引入lombok的依赖)
 
 ```xml
 <dependency>
@@ -243,7 +244,7 @@ public class User {
 
 ```
 
-​	**UserMapper接口：**
+**UserMapper 接口：**
 
 ```java
 package mapper;
@@ -341,7 +342,7 @@ public class MyMapperTest {
 }
 ```
 
-​	最后的这一部分是重点，Mybatis操纵数据库的关键部分就在这里。请重点理解它们	`SqlSessionFactoryBuilder、SqlSessionFactory、SqlSession以及UserMapper。`
+最后的这一部分是重点，MyBatis 操作数据库的关键就在这里。请重点理解 `SqlSessionFactoryBuilder`、`SqlSessionFactory`、`SqlSession` 以及 `UserMapper`。
 
 - `SqlSessionFactoryBuilder`
 
@@ -354,7 +355,7 @@ public class MyMapperTest {
 - `SqlSessionFactory`
 
   - 作用：用于生产(创建)`SqlSession`,通过`sqlSessionFactory.openSession()`
-  - 生命周期: 应用程序运行期间一直==存在且唯一==，**没有理由抛弃或创建第二个**。
+  - 生命周期: 应用程序运行期间一直<mark>存在且唯一</mark>，**没有理由抛弃或创建第二个**。
   - 比喻：SqlSession的建造工厂，专用于生产一个个SqlSession
 
   
@@ -365,7 +366,7 @@ public class MyMapperTest {
   - 比喻：数据库的操作员工，用来增删改查的真正对象
 
 - ` UserMapper userMapper = sqlSession.getMapper(UserMapper.class)`
-  - 最重要的一行代码，表面看我们得到了一个接口对象，实际上内部是==动态代理对象==
+  - 最重要的一行代码，表面看我们得到了一个接口对象，实际上内部是<mark>动态代理对象</mark>
 
 |                         调用过程如下                         |
 | :----------------------------------------------------------: |
@@ -377,7 +378,7 @@ public class MyMapperTest {
 |                           ↓(调用)                            |
 | `mapperProxyFactory.newInstance(sqlSession)`                                                                                     其中**type**在这一步已经被确定，不需要往下传了；只需要通过**sqlSession**得到代理对象 |
 |                           ↓(调用)                            |
-| `Proxy.newProxyInstance(this.mapperInterface.getClassLoader(),                   ``                         new Class[]{this.mapperInterface},                                      ``                         mapperProxy)`                                                                                                                                                              ==到这一步可以清晰发现它是利用了动态代理的方式去生成**Mapper**的代理对象，而非Mapper的实现类== |
+| `Proxy.newProxyInstance(this.mapperInterface.getClassLoader(),                   ``                         new Class[]{this.mapperInterface},                                      ``                         mapperProxy)`                                                                                                                                                              <mark>到这一步可以清晰发现它是利用了动态代理的方式去生成**Mapper**的代理对象，而非Mapper的实现类</mark> |
 
 - 因此,`UserMapper`的每一个方法的调用都会被代理对象拦截，因为它本身就是动态代理对象。
 
@@ -387,17 +388,17 @@ public class MyMapperTest {
 
 ## Springboot 数据库连接
 
-​		`Springboot`作为Java最强大的Java框架，是Java学习必不可少的一部分；连接数据库这方面它也为我们简化不少，接下来我将从`Springboot`项目直接连接数据库开始，再介绍如何引入外部的数据源和使用`Mybatis`框架。
+		`Springboot`作为Java最强大的Java框架，是Java学习必不可少的一部分；连接数据库这方面它也为我们简化不少，接下来我将从`Springboot`项目直接连接数据库开始，再介绍如何引入外部的数据源和使用`Mybatis`框架。
 
 ### 一 Springboot ---直连数据库
 
 #### 创建Springboot项目并导入依赖
 
-​			想要连接数据库，最基本需要`JDBC`依赖和`Mysql`依赖,可以选择在创建项目时勾选亦可以选择创建好项目后在`pom.xml`中手动添加依赖。
+			想要连接数据库，最基本需要`JDBC`依赖和`Mysql`依赖,可以选择在创建项目时勾选亦可以选择创建好项目后在`pom.xml`中手动添加依赖。
 
 ![image-20251011194040924](https://raw.githubusercontent.com/2722714532/Typora/main/image20251011224139.png)
 
-​		勾选后可以看到`pom.xml`中存在以下两个依赖；如果没有勾选，也可以直接添加这段代码到文件中。**如果你是手动添加，一定要记得添加好后，maven刷新一下，确认依赖正确导入**
+		勾选后可以看到`pom.xml`中存在以下两个依赖；如果没有勾选，也可以直接添加这段代码到文件中。**如果你是手动添加，一定要记得添加好后，maven刷新一下，确认依赖正确导入**
 
 ```xml
 <dependency>
@@ -412,10 +413,10 @@ public class MyMapperTest {
 
 #### 配置数据库连接参数
 
-​			连接数据库需要用户名，密码等参数，Springboot为我们提供了配置文件，只需要在配置文件中声明即可。
+连接数据库需要用户名、密码等参数，Spring Boot 为我们提供了配置文件，只需要在配置文件中声明即可。
 ![image-20251011195144705](https://raw.githubusercontent.com/2722714532/Typora/main/image20251011224727.png)
 
-​           Springboot直接创建的项目在`resoureces/`下会发现一种配置文件，如果没有请你创建`application.yml`,如果是`application.properties`请你删除并创建`application.yml`;这两种文件都可以进行springboot的配置，不过这里推荐使用`application.yml`,它的配置更清晰。
+Spring Boot 项目的 `resources/` 目录下可以使用 `application.yml` 或 `application.properties`。本文使用层级更清晰的 `application.yml`。
 
 在`application.yml`添加以下配置即可
 
@@ -456,18 +457,18 @@ class Boot08ConnectSqlApplicationTests {
 
 ![image-20251011200001781](https://raw.githubusercontent.com/2722714532/Typora/main/image20251011224154.png)
 
-​		从图中可以发现：
+		从图中可以发现：
 
 - 数据库驱动：``com.mysql.cj.jdbc`
 - 数据源:`HiKari` 这是SpringBoot默认的数据源
 
 ### 二 Springboot ---如何引入外部DataSource
 
-​			我们当然也可以选择引入外部的数据源，比如`Druid`数据源。
+我们也可以选择引入外部数据源，例如 Druid。
 
 #### 导入数据源依赖
 
-​	在`pom.xml`中添加下面的依赖，记得刷新Maven
+在 `pom.xml` 中添加下面的依赖，然后刷新 Maven。
 
 ```xml
 <dependency>
@@ -497,7 +498,7 @@ spring:
 
 #### 进一步Druid配置
 
-​			使用Druid真的只有这么简单吗？如果只是添加type这一项配置的话，实际上无法满足更深层次的需求，比如使用Druid数据源的独有方法，配置它的连接，监控和安全等功能，所以我们需要**注册一个DruidDataSource的bean**。
+			使用Druid真的只有这么简单吗？如果只是添加type这一项配置的话，实际上无法满足更深层次的需求，比如使用Druid数据源的独有方法，配置它的连接，监控和安全等功能，所以我们需要**注册一个DruidDataSource的bean**。
 
 ![image-20251011211251082](https://raw.githubusercontent.com/2722714532/Typora/main/image20251011224957.png)
 
@@ -519,13 +520,9 @@ spring:
 
      把 `application.yml` 中，以 `spring.datasource` 开头的配置，自动绑定到这个 Bean 的属性上。
 
-      - **@ConditionalOnProperty(**
+   - **@ConditionalOnProperty(name = "spring.datasource.type", havingValue = "com.alibaba.druid.pool.DruidDataSource")**
 
-        ​                            **name = "spring.datasource.type", **
-
-        ​                            **havingValue = "com.alibaba.druid.pool.DruidDataSource")**
-
-        为避免和默认 Hikari或其他数据源冲突，添加该项注解；作用是：只有当配置文件中存在`spring.datasource.type=com.alibaba.druid.pool.DruidDataSource` 时，这个 Bean 才会被创建。
+     为避免和默认 Hikari 或其他数据源冲突，只有当配置文件中存在 `spring.datasource.type=com.alibaba.druid.pool.DruidDataSource` 时，这个 Bean 才会被创建。
 
 ```java
 @Configuration
@@ -592,7 +589,7 @@ class Boot08ConnectSqlApplicationTests {
 
 ### 三 Springboot ---Mybatis的使用
 
-​		Mybatis的使用也需要从导入依赖开始。
+		Mybatis的使用也需要从导入依赖开始。
 
 #### 导入Mybatis依赖 	
 
@@ -610,15 +607,15 @@ class Boot08ConnectSqlApplicationTests {
 </dependency>
 ```
 
-​	`Mybatis`有很多适配不同环境的依赖，诸如mybatis依赖，mybatis-spring依赖，mybatis-spring-boot-starter依赖等。
+MyBatis 有多种适配不同环境的依赖：
 
-	- **mybatis**：只使用 MyBatis 核心功能，不依赖 Spring 框架.
-	- **mybatis-spring**：Spring 项目使用，但不是 Spring Boot 项目.
-	- **mybatis-spring-boot-starter**:MyBatis + Spring Boot 的整合启动器,Springboot 项目使用.
+- **mybatis**：只使用 MyBatis 核心功能，不依赖 Spring 框架。
+- **mybatis-spring**：用于 Spring 项目，但不是 Spring Boot 项目。
+- **mybatis-spring-boot-starter**：MyBatis 与 Spring Boot 的整合启动器。
 
 #### 配置
 
-​		mybatis的spring配置很简单，没什么别的需求的话只需要添加自动扫描*.xml和为实体类起别名;但是请特别注意几个文件的位置。
+		mybatis的spring配置很简单，没什么别的需求的话只需要添加自动扫描*.xml和为实体类起别名;但是请特别注意几个文件的位置。
 
 ```yml
 spring:

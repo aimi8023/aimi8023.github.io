@@ -1,19 +1,23 @@
 ---
 title: BootStrap 常用标签
 date: 2025-09-30 22:53:17
+updated: 2026-07-27 21:00:00
+description: Bootstrap 5 常用布局、组件与交互写法速查，包含容器、表单、Toast 和 Modal 等示例。
 tags: [BootStrap, 前端]
 categories: [前端]
 ---
 
-### Bootstrap5 入门常用标签 (一)
+# Bootstrap 5 常用标签
 
-#### 1 导入和使用
+## 1 导入和使用
 
-​			**Bootstrap** 是全球最受欢迎的前端组件库，用于开发响应式布局，对移动设备适配很好。想要学习和使用Bootstrap 5(当前最新版本)，我们可以采用CDN方式快速上手。你可以直接点击官网教程进行学习。
+**Bootstrap** 是常用的前端组件库，适合快速搭建响应式页面。本笔记围绕 Bootstrap 5 整理常用标签、组件和交互示例。
+
+<!-- more -->
 
 + [Bootstrap 官网入门教程 ](https://v5.bootcss.com/docs/getting-started/introduction/)
 
-​			初次学习使用Bootstrap，可以选择在 HTML 页面中引入CSS和JS链接，即可调用Bootstrap的CSS样式和JS方法。
+			初次学习使用Bootstrap，可以选择在 HTML 页面中引入CSS和JS链接，即可调用Bootstrap的CSS样式和JS方法。
 
 ```html
 <!DOCTYPE html>
@@ -47,7 +51,7 @@ categories: [前端]
 <script 			     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js">	</script>
 ```
 
-  
+
 
 ***
 
@@ -55,7 +59,7 @@ categories: [前端]
 
 ##### 2.1 容器
 
-​		Bootstrap 定义了自己的容器类 **.container**,用于容纳页面内的所有元素，它推荐我们把所有标签都放入container中使用
+		Bootstrap 定义了自己的容器类 **.container**,用于容纳页面内的所有元素，它推荐我们把所有标签都放入container中使用
 
 ```html
 <body>
@@ -66,15 +70,15 @@ categories: [前端]
 </body>
 ```
 
-​		Bootstrap当然不止有一个container类，官网告诉了我们有如下类别：
+		Bootstrap当然不止有一个container类，官网告诉了我们有如下类别：
 
 ![image-20250930182845165](https://raw.githubusercontent.com/2722714532/Typora/main/image20250930225041.png)
 
-​	这些不同的容器会针对显示设备的屏幕大小自动调整显示宽度。这种效果就被称为==响应式布局==。
+这些不同的容器会针对显示设备的屏幕大小自动调整显示宽度。这种效果就被称为<mark>响应式布局</mark>。
 
 - **bootstrap为什么将容器分为这么多类别呢？**
 
-​		是因为这些不同的类会在其达到**断点**时才会生效，否则并不会生效。这更有利于响应式布局，特别是针对于移动端设备。它默认内置了6个断点:
+		是因为这些不同的类会在其达到**断点**时才会生效，否则并不会生效。这更有利于响应式布局，特别是针对于移动端设备。它默认内置了6个断点:
 
 | 断点   | 类中后缀     | 生效断点  |
 | :----- | ------------ | --------- |
@@ -85,11 +89,11 @@ categories: [前端]
 | 特大号 | `xl`         | ≥1200像素 |
 | 特特大 | `xxl`        | ≥1400像素 |
 
-​		比如**`.container-sm`** 只有当屏幕宽度大于等于576像素时才会生效，大多数情况下容器选择 特小**.container**没有后缀，小于576px即可生效，大于并不会失效。
+		比如**`.container-sm`** 只有当屏幕宽度大于等于576像素时才会生效，大多数情况下容器选择 特小**.container**没有后缀，小于576px即可生效，大于并不会失效。
 
 ##### 2.2 网格系统
 
-​	Bootstrap将屏幕划分为网格式系统，更加方便开发人员对标签的布局。
+Bootstrap将屏幕划分为网格式系统，更加方便开发人员对标签的布局。
 
 - 无论设备屏幕的大小，Bootstrap都将一行分为**12块**，他会根据屏幕的大小自动平分每块的宽度。
 
@@ -159,13 +163,13 @@ categories: [前端]
 
 #### 3 输入文本框 Input group
 
-​	 bootstrap提供了更强大的输入文本框，它可以让我们方便在文本框的前后加上说明或注释。
+	 bootstrap提供了更强大的输入文本框，它可以让我们方便在文本框的前后加上说明或注释。
 
 先定义input group
 
-​				内部 input-group-text 定义输入框的文本注释
+				内部 input-group-text 定义输入框的文本注释
 
-​				内部 input 可以引用这个文本
+				内部 input 可以引用这个文本
 
 ![image-20250930192328972](https://raw.githubusercontent.com/2722714532/Typora/main/image20250930225110.png)
 
@@ -189,7 +193,7 @@ categories: [前端]
 
 #### 4 按钮 Buttons
 
-​		bootstrap的按钮没什么说的，常用定义它的按钮颜色，外轮廓颜色，大小。	
+Bootstrap 的按钮可以通过类名定义颜色、外轮廓和大小。
 
 ![image-20250930224414048](https://raw.githubusercontent.com/2722714532/Typora/main/image20250930225115.png)
 
@@ -265,7 +269,7 @@ bootstrap提供的单选框 Radio 和 check 只有type(类型)不同
 
 #### 6 下拉选择框 Select
 
-​		bootstrap提供下拉选择框select使用form-select类。但这是一个**display: block**属性的标签，它会占据一行，效果并不好。我们可以通过row 和 col来精确控制它的位置。
+		bootstrap提供下拉选择框select使用form-select类。但这是一个**display: block**属性的标签，它会占据一行，效果并不好。我们可以通过row 和 col来精确控制它的位置。
 
 ![image-20250930201044353](https://raw.githubusercontent.com/2722714532/Typora/main/image20250930225133.png)
 
@@ -279,7 +283,7 @@ bootstrap提供的单选框 Radio 和 check 只有type(类型)不同
 </select>
 ```
 
-​	<span style="font-size: 22px;">==通过div包装select，就可以控制它的位置和宽度。==</span>
+<span style="font-size: 22px;"><mark>通过div包装select，就可以控制它的位置和宽度。</mark></span>
 
 ```html
 <div class="row">
@@ -300,7 +304,7 @@ bootstrap提供的单选框 Radio 和 check 只有type(类型)不同
 
 #### 7 消息弹窗 Toasts
 
-​		bootstrap 提供了消息弹窗 toast，它可以用来实现：
+		bootstrap 提供了消息弹窗 toast，它可以用来实现：
 
 - 当我们点击或操作某个步骤完成时，它可以弹出来提示是否操作成功或失败。
 
@@ -308,9 +312,9 @@ bootstrap提供的单选框 Radio 和 check 只有type(类型)不同
 
 ![image-20250930201623270](https://raw.githubusercontent.com/2722714532/Typora/main/image20250930225147.png)
 
-​		
 
-toast 默认是自动隐藏，必须加上==show 属性==才能显示。
+
+toast 默认是自动隐藏，必须加上<mark>show 属性</mark>才能显示。
 
 ```html
 <div id="msgToast" class="toast show text-bg-success">
@@ -329,11 +333,11 @@ toast 默认是自动隐藏，必须加上==show 属性==才能显示。
       					- button 的类属性为 `class="btn-close"` ,代表关闭样式 :x:
       					- button 的 `data-bs-dismiss="toast"` 则表示关闭最近的toast标签
 
-​			3.定义消息体 toast-body
+			3.定义消息体 toast-body
 
 
 
-(●'◡'●) 但是注意：**==只使用html标签只是静态效果，我们需要搭配 JS 代码实现动态效果==**
+(●'◡'●) 但是注意：**<mark>只使用html标签只是静态效果，我们需要搭配 JS 代码实现动态效果</mark>**
 
 ![合并结果_1](https://raw.githubusercontent.com/2722714532/Typora/main/image20250930225156.gif)
 
@@ -372,7 +376,7 @@ toast 默认是自动隐藏，必须加上==show 属性==才能显示。
 
 1.    定义button 按钮触发 `showToast()`函数，去除`msgToast`原先的`class="show"`属性,可以为其添加`data-bs-delay="3000"`表示延迟3秒自动关闭消息框
 2. 设计`showToast()`函数：
-   1. 获取`msgToast和textToast`元素， 注意：==`msgToast`是包装后得到的`bootstrap.Toast`对象==
+   1. 获取`msgToast和textToast`元素， 注意：<mark>`msgToast`是包装后得到的`bootstrap.Toast`对象</mark>
    2. 可以自定义消息体内容
    3. 执行`show()`展示消息框，3秒后消息框自动关闭
 
@@ -382,7 +386,7 @@ toast 默认是自动隐藏，必须加上==show 属性==才能显示。
 
 #### 8 **弹窗组件**（模态框） Modal
 
-​		bootstrap还提供了有用的弹窗 Modal（模态框）,用来不关闭和刷新页面的情况下处理一些信息，它可以做到什么呢？
+		bootstrap还提供了有用的弹窗 Modal（模态框）,用来不关闭和刷新页面的情况下处理一些信息，它可以做到什么呢？
 
 看图：![image-20250930215936669](https://raw.githubusercontent.com/2722714532/Typora/main/image20250930225219.png)
 - 当填写一些信息时，我们可以利用Modal来处理，主页面并不会关闭，它可以弹出一个弹窗让我们操作
@@ -398,7 +402,7 @@ toast 默认是自动隐藏，必须加上==show 属性==才能显示。
       - modal-body
       - modal-footer
 
-​		 和 Toast 一脉相承，我们直接使用按钮点击来实现它的打开和关闭。
+		 和 Toast 一脉相承，我们直接使用按钮点击来实现它的打开和关闭。
 
 ```html
 <div class="container mt-5">
@@ -436,7 +440,7 @@ toast 默认是自动隐藏，必须加上==show 属性==才能显示。
 
 1.    定义button 按钮触发 `showModal()`函数
 2.    设计`showModal()`函数：
-      1. 获取`myModal`元素， 注意：==`myMOdal`是包装后得到的`bootstrap.Modal`对象==
+      1. 获取`myModal`元素， 注意：<mark>`myMOdal`是包装后得到的`bootstrap.Modal`对象</mark>
       3. 执行`show()`展示模态框
 
 - Modal 层级：`modal > modal-dialog > modal-content > (header/body/footer)`
@@ -526,8 +530,6 @@ toast 默认是自动隐藏，必须加上==show 属性==才能显示。
 ***
 
 **记录和分享学习过程，如有错误，请指正。**
-
-
 
 
 

@@ -50,7 +50,15 @@ categories: [category]
 ---
 ```
 
-Available categories: backend, frontend, tools, misc.
+Available categories: 后端、前端、工具、杂项。
+
+## Quality Checks
+
+```bash
+npm run check
+```
+
+This validates post metadata and secret placeholders, builds the site, and checks generated internal links.
 
 ## Deploy
 

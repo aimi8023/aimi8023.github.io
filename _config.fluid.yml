@@ -3,6 +3,29 @@
 #---------------------------
 
 # 导航栏标题
+favicon: /images/brand/aimi-avatar.png
+apple_touch_icon: /images/brand/aimi-avatar.png
+
+color:
+  body_bg_color: "#f3f7fb"
+  body_bg_color_dark: "#07111f"
+  navbar_bg_color: "#081426"
+  navbar_bg_color_dark: "#050b15"
+  post_link_color: "#0284c7"
+  post_link_color_dark: "#38bdf8"
+  link_hover_color: "#6366f1"
+  link_hover_color_dark: "#818cf8"
+
+custom_css: /css/custom.css
+
+canonical:
+  enable: true
+
+open_graph:
+  enable: true
+  image: /images/brand/aimi-blog-cover.webp
+  twitter_card: summary_large_image
+
 navbar:
   blog_title: "艾米"
   menu:
@@ -18,19 +41,19 @@ search:
 
 # 首页
 index:
-  banner_img: /img/default.png
-  banner_img_height: 80
-  banner_mask_alpha: 0.3
+  banner_img: /images/brand/aimi-blog-cover.webp
+  banner_img_height: 62
+  banner_mask_alpha: 0.08
   slogan:
-    enable: true
-    text: "记录学习，分享思考，持续成长"
+    enable: false
+    text: "全栈与 AI 学习笔记"
 
 # 文章页
 
 post:
-  banner_img: /img/default.png
-  banner_img_height: 60
-  banner_mask_alpha: 0.3
+  banner_img: /images/brand/aimi-blog-cover.webp
+  banner_img_height: 38
+  banner_mask_alpha: 0.2
   meta:
     author:
       enable: true
@@ -43,6 +66,11 @@ post:
     views:
       enable: true
       source: busuanzi
+  updated:
+    enable: true
+    date_format: "YYYY-MM-DD"
+    relative: false
+    note_class: info
   copyright:
     enable: true
     license: 'BY-NC-SA'
@@ -54,41 +82,50 @@ post:
 # 关于页
 about:
   enable: true
-  banner_img: /img/default.png
-  banner_img_height: 60
-  banner_mask_alpha: 0.3
-  avatar: /img/avatar.png
+  banner_img: /images/brand/aimi-blog-cover.webp
+  banner_img_height: 38
+  banner_mask_alpha: 0.2
+  avatar: /images/brand/aimi-avatar.png
   name: "艾米"
-  intro: "华东理工大学计算机研究生 · 热爱 LLM 与 CV"
+  intro: "计算机研究生 · 记录全栈开发与 AI 学习"
   icons:
     - { class: "iconfont icon-github-fill", link: "https://github.com/aimi8023", tip: "GitHub" }
     - { class: "iconfont icon-mail-fill", link: "mailto:2722714532@qq.com", tip: "邮箱" }
 
 # 归档页
 archive:
-  banner_img: /img/default.png
-  banner_img_height: 50
-  banner_mask_alpha: 0.3
+  banner_img: /images/brand/aimi-blog-cover.webp
+  banner_img_height: 34
+  banner_mask_alpha: 0.2
 
 # 分类页
 category:
   enable: true
-  banner_img: /img/default.png
-  banner_img_height: 50
-  banner_mask_alpha: 0.3
+  banner_img: /images/brand/aimi-blog-cover.webp
+  banner_img_height: 34
+  banner_mask_alpha: 0.2
 
 # 标签页
 tag:
   enable: true
-  banner_img: /img/default.png
-  banner_img_height: 50
-  banner_mask_alpha: 0.3
+  banner_img: /images/brand/aimi-blog-cover.webp
+  banner_img_height: 34
+  banner_mask_alpha: 0.2
 
 # 自定义页
 page:
-  banner_img: /img/default.png
-  banner_img_height: 50
-  banner_mask_alpha: 0.3
+  banner_img: /images/brand/aimi-blog-cover.webp
+  banner_img_height: 34
+  banner_mask_alpha: 0.2
+
+page404:
+  enable: true
+  banner_img: /images/brand/aimi-blog-cover.webp
+  banner_img_height: 62
+  banner_mask_alpha: 0.2
+
+links:
+  enable: false
 
 # 页脚
 footer:
@@ -118,7 +155,7 @@ code:
 # 打字机效果
 fun_features:
   typing:
-    enable: true
+    enable: false
     typeSpeed: 70
     cursorChar: "_"
     loop: false

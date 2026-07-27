@@ -1,0 +1,115 @@
+:root {
+  --aimi-navy: #081426;
+  --aimi-blue: #0284c7;
+  --aimi-cyan: #38bdf8;
+  --aimi-indigo: #6366f1;
+  --aimi-amber: #f59e0b;
+}
+
+body {
+  background-image:
+    radial-gradient(circle at 15% 0%, rgba(56, 189, 248, 0.08), transparent 28rem),
+    radial-gradient(circle at 90% 20%, rgba(99, 102, 241, 0.06), transparent 26rem);
+}
+
+#navbar {
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+#banner {
+  background-position: center center !important;
+}
+
+#board {
+  border-radius: 22px 22px 0 0;
+  box-shadow: 0 18px 55px rgba(8, 20, 38, 0.12);
+}
+
+.index-card {
+  margin-bottom: 1.25rem;
+  padding: 1.35rem 1.5rem;
+  border: 1px solid rgba(2, 132, 199, 0.1);
+  border-radius: 16px;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.index-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(56, 189, 248, 0.35);
+  box-shadow: 0 14px 34px rgba(8, 20, 38, 0.09);
+}
+
+.index-header a,
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3 {
+  letter-spacing: -0.02em;
+}
+
+.markdown-body {
+  line-height: 1.85;
+}
+
+.markdown-body mark {
+  padding: 0.08em 0.28em;
+  border-radius: 0.3em;
+  color: inherit;
+  background: linear-gradient(transparent 45%, rgba(245, 158, 11, 0.28) 45%);
+}
+
+.markdown-body img {
+  border-radius: 10px;
+  box-shadow: 0 8px 28px rgba(8, 20, 38, 0.12);
+}
+
+.note.note-info {
+  border-color: var(--aimi-cyan);
+}
+
+html[data-user-color-scheme="dark"] .index-card {
+  border-color: rgba(56, 189, 248, 0.12);
+}
+
+html[data-user-color-scheme="dark"] .index-card:hover {
+  border-color: rgba(56, 189, 248, 0.32);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28);
+}
+
+@media (max-width: 767.98px) {
+  #banner {
+    height: 44vh !important;
+    min-height: 300px;
+  }
+
+  #board {
+    margin-top: -1.2rem !important;
+    border-radius: 18px 18px 0 0;
+  }
+
+  .index-card {
+    margin-bottom: 0.9rem;
+    padding: 1rem 0.9rem;
+  }
+
+  .index-header {
+    font-size: 1.28rem;
+    line-height: 1.4;
+  }
+
+  .markdown-body {
+    font-size: 0.98rem;
+    line-height: 1.75;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

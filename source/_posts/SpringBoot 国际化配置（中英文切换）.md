@@ -1,15 +1,17 @@
 ---
 title: SpringBoot 国际化配置（中英文切换）
 date: 2025-09-26 13:58:10
+updated: 2026-07-27 21:00:00
+description: 在 Spring Boot 与 Thymeleaf 项目中配置中英文切换，涵盖资源文件、LocaleResolver 和页面改造。
 tags: [SpringBoot]
 categories: [后端]
 ---
 
-
-
 # SpringBoot 国际化配置（中英文切换）
 
-[TOC]
+本文记录 Spring Boot + Thymeleaf 项目实现中英文切换的完整过程，包括资源文件、区域解析器和页面文本替换。
+
+<!-- more -->
 
 ### 1.Idea新建springboot项目
 
@@ -50,7 +52,7 @@ categories: [后端]
 
 - 首页index.html需放在**templates/**目录下
 
-  <span style="font-size:22px;">==**css/style.css ，index.html 放在文章末尾, images/banner.jpg 可以自己随便放张照片 **==</span> 
+<mark>将 `css/style.css`、`index.html` 放在文章末尾，`images/banner.jpg` 可以替换为自己的图片。</mark>
 
 ***
 
@@ -74,7 +76,7 @@ public class MyWebMvcConfig implements WebMvcConfigurer {
 }
 ```
 
-- 首页访问也可以如下直接新建一个类直接进行路径映射，不过这里采用继承==WebMvcConfigurer接口==的方式是为了接下来的国际化配置
+- 首页访问也可以如下直接新建一个类直接进行路径映射，不过这里采用继承<mark>WebMvcConfigurer接口</mark>的方式是为了接下来的国际化配置
 
 ```JAVA
  //  不采用该方式
@@ -98,7 +100,7 @@ public class MyWebMvcConfig implements WebMvcConfigurer {
 
 #### 4.1 三个文件的配置
 
-​		实现国际化配置，我们需要替换首页中的所有中文，使其点击中英文按钮时可以切换中文和英文，实现方法就是将==中文文本==**替换**为==Login配置文件中的变量==，通过控制变量的解析文件即可实现中英文配置
+实现国际化配置，我们需要替换首页中的所有中文，使其点击中英文按钮时可以切换中文和英文，实现方法就是将<mark>中文文本</mark>**替换**为<mark>Login配置文件中的变量</mark>，通过控制变量的解析文件即可实现中英文配置
 
 以下为三个文件的配置，应该不用解释，很好理解，login为默认配置，zh_CN为中文,en_US为英文
 
@@ -201,7 +203,7 @@ spring:
 </div>
 ```
 
-​	修改后：
+修改后：
 
 ```HTML
 <div class="login">

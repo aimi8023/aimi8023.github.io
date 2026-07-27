@@ -1,6 +1,8 @@
 ---
 title: Spring Cloud 微服务入门学习
 date: 2025-10-24 20:47:25
+updated: 2026-07-27 21:00:00
+description: 从服务注册、远程调用、容错、网关和配置中心五个模块建立 Spring Cloud 微服务学习路线。
 tags: [Spring Cloud, 微服务]
 categories: [后端]
 ---
@@ -9,14 +11,16 @@ categories: [后端]
 
 ## 微服务是什么？
 
-​    	微服务（Microservices）是一种软件架构风格，它将一个**大型应用系统拆分成多个小型、独立、可部署的服务**。这些服务之间通过**轻量级通信机制（通常是HTTP或消息队列）**协作完成系统功能。
+微服务（Microservices）是一种软件架构风格，它将一个**大型应用系统拆分成多个小型、独立、可部署的服务**。这些服务之间通过**轻量级通信机制（通常是 HTTP 或消息队列）**协作完成系统功能。
 
-​	学习微服务需要从以下五个方面开始入门：
+<!-- more -->
+
+学习微服务可以从以下五个方面开始：
 
 - 服务注册与发现：Eureka **/** Nacos 
 - 服务远程调用与负载均衡：RestTemplate+Ribbon **/** Feign
 - 服务熔断与限流：Hystrix **/** Resilience4j **/** Sentinel
-- 服务网关：Spring Cloud Gateway **/ **Zuul
+- 服务网关：Spring Cloud Gateway **/** Zuul
 - 配置中心：Spring Cloud Config **/** Nacos
 
 ## 微服务学习

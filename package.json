@@ -4,6 +4,9 @@
   "private": true,
   "scripts": {
     "build": "hexo generate",
+    "check": "npm run check:content && npm run build && npm run check:build",
+    "check:content": "node quality/check-content.js",
+    "check:build": "node quality/check-build.js",
     "clean": "hexo clean",
     "deploy": "hexo deploy",
     "server": "hexo server"

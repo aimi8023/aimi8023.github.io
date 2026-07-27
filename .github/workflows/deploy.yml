@@ -10,12 +10,24 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v6
         with:
           node-version: 22
-      - run: npm install
-      - run: npx hexo generate
+          cache: npm
+      - run: npm ci
+      - name: Check content
+        run: npm run check:content
+      - name: Build
+        run: npm run clean && npm run build
+      - name: Check generated links
+        run: npm run check:build
+      - name: Scan for leaked secrets
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Push to gh-pages
         run: |
           cd public

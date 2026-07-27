@@ -32,7 +32,7 @@ categories: [category]
 ---
 ```
 
-Categories: backend, frontend, tools, misc.
+Categories: 后端、前端、工具、杂项。
 
 ## Image Handling
 
