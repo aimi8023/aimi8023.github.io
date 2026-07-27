@@ -29,11 +29,11 @@ open_graph:
 navbar:
   blog_title: "艾米"
   menu:
-    - { key: "home", link: "/", icon: "iconfont icon-home-fill" }
-    - { key: "articles", link: "/articles/", icon: "iconfont icon-archive-fill", name: "文章" }
-    - { key: "projects", link: "/projects/", icon: "iconfont icon-tags-fill", name: "作品" }
-    - { key: "tools", link: "/tools/", icon: "iconfont icon-appstore-fill", name: "工具箱" }
-    - { key: "about", link: "/about/", icon: "iconfont icon-user-fill" }
+    - { key: "home", link: "/", name: "首页" }
+    - { key: "articles", link: "/articles/", name: "文章" }
+    - { key: "projects", link: "/projects/", name: "作品" }
+    - { key: "tools", link: "/tools/", name: "工具箱" }
+    - { key: "about", link: "/about/", name: "关于" }
 # 搜索
 search:
   enable: true
@@ -51,7 +51,7 @@ index:
 
 post:
   banner_img: /images/brand/calm-night-background.webp
-  banner_img_height: 38
+  banner_img_height: 34
   banner_mask_alpha: 0.2
   meta:
     author:
@@ -82,7 +82,7 @@ post:
 about:
   enable: true
   banner_img: /images/brand/calm-night-background.webp
-  banner_img_height: 38
+  banner_img_height: 20
   banner_mask_alpha: 0.2
   avatar: /img/avatar.png
   name: "艾米"
@@ -94,27 +94,27 @@ about:
 # 归档页
 archive:
   banner_img: /images/brand/calm-night-background.webp
-  banner_img_height: 34
+  banner_img_height: 20
   banner_mask_alpha: 0.2
 
 # 分类页
 category:
   enable: true
   banner_img: /images/brand/calm-night-background.webp
-  banner_img_height: 34
+  banner_img_height: 20
   banner_mask_alpha: 0.2
 
 # 标签页
 tag:
   enable: true
   banner_img: /images/brand/calm-night-background.webp
-  banner_img_height: 34
+  banner_img_height: 20
   banner_mask_alpha: 0.2
 
 # 自定义页
 page:
   banner_img: /images/brand/calm-night-background.webp
-  banner_img_height: 34
+  banner_img_height: 20
   banner_mask_alpha: 0.2
 
 page404:
@@ -129,9 +129,11 @@ links:
 # 页脚
 footer:
   content: '
-    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
-    <i class="iconfont icon-love"></i>
-    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a>
+    <span>© 2026 艾米</span>
+    <span class="footer-separator">·</span>
+    <a href="/atom.xml"><span>RSS</span></a>
+    <span class="footer-separator">·</span>
+    <a href="https://github.com/aimi8023" target="_blank" rel="nofollow noopener"><span>GitHub</span></a>
   '
   statistics:
     enable: true

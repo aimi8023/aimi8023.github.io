@@ -115,6 +115,8 @@ html[data-user-color-scheme="dark"] .jtw-mhd{border-color:#444}
 @media(min-width:769px){.jtw-body{height:520px}}
 </style>
 
+{% json_tool_intro %}
+
 <div class=jtw>
 <div class=jtw-bar>
   <label class=upbtn><span>📂 上传</span><input type=file accept=".json,application/json" id=f></label>
