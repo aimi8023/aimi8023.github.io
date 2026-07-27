@@ -7,14 +7,14 @@ favicon: /img/fluid.png
 apple_touch_icon: /img/fluid.png
 
 color:
-  body_bg_color: "#f3f7fb"
-  body_bg_color_dark: "#07111f"
-  navbar_bg_color: "#081426"
-  navbar_bg_color_dark: "#050b15"
-  post_link_color: "#0284c7"
-  post_link_color_dark: "#38bdf8"
-  link_hover_color: "#6366f1"
-  link_hover_color_dark: "#818cf8"
+  body_bg_color: "#f4f1e8"
+  body_bg_color_dark: "#151719"
+  navbar_bg_color: "#173f45"
+  navbar_bg_color_dark: "#101f22"
+  post_link_color: "#b34f5f"
+  post_link_color_dark: "#ef8fa0"
+  link_hover_color: "#176c70"
+  link_hover_color_dark: "#70c6c5"
 
 custom_css: /css/custom.css
 
