@@ -3,8 +3,8 @@
 #---------------------------
 
 # 导航栏标题
-favicon: /images/brand/aimi-avatar.png
-apple_touch_icon: /images/brand/aimi-avatar.png
+favicon: /img/fluid.png
+apple_touch_icon: /img/fluid.png
 
 color:
   body_bg_color: "#f3f7fb"
@@ -23,7 +23,7 @@ canonical:
 
 open_graph:
   enable: true
-  image: /images/brand/aimi-blog-cover.webp
+  image: /images/brand/calm-night-background.webp
   twitter_card: summary_large_image
 
 navbar:
@@ -41,7 +41,7 @@ search:
 
 # 首页
 index:
-  banner_img: /images/brand/aimi-blog-cover.webp
+  banner_img: /images/brand/calm-night-background.webp
   banner_img_height: 62
   banner_mask_alpha: 0.08
   slogan:
@@ -51,7 +51,7 @@ index:
 # 文章页
 
 post:
-  banner_img: /images/brand/aimi-blog-cover.webp
+  banner_img: /images/brand/calm-night-background.webp
   banner_img_height: 38
   banner_mask_alpha: 0.2
   meta:
@@ -82,10 +82,10 @@ post:
 # 关于页
 about:
   enable: true
-  banner_img: /images/brand/aimi-blog-cover.webp
+  banner_img: /images/brand/calm-night-background.webp
   banner_img_height: 38
   banner_mask_alpha: 0.2
-  avatar: /images/brand/aimi-avatar.png
+  avatar: /img/avatar.png
   name: "艾米"
   intro: "计算机研究生 · 记录全栈开发与 AI 学习"
   icons:
@@ -94,33 +94,33 @@ about:
 
 # 归档页
 archive:
-  banner_img: /images/brand/aimi-blog-cover.webp
+  banner_img: /images/brand/calm-night-background.webp
   banner_img_height: 34
   banner_mask_alpha: 0.2
 
 # 分类页
 category:
   enable: true
-  banner_img: /images/brand/aimi-blog-cover.webp
+  banner_img: /images/brand/calm-night-background.webp
   banner_img_height: 34
   banner_mask_alpha: 0.2
 
 # 标签页
 tag:
   enable: true
-  banner_img: /images/brand/aimi-blog-cover.webp
+  banner_img: /images/brand/calm-night-background.webp
   banner_img_height: 34
   banner_mask_alpha: 0.2
 
 # 自定义页
 page:
-  banner_img: /images/brand/aimi-blog-cover.webp
+  banner_img: /images/brand/calm-night-background.webp
   banner_img_height: 34
   banner_mask_alpha: 0.2
 
 page404:
   enable: true
-  banner_img: /images/brand/aimi-blog-cover.webp
+  banner_img: /images/brand/calm-night-background.webp
   banner_img_height: 62
   banner_mask_alpha: 0.2
 
