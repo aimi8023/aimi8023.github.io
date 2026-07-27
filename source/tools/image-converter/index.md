@@ -132,11 +132,11 @@ html[data-user-color-scheme="dark"] .ic-meta-note{background:rgba(110,45,57,.22)
       <div class="ic-field">
         <label for="ic-mode">压缩方式</label>
         <select class="ic-control" id="ic-mode">
+          <option value="target" selected>压缩到目标比例</option>
           <option value="quality">按画质压缩（JPG / WebP）</option>
-          <option value="target">压缩到目标体积</option>
         </select>
       </div>
-      <div class="ic-field" id="ic-quality-field">
+      <div class="ic-field ic-hidden" id="ic-quality-field">
         <span class="ic-field-title">画质等级</span>
         <div class="ic-range-row">
           <input class="ic-range" id="ic-quality" type="range" min="10" max="100" step="1" value="82" aria-label="画质等级">
@@ -144,13 +144,13 @@ html[data-user-color-scheme="dark"] .ic-meta-note{background:rgba(110,45,57,.22)
         </div>
         <p class="ic-field-note">仅对 JPG、WebP 生效，不代表输出体积比例</p>
       </div>
-      <div class="ic-field ic-hidden" id="ic-target-field">
-        <span class="ic-field-title">目标体积</span>
+      <div class="ic-field" id="ic-target-field">
+        <span class="ic-field-title">目标体积比例</span>
         <div class="ic-range-row">
-          <input class="ic-range" id="ic-target" type="range" min="0" max="0" step="1" value="0" aria-label="目标体积" disabled>
-          <output class="ic-range-value" id="ic-target-value" for="ic-target">添加图片</output>
+          <input class="ic-range" id="ic-target" type="range" min="0" max="100" step="1" value="70" aria-label="目标体积比例">
+          <output class="ic-range-value" id="ic-target-value" for="ic-target">70%</output>
         </div>
-        <p class="ic-field-note" id="ic-target-note">范围会根据原图体积自动设置</p>
+        <p class="ic-field-note" id="ic-target-note">每张图片的目标体积约为自身原图的 70%</p>
       </div>
       <div class="ic-field">
         <label for="ic-resize">输出尺寸</label>
@@ -181,6 +181,7 @@ html[data-user-color-scheme="dark"] .ic-meta-note{background:rgba(110,45,57,.22)
     <div class="ic-settings-actions">
       <p class="ic-settings-hint" id="ic-settings-hint">JPG 与 WebP 支持有损质量压缩；PNG 使用无损导出。</p>
       <div class="ic-buttons">
+        <button class="ic-btn" id="ic-download-all" type="button" disabled>全部下载 ZIP</button>
         <button class="ic-btn ic-btn-danger" id="ic-clear" type="button" disabled>清空队列</button>
         <button class="ic-btn ic-btn-primary" id="ic-process" type="button" disabled>开始处理</button>
       </div>
@@ -233,9 +234,9 @@ var heightInput=$('ic-height');
 var bgInput=$('ic-bg');
 var bgValue=$('ic-bg-value');
 var processButton=$('ic-process');
+var downloadAllButton=$('ic-download-all');
 var clearButton=$('ic-clear');
 var toast=$('ic-toast');
-var targetTouched=false;
 
 function esc(value){
   return String(value).replace(/[&<>"']/g,function(char){
@@ -251,36 +252,11 @@ function formatBytes(bytes){
 }
 
 function updateTargetDisplay(){
-  if(!items.length){
-    targetValue.textContent='添加图片';
-    return
-  }
-  var targetKB=Number(targetInput.value);
-  targetValue.textContent=targetKB===0?'尽可能小':formatBytes(targetKB*1024)
-}
-
-function updateTargetRange(){
-  if(!items.length){
-    targetInput.max='0';
-    targetInput.value='0';
-    targetInput.disabled=true;
-    targetNote.textContent='范围会根据原图体积自动设置';
-    updateTargetDisplay();
-    return
-  }
-  var largestSize=items.reduce(function(max,item){return Math.max(max,item.size)},0);
-  var maxKB=Math.max(1,Math.ceil(largestSize/1024));
-  targetInput.max=String(maxKB);
-  if(!targetTouched){
-    targetInput.value=String(Math.min(500,Math.max(1,Math.round(maxKB*.75))))
-  }else if(Number(targetInput.value)>maxKB){
-    targetInput.value=String(maxKB)
-  }
-  targetInput.disabled=busy;
-  targetNote.textContent=items.length===1?
-    '范围：0 至原图体积；0 表示尽可能小':
-    '上限取队列最大原图；每张不会超过自身原始体积';
-  updateTargetDisplay()
+  var percent=Number(targetInput.value);
+  targetValue.textContent=percent+'%';
+  targetNote.textContent=percent===0?
+    '0% 表示使用当前编码器能达到的最小体积':
+    '每张图片的目标体积约为自身原图的 '+percent+'%'
 }
 
 function showToast(message,type){
@@ -392,7 +368,6 @@ async function addFiles(fileList){
       };
       decoded.dispose();
       items.push(item);
-      updateTargetRange();
       added++
     }catch(error){
       showToast(file.name+'：'+(error.message||'读取失败'),'error')
@@ -507,7 +482,8 @@ async function processItem(item,settings){
       }
       context.drawImage(decoded.source,0,0,dims.width,dims.height);
       if(settings.mode==='target'){
-        encoded=await encodeTarget(canvas,mime,Math.min(settings.targetBytes,item.size),settings.quality)
+        var targetBytes=Math.max(1,Math.round(item.size*settings.targetRatio));
+        encoded=await encodeTarget(canvas,mime,targetBytes,settings.quality)
       }else{
         encoded={blob:await encodeCanvas(canvas,mime,settings.quality),quality:settings.quality,met:true}
       }
@@ -542,15 +518,15 @@ function settingsSnapshot(){
   if(resizeSelect.value==='custom'&&!maxWidth&&!maxHeight){
     throw new Error('请至少填写一个最大尺寸')
   }
-  var targetKB=Number(targetInput.value);
-  if(modeSelect.value==='target'&&(!Number.isFinite(targetKB)||targetKB<0)){
-    throw new Error('目标体积设置无效')
+  var targetPercent=Number(targetInput.value);
+  if(modeSelect.value==='target'&&(!Number.isFinite(targetPercent)||targetPercent<0||targetPercent>100)){
+    throw new Error('目标体积比例设置无效')
   }
   return{
     format:formatSelect.value,
     mode:modeSelect.value,
     quality:modeSelect.value==='target'?0.95:Number(qualityInput.value)/100,
-    targetBytes:Math.max(1,Math.round(targetKB*1024)),
+    targetRatio:targetPercent/100,
     resize:resizeSelect.value,
     maxWidth:maxWidth>0?maxWidth:0,
     maxHeight:maxHeight>0?maxHeight:0,
@@ -648,9 +624,10 @@ function render(){
 function setControls(){
   processButton.disabled=busy||!items.length;
   clearButton.disabled=busy||!items.length;
+  downloadAllButton.disabled=busy||items.filter(function(item){return item.result}).length<2;
   fileInput.disabled=busy;
   Array.prototype.forEach.call(document.querySelectorAll('.ic-control,.ic-range,#ic-bg'),function(control){
-    control.disabled=busy||(control===targetInput&&!items.length)
+    control.disabled=busy
   });
   Array.prototype.forEach.call(document.querySelectorAll('[data-download],[data-remove],[data-view]'),function(button){
     button.disabled=busy
@@ -663,7 +640,6 @@ function removeItem(id){
   if(index<0)return;
   cleanupItem(items[index]);
   items.splice(index,1);
-  updateTargetRange();
   render()
 }
 
@@ -671,8 +647,6 @@ function clearAll(){
   if(busy)return;
   items.forEach(cleanupItem);
   items=[];
-  targetTouched=false;
-  updateTargetRange();
   processButton.textContent='开始处理';
   render();
   showToast('队列已清空','success')
@@ -688,6 +662,154 @@ function downloadItem(id){
   document.body.appendChild(anchor);
   anchor.click();
   document.body.removeChild(anchor)
+}
+
+var crcTable=null;
+
+function getCrcTable(){
+  if(crcTable)return crcTable;
+  crcTable=[];
+  for(var n=0;n<256;n++){
+    var value=n;
+    for(var bit=0;bit<8;bit++){
+      value=(value&1)?0xedb88320^(value>>>1):value>>>1
+    }
+    crcTable[n]=value>>>0
+  }
+  return crcTable
+}
+
+function crc32(bytes){
+  var table=getCrcTable();
+  var crc=0xffffffff;
+  for(var i=0;i<bytes.length;i++){
+    crc=table[(crc^bytes[i])&0xff]^(crc>>>8)
+  }
+  return(crc^0xffffffff)>>>0
+}
+
+function zipDateTime(date){
+  var year=Math.max(1980,date.getFullYear());
+  return{
+    time:(date.getHours()<<11)|(date.getMinutes()<<5)|Math.floor(date.getSeconds()/2),
+    date:((year-1980)<<9)|((date.getMonth()+1)<<5)|date.getDate()
+  }
+}
+
+function safeArchiveName(name,used){
+  var clean=(name||'image').replace(/[\\/:*?"<>|]/g,'-');
+  var dot=clean.lastIndexOf('.');
+  var base=dot>0?clean.slice(0,dot):clean;
+  var extension=dot>0?clean.slice(dot):'';
+  var candidate=clean;
+  var number=2;
+  while(used[candidate]){
+    candidate=base+'-'+number+extension;
+    number++
+  }
+  used[candidate]=true;
+  return candidate
+}
+
+async function createZip(entries){
+  var encoder=new TextEncoder();
+  var localParts=[];
+  var centralParts=[];
+  var usedNames={};
+  var offset=0;
+  var timestamp=zipDateTime(new Date());
+  for(var i=0;i<entries.length;i++){
+    var data=new Uint8Array(await entries[i].blob.arrayBuffer());
+    var name=safeArchiveName(entries[i].name,usedNames);
+    var nameBytes=encoder.encode(name);
+    var checksum=crc32(data);
+    var local=new Uint8Array(30+nameBytes.length);
+    var localView=new DataView(local.buffer);
+    localView.setUint32(0,0x04034b50,true);
+    localView.setUint16(4,20,true);
+    localView.setUint16(6,0x0800,true);
+    localView.setUint16(8,0,true);
+    localView.setUint16(10,timestamp.time,true);
+    localView.setUint16(12,timestamp.date,true);
+    localView.setUint32(14,checksum,true);
+    localView.setUint32(18,data.length,true);
+    localView.setUint32(22,data.length,true);
+    localView.setUint16(26,nameBytes.length,true);
+    localView.setUint16(28,0,true);
+    local.set(nameBytes,30);
+    localParts.push(local,data);
+
+    var central=new Uint8Array(46+nameBytes.length);
+    var centralView=new DataView(central.buffer);
+    centralView.setUint32(0,0x02014b50,true);
+    centralView.setUint16(4,20,true);
+    centralView.setUint16(6,20,true);
+    centralView.setUint16(8,0x0800,true);
+    centralView.setUint16(10,0,true);
+    centralView.setUint16(12,timestamp.time,true);
+    centralView.setUint16(14,timestamp.date,true);
+    centralView.setUint32(16,checksum,true);
+    centralView.setUint32(20,data.length,true);
+    centralView.setUint32(24,data.length,true);
+    centralView.setUint16(28,nameBytes.length,true);
+    centralView.setUint16(30,0,true);
+    centralView.setUint16(32,0,true);
+    centralView.setUint16(34,0,true);
+    centralView.setUint16(36,0,true);
+    centralView.setUint32(38,0,true);
+    centralView.setUint32(42,offset,true);
+    central.set(nameBytes,46);
+    centralParts.push(central);
+    offset+=local.length+data.length
+  }
+  var centralSize=centralParts.reduce(function(total,part){return total+part.length},0);
+  var end=new Uint8Array(22);
+  var endView=new DataView(end.buffer);
+  endView.setUint32(0,0x06054b50,true);
+  endView.setUint16(4,0,true);
+  endView.setUint16(6,0,true);
+  endView.setUint16(8,entries.length,true);
+  endView.setUint16(10,entries.length,true);
+  endView.setUint32(12,centralSize,true);
+  endView.setUint32(16,offset,true);
+  endView.setUint16(20,0,true);
+  return new Blob(localParts.concat(centralParts,[end]),{type:'application/zip'})
+}
+
+async function downloadAll(){
+  if(busy)return;
+  var completed=items.filter(function(item){return item.resultBlob&&item.result});
+  if(completed.length<2)return;
+  busy=true;
+  downloadAllButton.textContent='正在打包…';
+  setControls();
+  try{
+    var entries=completed.map(function(item){
+      return{blob:item.resultBlob,name:item.result.name}
+    });
+    var zip=await createZip(entries);
+    var url=URL.createObjectURL(zip);
+    var anchor=document.createElement('a');
+    var now=new Date();
+    var stamp=String(now.getFullYear())+
+      String(now.getMonth()+1).padStart(2,'0')+
+      String(now.getDate()).padStart(2,'0')+'-'+
+      String(now.getHours()).padStart(2,'0')+
+      String(now.getMinutes()).padStart(2,'0');
+    anchor.href=url;
+    anchor.download='optimized-images-'+stamp+'.zip';
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+    setTimeout(function(){URL.revokeObjectURL(url)},1000);
+    showToast('已打包 '+completed.length+' 张处理后图片','success')
+  }catch(error){
+    showToast('ZIP 打包失败：'+(error.message||'未知错误'),'error')
+  }finally{
+    busy=false;
+    downloadAllButton.textContent='全部下载 ZIP';
+    setControls()
+  }
 }
 
 function updateSettings(){
@@ -709,7 +831,7 @@ function updateSettings(){
   }else if(formatSelect.value==='original'){
     $('ic-settings-hint').textContent='保持原格式时，JPG、WebP 可按画质重编码；未缩放的 PNG 会保留原文件，避免体积膨胀。'
   }else if(modeSelect.value==='target'){
-    $('ic-settings-hint').textContent='工具会多次编码，寻找不超过目标体积的最高可用质量。'
+    $('ic-settings-hint').textContent='每张图片按自身原始体积计算目标，并寻找不超过该比例的最高可用画质。'
   }else{
     $('ic-settings-hint').textContent='画质等级控制清晰度与体积的取舍，不是输出体积百分比；数值越低通常越小。'
   }
@@ -775,18 +897,18 @@ list.addEventListener('click',function(event){
 });
 
 processButton.addEventListener('click',processAll);
+downloadAllButton.addEventListener('click',downloadAll);
 clearButton.addEventListener('click',clearAll);
 [formatSelect,modeSelect,resizeSelect].forEach(function(control){control.addEventListener('change',updateSettings)});
 qualityInput.addEventListener('input',updateSettings);
 targetInput.addEventListener('input',function(){
-  targetTouched=true;
   updateTargetDisplay()
 });
 bgInput.addEventListener('input',updateSettings);
 window.addEventListener('beforeunload',function(){items.forEach(cleanupItem)});
 
-updateTargetRange();
 updateSettings();
+updateTargetDisplay();
 render();
 detectCapabilities();
 })();

@@ -55,8 +55,11 @@ if (!fs.existsSync(imageToolFile)) {
     'id="ic-target-value"',
     'id="ic-resize"',
     'id="ic-process"',
+    'id="ic-download-all"',
     'id="ic-list"',
     'function encodeTarget(',
+    'async function createZip(',
+    'function crc32(',
     '下载处理后',
     '下载原图',
     '原始体积',
@@ -76,8 +79,8 @@ if (!fs.existsSync(imageToolFile)) {
     failures.add('图片工具动态预览被主题懒加载占位图接管');
   }
 
-  if (!imageToolHtml.includes('id="ic-target" type="range" min="0"')) {
-    failures.add('图片工具目标体积未生成动态滑动控件');
+  if (!imageToolHtml.includes('id="ic-target" type="range" min="0" max="100"')) {
+    failures.add('图片工具目标体积比例未生成 0-100 滑动控件');
   }
 
   const scriptMatch = imageToolHtml.match(
