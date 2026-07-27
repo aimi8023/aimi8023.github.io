@@ -31,10 +31,8 @@ navbar:
   menu:
     - { key: "home", link: "/", icon: "iconfont icon-home-fill" }
     - { key: "articles", link: "/articles/", icon: "iconfont icon-archive-fill", name: "文章" }
-    - { key: "series", link: "/series/", icon: "iconfont icon-category-fill", name: "系列" }
     - { key: "projects", link: "/projects/", icon: "iconfont icon-tags-fill", name: "作品" }
-    - { key: "tools", link: "/tools/", icon: "iconfont icon-appstore-fill", name: "工具" }
-    - { key: "now", link: "/now/", icon: "iconfont icon-date", name: "近况" }
+    - { key: "tools", link: "/tools/", icon: "iconfont icon-appstore-fill", name: "工具箱" }
     - { key: "about", link: "/about/", icon: "iconfont icon-user-fill" }
 # 搜索
 search:

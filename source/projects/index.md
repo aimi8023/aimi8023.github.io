@@ -17,7 +17,7 @@ description: 艾米的项目作品、在线工具和工程实践记录。
       <span class="project-number">01</span>
     </div>
     <h2>个人知识与作品站</h2>
-    <p>以 Hexo 和 Fluid 构建的公开知识档案，包含系列文章、学习记录、作品展示、在线工具、自动部署与内容质量检查。</p>
+    <p>以 Hexo 和 Fluid 构建的个人知识站，将技术文章、项目作品和在线工具组织在同一个清晰入口中，并加入自动部署与内容质量检查。</p>
     <ul class="project-tags">
       <li>Hexo</li>
       <li>Fluid</li>

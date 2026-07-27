@@ -5,8 +5,6 @@ updated: 2026-07-27 21:00:00
 description: 在 Spring Boot 与 Thymeleaf 项目中配置中英文切换，涵盖资源文件、LocaleResolver 和页面改造。
 tags: [SpringBoot]
 categories: [后端]
-series: Spring Boot 实践
-series_order: 1
 ---
 
 # SpringBoot 国际化配置（中英文切换）

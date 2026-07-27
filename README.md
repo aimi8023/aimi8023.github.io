@@ -1,6 +1,6 @@
 # Aimi's Personal Knowledge Hub
 
-A personal knowledge hub built with Hexo + Fluid, combining learning records, structured knowledge series, project work, and practical online tools.
+A personal knowledge hub built with Hexo + Fluid, combining technical writing, project work, and practical online tools.
 
 URL: https://aimi8023.github.io/
 
@@ -16,14 +16,12 @@ URL: https://aimi8023.github.io/
 source/
 - index.md      # Custom homepage
 - _posts/       # Articles and learning notes
-- series/       # Structured knowledge series
 - projects/     # Project portfolio
 - tools/        # Online tools
-- now/          # Current learning and building log
 - about/        # About page
 - images/       # Images
 scripts/
-- site-hub-tags.js # Dynamic homepage and series components
+- site-hub-tags.js # Dynamic homepage components
 _config.yml       # Hexo config
 _config.fluid.yml # Fluid theme config
 scaffolds/        # Post templates
@@ -54,13 +52,10 @@ title: Post Title
 date: 2025-10-24 23:18:25
 tags: [tag1, tag2]
 categories: [category]
-series: Series Name
-series_order: 1
 ---
 ```
 
 Available categories: 后端、前端、工具、杂项。
-Use `series` and `series_order` to place an article in the structured series directory.
 
 ## Quality Checks
 

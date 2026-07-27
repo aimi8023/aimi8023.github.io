@@ -10,9 +10,7 @@ Hexo v8 personal blog with Fluid theme, served via GitHub Pages.
 |------|---------|
 | source/_posts/ | Blog posts (Markdown) |
 | source/index.md | 自定义知识主页 |
-| source/series/ | 学习系列与知识档案 |
 | source/projects/ | 项目作品集 |
-| source/now/ | 当前学习与构建记录 |
 | source/about/index.md | About page |
 | source/images/ | Local images |
 | _config.yml | Hexo config |

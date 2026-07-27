@@ -5,8 +5,6 @@ updated: 2026-07-27 21:00:00
 description: Bootstrap 5 常用布局、组件与交互写法速查，包含容器、表单、Toast 和 Modal 等示例。
 tags: [BootStrap, 前端]
 categories: [前端]
-series: 前端基础
-series_order: 1
 ---
 
 # Bootstrap 5 常用标签
@@ -532,6 +530,5 @@ toast 默认是自动隐藏，必须加上<mark>show 属性</mark>才能显示�
 ***
 
 **记录和分享学习过程，如有错误，请指正。**
-
 
 

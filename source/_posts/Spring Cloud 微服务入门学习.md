@@ -5,8 +5,6 @@ updated: 2026-07-27 21:00:00
 description: 从服务注册、远程调用、容错、网关和配置中心五个模块建立 Spring Cloud 微服务学习路线。
 tags: [Spring Cloud, 微服务]
 categories: [后端]
-series: Spring Cloud 微服务
-series_order: 1
 ---
 
 # Spring Cloud 微服务入门学习

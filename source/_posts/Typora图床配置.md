@@ -5,8 +5,6 @@ updated: 2026-07-27 21:00:00
 description: 使用 PicGo 为 Typora 配置 GitHub 或 Gitee 图床，并通过占位符安全管理访问令牌。
 tags: [Typora, 图床, 工具]
 categories: [工具]
-series: 开发工具
-series_order: 1
 ---
 
 # Typora 图床配置

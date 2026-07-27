@@ -6,8 +6,6 @@ description: 从 JDBC、DataSource 到 MyBatis 与 Spring Boot，梳理 Java 数
 sticky: 90
 tags: [Java, 数据库]
 categories: [后端]
-series: Java 后端基础
-series_order: 1
 ---
 
 # Java数据库连接(从JDBC->Mybatis->SpringBoot)
