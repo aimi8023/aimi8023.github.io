@@ -427,15 +427,63 @@ body:has(.index-card) .header-inner {
 }
 
 .garden-project {
+  position: relative;
   display: grid;
-  grid-template-columns: 5rem minmax(0, 1fr) auto;
+  grid-template-columns: 5rem minmax(0, 1fr);
   align-items: start;
-  padding: 1.4rem;
+  padding: 1.4rem 8.5rem 1.4rem 1.4rem;
   border: 2px solid var(--aimi-line);
   border-radius: var(--aimi-radius);
   background: var(--aimi-paper);
   box-shadow: var(--aimi-shadow);
+  cursor: pointer;
   gap: 1.2rem;
+  transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.garden-project:hover {
+  transform: translateY(-2px);
+  border-color: var(--aimi-teal);
+  box-shadow: 0 7px 0 rgba(61, 57, 47, 0.08);
+}
+
+.garden-project:has(.garden-project-hitarea:focus-visible) {
+  outline: 3px solid var(--aimi-coral);
+  outline-offset: 3px;
+}
+
+.garden-project-hitarea {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.garden-project-source {
+  position: absolute;
+  z-index: 2;
+  top: 1.35rem;
+  right: 1.35rem;
+  color: var(--aimi-coral) !important;
+  font-size: 0.72rem;
+  font-weight: 750;
+  text-decoration: none !important;
+}
+
+.garden-project-source:hover {
+  color: var(--aimi-teal) !important;
+  text-decoration: underline !important;
+  text-underline-offset: 0.2rem;
+}
+
+.garden-project-action {
+  position: absolute;
+  right: 1.35rem;
+  bottom: 1.35rem;
+  color: var(--aimi-teal);
+  font-size: 0.72rem;
+  font-weight: 800;
+  pointer-events: none;
 }
 
 .garden-project-year {
@@ -486,20 +534,6 @@ body:has(.index-card) .header-inner {
   background: #f8f5ec;
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   font-size: 0.64rem;
-}
-
-.garden-project-links {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.45rem;
-}
-
-.garden-project-links a {
-  color: var(--aimi-coral) !important;
-  font-size: 0.76rem;
-  font-weight: 700;
-  text-decoration: none !important;
 }
 
 .garden-tool {
@@ -1703,17 +1737,21 @@ html[data-user-color-scheme="dark"] #local-search-result .list-group-item {
 
   .garden-project {
     grid-template-columns: 1fr;
+    padding: 3.5rem 1.2rem 3.4rem;
   }
 
   .garden-project-year {
     margin-bottom: -0.6rem;
   }
 
-  .garden-project-links {
-    flex-direction: row;
-    align-items: flex-start;
-    margin-top: 0.4rem;
-    gap: 1rem;
+  .garden-project-source {
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .garden-project-action {
+    right: 1rem;
+    bottom: 1rem;
   }
 
   .garden-tool {

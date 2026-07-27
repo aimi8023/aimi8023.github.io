@@ -86,6 +86,8 @@ hexo.extend.tag.register('home_index', () => `
         <a href="/projects/">项目归档</a>
       </header>
       <article class="garden-project">
+        <a class="garden-project-hitarea" href="https://anime.zhanghome.qzz.io/" aria-label="访问作品：追番记录"></a>
+        <a class="garden-project-source" href="https://github.com/aimi8023/anime-diary">查看源码 ↗</a>
         <div class="garden-project-year">2026</div>
         <div class="garden-project-copy">
           <span class="garden-project-label">在线运行</span>
@@ -97,10 +99,7 @@ hexo.extend.tag.register('home_index', () => `
             <li>Upstash Redis</li>
           </ul>
         </div>
-        <div class="garden-project-links">
-          <a href="https://anime.zhanghome.qzz.io/">访问作品 ↗</a>
-          <a href="https://github.com/aimi8023/anime-diary">查看源码 ↗</a>
-        </div>
+        <span class="garden-project-action" aria-hidden="true">访问作品 ↗</span>
       </article>
     </section>
 
