@@ -145,12 +145,12 @@ html[data-user-color-scheme="dark"] .ic-meta-note{background:rgba(110,45,57,.22)
         <p class="ic-field-note">仅对 JPG、WebP 生效，不代表输出体积比例</p>
       </div>
       <div class="ic-field ic-hidden" id="ic-target-field">
-        <label for="ic-target">目标体积</label>
-        <div class="ic-inline-input">
-          <input class="ic-control" id="ic-target" type="number" min="10" max="51200" step="10" value="500">
-          <span class="ic-unit">KB</span>
+        <span class="ic-field-title">目标体积</span>
+        <div class="ic-range-row">
+          <input class="ic-range" id="ic-target" type="range" min="0" max="0" step="1" value="0" aria-label="目标体积" disabled>
+          <output class="ic-range-value" id="ic-target-value" for="ic-target">添加图片</output>
         </div>
-        <p class="ic-field-note">尽量接近，不保证严格等于</p>
+        <p class="ic-field-note" id="ic-target-note">范围会根据原图体积自动设置</p>
       </div>
       <div class="ic-field">
         <label for="ic-resize">输出尺寸</label>
@@ -225,6 +225,8 @@ var modeSelect=$('ic-mode');
 var qualityInput=$('ic-quality');
 var qualityValue=$('ic-quality-value');
 var targetInput=$('ic-target');
+var targetValue=$('ic-target-value');
+var targetNote=$('ic-target-note');
 var resizeSelect=$('ic-resize');
 var widthInput=$('ic-width');
 var heightInput=$('ic-height');
@@ -233,6 +235,7 @@ var bgValue=$('ic-bg-value');
 var processButton=$('ic-process');
 var clearButton=$('ic-clear');
 var toast=$('ic-toast');
+var targetTouched=false;
 
 function esc(value){
   return String(value).replace(/[&<>"']/g,function(char){
@@ -245,6 +248,39 @@ function formatBytes(bytes){
   if(bytes<1024)return bytes+' B';
   if(bytes<1024*1024)return(bytes/1024).toFixed(bytes<10240?1:0)+' KB';
   return(bytes/1024/1024).toFixed(bytes<10*1024*1024?2:1)+' MB'
+}
+
+function updateTargetDisplay(){
+  if(!items.length){
+    targetValue.textContent='添加图片';
+    return
+  }
+  var targetKB=Number(targetInput.value);
+  targetValue.textContent=targetKB===0?'尽可能小':formatBytes(targetKB*1024)
+}
+
+function updateTargetRange(){
+  if(!items.length){
+    targetInput.max='0';
+    targetInput.value='0';
+    targetInput.disabled=true;
+    targetNote.textContent='范围会根据原图体积自动设置';
+    updateTargetDisplay();
+    return
+  }
+  var largestSize=items.reduce(function(max,item){return Math.max(max,item.size)},0);
+  var maxKB=Math.max(1,Math.ceil(largestSize/1024));
+  targetInput.max=String(maxKB);
+  if(!targetTouched){
+    targetInput.value=String(Math.min(500,Math.max(1,Math.round(maxKB*.75))))
+  }else if(Number(targetInput.value)>maxKB){
+    targetInput.value=String(maxKB)
+  }
+  targetInput.disabled=busy;
+  targetNote.textContent=items.length===1?
+    '范围：0 至原图体积；0 表示尽可能小':
+    '上限取队列最大原图；每张不会超过自身原始体积';
+  updateTargetDisplay()
 }
 
 function showToast(message,type){
@@ -356,6 +392,7 @@ async function addFiles(fileList){
       };
       decoded.dispose();
       items.push(item);
+      updateTargetRange();
       added++
     }catch(error){
       showToast(file.name+'：'+(error.message||'读取失败'),'error')
@@ -470,7 +507,7 @@ async function processItem(item,settings){
       }
       context.drawImage(decoded.source,0,0,dims.width,dims.height);
       if(settings.mode==='target'){
-        encoded=await encodeTarget(canvas,mime,settings.targetBytes,settings.quality)
+        encoded=await encodeTarget(canvas,mime,Math.min(settings.targetBytes,item.size),settings.quality)
       }else{
         encoded={blob:await encodeCanvas(canvas,mime,settings.quality),quality:settings.quality,met:true}
       }
@@ -506,14 +543,14 @@ function settingsSnapshot(){
     throw new Error('请至少填写一个最大尺寸')
   }
   var targetKB=Number(targetInput.value);
-  if(modeSelect.value==='target'&&(!targetKB||targetKB<10)){
-    throw new Error('目标体积不能小于 10 KB')
+  if(modeSelect.value==='target'&&(!Number.isFinite(targetKB)||targetKB<0)){
+    throw new Error('目标体积设置无效')
   }
   return{
     format:formatSelect.value,
     mode:modeSelect.value,
     quality:modeSelect.value==='target'?0.95:Number(qualityInput.value)/100,
-    targetBytes:Math.round(targetKB*1024),
+    targetBytes:Math.max(1,Math.round(targetKB*1024)),
     resize:resizeSelect.value,
     maxWidth:maxWidth>0?maxWidth:0,
     maxHeight:maxHeight>0?maxHeight:0,
@@ -546,28 +583,39 @@ function savingsText(item){
 }
 
 function cardMarkup(item){
-  var previewUrl=item.preview==='result'&&item.resultUrl?item.resultUrl:item.originalUrl;
-  var previewLabel=item.preview==='result'&&item.result?'处理后':'原图';
-  var statusText={ready:'等待处理',processing:'处理中',done:'处理完成',error:'处理失败'}[item.status];
   var result=item.result;
-  var metrics=result?
-    '<div class="ic-result">'+
+  var showingResult=Boolean(item.preview==='result'&&result&&item.resultUrl);
+  var previewUrl=showingResult?item.resultUrl:item.originalUrl;
+  var previewLabel=showingResult?'处理后':'原图';
+  var statusText={ready:'等待处理',processing:'处理中',done:'处理完成',error:'处理失败'}[item.status];
+  var metrics='';
+  if(result&&showingResult){
+    metrics='<div class="ic-result">'+
       '<div class="ic-metric"><span>输出体积</span><strong>'+formatBytes(result.size)+'</strong></div>'+
       '<div class="ic-metric"><span>体积变化</span><strong class="'+(result.size<=item.size?'good':'')+'">'+savingsText(item)+'</strong></div>'+
       '<div class="ic-metric"><span>输出尺寸</span><strong>'+result.width+' × '+result.height+'</strong></div>'+
       '<div class="ic-metric"><span>输出格式</span><strong>'+outputExtension(result.mime).toUpperCase()+'</strong></div>'+
-    '</div>':'';
-  var warning=result&&!result.metTarget?'<p class="ic-warning">最低画质仍高于目标体积，请同时缩小输出尺寸。</p>':'';
-  if(result&&result.mime==='image/png'&&result.size>item.size){
+    '</div>'
+  }else if(result){
+    metrics='<div class="ic-result">'+
+      '<div class="ic-metric"><span>原始体积</span><strong>'+formatBytes(item.size)+'</strong></div>'+
+      '<div class="ic-metric"><span>原始尺寸</span><strong>'+item.width+' × '+item.height+'</strong></div>'+
+      '<div class="ic-metric"><span>原始格式</span><strong>'+outputExtension(item.kind).toUpperCase()+'</strong></div>'+
+      '<div class="ic-metric"><span>当前查看</span><strong>原始文件</strong></div>'+
+    '</div>'
+  }
+  var warning=showingResult&&!result.metTarget?'<p class="ic-warning">最低画质仍高于目标体积，请同时缩小输出尺寸。</p>':'';
+  if(showingResult&&result.mime==='image/png'&&result.size>item.size){
     warning+='<p class="ic-warning">PNG 是无损格式，转换或缩放后可能比原图更大；如果目标是减小体积，请选择 WebP 或 JPG。</p>'
   }
-  var info=result&&result.preserved?'<p class="ic-info">PNG 不支持画质压缩，已保留原文件，避免无意义地增大体积。</p>':'';
+  var info=showingResult&&result.preserved?'<p class="ic-info">PNG 不支持画质压缩，已保留原文件，避免无意义地增大体积。</p>':'';
   var error=item.error?'<p class="ic-error">'+esc(item.error)+'</p>':'';
   var toggle=result?
-    '<div class="ic-view-toggle" aria-label="预览切换">'+
-      '<button type="button" data-view="original" data-id="'+item.id+'" class="'+(item.preview==='original'?'active':'')+'">原图</button>'+
-      '<button type="button" data-view="result" data-id="'+item.id+'" class="'+(item.preview==='result'?'active':'')+'">处理后</button>'+
+    '<div class="ic-view-toggle" aria-label="查看版本">'+
+      '<button type="button" data-view="original" data-id="'+item.id+'" aria-pressed="'+(!showingResult)+'" class="'+(!showingResult?'active':'')+'">原图</button>'+
+      '<button type="button" data-view="result" data-id="'+item.id+'" aria-pressed="'+showingResult+'" class="'+(showingResult?'active':'')+'">处理后</button>'+
     '</div>':'';
+  var downloadLabel=showingResult?'下载处理后':'下载原图';
   return'<article class="ic-card" data-card="'+item.id+'">'+
     '<div class="ic-preview"><img src="'+previewUrl+'" alt="'+esc(item.name)+' 预览"><span class="ic-preview-badge">'+previewLabel+'</span></div>'+
     '<div class="ic-card-main">'+
@@ -575,7 +623,7 @@ function cardMarkup(item){
       metrics+warning+info+error+toggle+
     '</div>'+
     '<div class="ic-card-actions">'+
-      '<button class="ic-btn" type="button" data-download="'+item.id+'" '+(result?'':'disabled')+'>下载</button>'+
+      '<button class="ic-btn" type="button" data-download="'+item.id+'" '+(busy?'disabled':'')+'>'+downloadLabel+'</button>'+
       '<button class="ic-btn ic-btn-danger" type="button" data-remove="'+item.id+'" '+(busy?'disabled':'')+'>移除</button>'+
     '</div>'+
   '</article>'
@@ -602,7 +650,10 @@ function setControls(){
   clearButton.disabled=busy||!items.length;
   fileInput.disabled=busy;
   Array.prototype.forEach.call(document.querySelectorAll('.ic-control,.ic-range,#ic-bg'),function(control){
-    control.disabled=busy
+    control.disabled=busy||(control===targetInput&&!items.length)
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-download],[data-remove],[data-view]'),function(button){
+    button.disabled=busy
   })
 }
 
@@ -612,6 +663,7 @@ function removeItem(id){
   if(index<0)return;
   cleanupItem(items[index]);
   items.splice(index,1);
+  updateTargetRange();
   render()
 }
 
@@ -619,6 +671,8 @@ function clearAll(){
   if(busy)return;
   items.forEach(cleanupItem);
   items=[];
+  targetTouched=false;
+  updateTargetRange();
   processButton.textContent='开始处理';
   render();
   showToast('队列已清空','success')
@@ -626,10 +680,11 @@ function clearAll(){
 
 function downloadItem(id){
   var item=items.find(function(entry){return entry.id===id});
-  if(!item||!item.resultUrl||!item.result)return;
+  if(!item)return;
+  var downloadResult=item.preview==='result'&&item.resultUrl&&item.result;
   var anchor=document.createElement('a');
-  anchor.href=item.resultUrl;
-  anchor.download=item.result.name;
+  anchor.href=downloadResult?item.resultUrl:item.originalUrl;
+  anchor.download=downloadResult?item.result.name:item.name;
   document.body.appendChild(anchor);
   anchor.click();
   document.body.removeChild(anchor)
@@ -723,9 +778,14 @@ processButton.addEventListener('click',processAll);
 clearButton.addEventListener('click',clearAll);
 [formatSelect,modeSelect,resizeSelect].forEach(function(control){control.addEventListener('change',updateSettings)});
 qualityInput.addEventListener('input',updateSettings);
+targetInput.addEventListener('input',function(){
+  targetTouched=true;
+  updateTargetDisplay()
+});
 bgInput.addEventListener('input',updateSettings);
 window.addEventListener('beforeunload',function(){items.forEach(cleanupItem)});
 
+updateTargetRange();
 updateSettings();
 render();
 detectCapabilities();
