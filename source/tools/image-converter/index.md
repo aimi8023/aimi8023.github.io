@@ -3,6 +3,7 @@ title: 图片压缩与转换
 layout: page
 date: 2026-07-27 23:10:00
 description: 在浏览器本地批量转换、压缩和缩放 JPG、PNG 与 WebP 图片，文件不会上传。
+lazyload: false
 ---
 
 <style>
@@ -31,7 +32,7 @@ description: 在浏览器本地批量转换、压缩和缩放 JPG、PNG 与 WebP
 .ic-control{width:100%;height:38px;padding:0 .68rem;border:1px solid var(--ic-border);border-radius:6px;color:var(--ic-ink);background:var(--ic-paper);outline:none}
 .ic-control:focus{border-color:var(--ic-teal);box-shadow:0 0 0 3px rgba(23,108,112,.12)}
 .ic-control:disabled{cursor:not-allowed;opacity:.52}
-.ic-range-row{display:grid;grid-template-columns:minmax(0,1fr) 3rem;align-items:center;height:38px;gap:.6rem}
+.ic-range-row{display:grid;grid-template-columns:minmax(0,1fr) 4.5rem;align-items:center;height:38px;gap:.6rem}
 .ic-range{width:100%;accent-color:var(--ic-teal)}
 .ic-range-value{color:var(--ic-teal);font-family:"SFMono-Regular",Consolas,monospace;font-size:.72rem;font-weight:750;text-align:right}
 .ic-inline-input{position:relative}
@@ -74,6 +75,7 @@ description: 在浏览器本地批量转换、压缩和缩放 JPG、PNG 与 WebP
 .ic-metric strong{display:block;overflow:hidden;margin-top:.14rem;color:var(--ic-ink);font-family:"SFMono-Regular",Consolas,monospace;font-size:.68rem;text-overflow:ellipsis;white-space:nowrap}
 .ic-metric strong.good{color:var(--ic-teal)}
 .ic-warning{margin:.65rem 0 0!important;color:#9a6a18;font-size:.66rem;line-height:1.5}
+.ic-info{margin:.65rem 0 0!important;color:var(--ic-teal);font-size:.66rem;line-height:1.5}
 .ic-error{margin:.65rem 0 0!important;color:var(--ic-coral);font-size:.68rem;line-height:1.5}
 .ic-view-toggle{display:inline-flex;margin-top:.75rem;padding:2px;border:1px solid var(--ic-border);border-radius:5px}
 .ic-view-toggle button{padding:.28rem .55rem;border:0;border-radius:3px;color:var(--ic-muted);background:transparent;cursor:pointer;font-size:.63rem}
@@ -124,22 +126,23 @@ html[data-user-color-scheme="dark"] .ic-meta-note{background:rgba(110,45,57,.22)
           <option value="original">保持原格式</option>
           <option value="image/jpeg">JPG</option>
           <option value="image/png">PNG</option>
-          <option value="image/webp">WebP</option>
+          <option value="image/webp" selected>WebP（推荐）</option>
         </select>
       </div>
       <div class="ic-field">
         <label for="ic-mode">压缩方式</label>
         <select class="ic-control" id="ic-mode">
-          <option value="quality">按质量压缩</option>
+          <option value="quality">按画质压缩（JPG / WebP）</option>
           <option value="target">压缩到目标体积</option>
         </select>
       </div>
       <div class="ic-field" id="ic-quality-field">
-        <span class="ic-field-title">输出质量</span>
+        <span class="ic-field-title">画质等级</span>
         <div class="ic-range-row">
-          <input class="ic-range" id="ic-quality" type="range" min="10" max="100" step="1" value="82" aria-label="输出质量">
-          <output class="ic-range-value" id="ic-quality-value" for="ic-quality">82%</output>
+          <input class="ic-range" id="ic-quality" type="range" min="10" max="100" step="1" value="82" aria-label="画质等级">
+          <output class="ic-range-value" id="ic-quality-value" for="ic-quality">82 / 100</output>
         </div>
+        <p class="ic-field-note">仅对 JPG、WebP 生效，不代表输出体积比例</p>
       </div>
       <div class="ic-field ic-hidden" id="ic-target-field">
         <label for="ic-target">目标体积</label>
@@ -443,29 +446,34 @@ async function processItem(item,settings){
   var decoded;
   var canvas;
   try{
-    decoded=await decodeFile(item.file);
     var dims=dimensionsFor(item,settings);
     var mime=outputMime(item,settings);
     if(settings.mode==='target'&&mime==='image/png'){
       throw new Error('目标体积模式仅支持 JPG 或 WebP')
     }
-    canvas=document.createElement('canvas');
-    canvas.width=dims.width;
-    canvas.height=dims.height;
-    var context=canvas.getContext('2d',{alpha:mime!=='image/jpeg'});
-    if(!context)throw new Error('无法创建图片处理画布');
-    context.imageSmoothingEnabled=true;
-    context.imageSmoothingQuality='high';
-    if(mime==='image/jpeg'){
-      context.fillStyle=settings.background;
-      context.fillRect(0,0,dims.width,dims.height)
-    }
-    context.drawImage(decoded.source,0,0,dims.width,dims.height);
     var encoded;
-    if(settings.mode==='target'){
-      encoded=await encodeTarget(canvas,mime,settings.targetBytes,settings.quality)
+    var preserved=settings.mode==='quality'&&item.kind==='image/png'&&mime==='image/png'&&dims.width===item.width&&dims.height===item.height;
+    if(preserved){
+      encoded={blob:item.file,quality:null,met:true}
     }else{
-      encoded={blob:await encodeCanvas(canvas,mime,settings.quality),quality:settings.quality,met:true}
+      decoded=await decodeFile(item.file);
+      canvas=document.createElement('canvas');
+      canvas.width=dims.width;
+      canvas.height=dims.height;
+      var context=canvas.getContext('2d',{alpha:mime!=='image/jpeg'});
+      if(!context)throw new Error('无法创建图片处理画布');
+      context.imageSmoothingEnabled=true;
+      context.imageSmoothingQuality='high';
+      if(mime==='image/jpeg'){
+        context.fillStyle=settings.background;
+        context.fillRect(0,0,dims.width,dims.height)
+      }
+      context.drawImage(decoded.source,0,0,dims.width,dims.height);
+      if(settings.mode==='target'){
+        encoded=await encodeTarget(canvas,mime,settings.targetBytes,settings.quality)
+      }else{
+        encoded={blob:await encodeCanvas(canvas,mime,settings.quality),quality:settings.quality,met:true}
+      }
     }
     item.resultBlob=encoded.blob;
     item.resultUrl=URL.createObjectURL(encoded.blob);
@@ -476,6 +484,7 @@ async function processItem(item,settings){
       size:encoded.blob.size,
       quality:encoded.quality,
       metTarget:encoded.met,
+      preserved:preserved,
       name:outputName(item,mime)
     };
     item.preview='result';
@@ -548,7 +557,11 @@ function cardMarkup(item){
       '<div class="ic-metric"><span>输出尺寸</span><strong>'+result.width+' × '+result.height+'</strong></div>'+
       '<div class="ic-metric"><span>输出格式</span><strong>'+outputExtension(result.mime).toUpperCase()+'</strong></div>'+
     '</div>':'';
-  var warning=result&&!result.metTarget?'<p class="ic-warning">最低质量仍高于目标体积，请同时缩小输出尺寸。</p>':'';
+  var warning=result&&!result.metTarget?'<p class="ic-warning">最低画质仍高于目标体积，请同时缩小输出尺寸。</p>':'';
+  if(result&&result.mime==='image/png'&&result.size>item.size){
+    warning+='<p class="ic-warning">PNG 是无损格式，转换或缩放后可能比原图更大；如果目标是减小体积，请选择 WebP 或 JPG。</p>'
+  }
+  var info=result&&result.preserved?'<p class="ic-info">PNG 不支持画质压缩，已保留原文件，避免无意义地增大体积。</p>':'';
   var error=item.error?'<p class="ic-error">'+esc(item.error)+'</p>':'';
   var toggle=result?
     '<div class="ic-view-toggle" aria-label="预览切换">'+
@@ -559,7 +572,7 @@ function cardMarkup(item){
     '<div class="ic-preview"><img src="'+previewUrl+'" alt="'+esc(item.name)+' 预览"><span class="ic-preview-badge">'+previewLabel+'</span></div>'+
     '<div class="ic-card-main">'+
       '<div class="ic-card-top"><div style="min-width:0"><h3 class="ic-card-name" title="'+esc(item.name)+'">'+esc(item.name)+'</h3><p class="ic-card-original">'+item.width+' × '+item.height+' · '+formatBytes(item.size)+' · '+outputExtension(item.kind).toUpperCase()+'</p></div><span class="ic-status '+item.status+'">'+statusText+'</span></div>'+
-      metrics+warning+error+toggle+
+      metrics+warning+info+error+toggle+
     '</div>'+
     '<div class="ic-card-actions">'+
       '<button class="ic-btn" type="button" data-download="'+item.id+'" '+(result?'':'disabled')+'>下载</button>'+
@@ -623,7 +636,7 @@ function downloadItem(id){
 }
 
 function updateSettings(){
-  qualityValue.textContent=qualityInput.value+'%';
+  qualityValue.textContent=qualityInput.value+' / 100';
   bgValue.textContent=bgInput.value;
   $('ic-quality-field').classList.toggle('ic-hidden',modeSelect.value!=='quality');
   $('ic-target-field').classList.toggle('ic-hidden',modeSelect.value!=='target');
@@ -637,11 +650,13 @@ function updateSettings(){
     showToast('目标体积模式已切换为可调质量格式','success')
   }
   if(formatSelect.value==='image/png'){
-    $('ic-settings-hint').textContent='PNG 使用无损导出，质量参数不会改变压缩程度。'
+    $('ic-settings-hint').textContent='PNG 是无损格式，画质等级不会让它变小；转换后还可能增大。压缩优先选择 WebP。'
+  }else if(formatSelect.value==='original'){
+    $('ic-settings-hint').textContent='保持原格式时，JPG、WebP 可按画质重编码；未缩放的 PNG 会保留原文件，避免体积膨胀。'
   }else if(modeSelect.value==='target'){
     $('ic-settings-hint').textContent='工具会多次编码，寻找不超过目标体积的最高可用质量。'
   }else{
-    $('ic-settings-hint').textContent='JPG 与 WebP 支持有损质量压缩；PNG 使用无损导出。'
+    $('ic-settings-hint').textContent='画质等级控制清晰度与体积的取舍，不是输出体积百分比；数值越低通常越小。'
   }
 }
 

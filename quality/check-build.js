@@ -68,6 +68,10 @@ if (!fs.existsSync(imageToolFile)) {
     failures.add('图片工具包含未渲染或被转义的页面内容');
   }
 
+  if (imageToolHtml.includes(`<img src="'+previewUrl+'" srcset=`)) {
+    failures.add('图片工具动态预览被主题懒加载占位图接管');
+  }
+
   const scriptMatch = imageToolHtml.match(
     /<script>\s*(\(function\(\)\{\s*'use strict';\s*var MAX_FILES[\s\S]*?\}\)\(\);)\s*<\/script>/,
   );
