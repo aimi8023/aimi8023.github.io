@@ -88,18 +88,18 @@ hexo.extend.tag.register('home_index', () => `
       <article class="garden-project">
         <div class="garden-project-year">2026</div>
         <div class="garden-project-copy">
-          <span class="garden-project-label">持续维护</span>
-          <h3>个人知识与作品站</h3>
-          <p>基于 Hexo 与 Fluid 构建，把技术文章、项目作品和在线工具组织在同一个清晰入口中，并通过自动部署与内容检查保持稳定更新。</p>
+          <span class="garden-project-label">在线运行</span>
+          <h3>追番记录</h3>
+          <p>按季度整理和浏览追过的番剧，支持全局搜索、多条件筛选、标签、评分，以及带密码保护的管理后台。</p>
           <ul>
-            <li>Hexo</li>
-            <li>Fluid</li>
-            <li>GitHub Actions</li>
+            <li>Next.js 16</li>
+            <li>TypeScript</li>
+            <li>Upstash Redis</li>
           </ul>
         </div>
         <div class="garden-project-links">
-          <a href="/projects/">项目介绍</a>
-          <a href="https://github.com/aimi8023/aimi8023.github.io">查看源码 ↗</a>
+          <a href="https://anime.zhanghome.qzz.io/">访问作品 ↗</a>
+          <a href="https://github.com/aimi8023/anime-diary">查看源码 ↗</a>
         </div>
       </article>
     </section>
@@ -189,6 +189,17 @@ hexo.extend.tag.register('projects_index', () => `
 
     <div class="work-catalog">
       <article class="work-card work-card-featured">
+        <div class="work-card-meta"><span>2026</span><em>在线运行</em></div>
+        <div class="work-card-main">
+          <p class="section-label">FULL-STACK WEB APP</p>
+          <h2>追番记录</h2>
+          <p>一个按季度整理和浏览番剧的个人记录站。支持名称、年份、标签和评分筛选，包含标签管理、数据导出以及带密码保护的内容管理后台。</p>
+          <ul><li>Next.js 16</li><li>TypeScript</li><li>Tailwind CSS 4</li><li>Upstash Redis</li></ul>
+        </div>
+        <div class="work-card-links"><a href="https://anime.zhanghome.qzz.io/">访问作品 ↗</a><a href="https://github.com/aimi8023/anime-diary">查看源码 ↗</a></div>
+      </article>
+
+      <article class="work-card">
         <div class="work-card-meta"><span>2026</span><em>持续维护</em></div>
         <div class="work-card-main">
           <p class="section-label">PERSONAL WEBSITE</p>
@@ -198,23 +209,12 @@ hexo.extend.tag.register('projects_index', () => `
         </div>
         <div class="work-card-links"><a href="/">访问站点</a><a href="https://github.com/aimi8023/aimi8023.github.io">查看源码 ↗</a></div>
       </article>
-
-      <article class="work-card">
-        <div class="work-card-meta"><span>2026</span><em>在线可用</em></div>
-        <div class="work-card-main">
-          <p class="section-label">BROWSER TOOL</p>
-          <h2>JSON 格式化工具</h2>
-          <p>在浏览器本地完成 JSON 格式化、校验、树形编辑、搜索、复制、文件导入与下载，输入内容不会上传。</p>
-          <ul><li>Vanilla JavaScript</li><li>Local-first</li><li>Responsive</li></ul>
-        </div>
-        <div class="work-card-links"><a href="/tools/json-formatter/">打开工具</a><a href="/tools/">工具列表</a></div>
-      </article>
     </div>
 
     <section class="page-note">
       <p class="section-label">NEXT</p>
       <h2>作品会随着学习一起增长。</h2>
-      <p>下一阶段会逐步加入 AI 实验、论文复现、更多本地开发工具和完整项目复盘，而不是只展示最终截图。</p>
+      <p>下一阶段会逐步加入 AI 实验、论文复现和更多完整项目复盘，而不是只展示最终截图。</p>
     </section>
   </div>
 `);
