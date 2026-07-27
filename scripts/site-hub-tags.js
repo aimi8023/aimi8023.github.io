@@ -133,7 +133,10 @@ hexo.extend.tag.register('about_index', () => `
       <h1>学习、构建，也把过程分享出来。</h1>
       <p>我是艾米，华东理工大学计算机科学与技术专业硕士研究生。本科毕业于西安科技大学，目前主要关注后端工程、人工智能与开发工具。</p>
       <div class="page-lead-actions">
-        <a class="garden-button garden-button-primary" href="mailto:2722714532@qq.com">联系我</a>
+        <div class="about-email">
+          <span>邮箱</span>
+          <a href="mailto:2722714532@qq.com">2722714532@qq.com</a>
+        </div>
         <a class="garden-button" href="https://github.com/aimi8023">GitHub ↗</a>
       </div>
     </header>

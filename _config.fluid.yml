@@ -34,6 +34,7 @@ navbar:
     - { key: "projects", link: "/projects/", name: "作品" }
     - { key: "tools", link: "/tools/", name: "工具箱" }
     - { key: "about", link: "/about/", name: "关于" }
+    - { key: "github", link: "https://github.com/aimi8023", name: "GitHub", icon: "iconfont icon-github-fill", target: "_blank" }
 # 搜索
 search:
   enable: true
