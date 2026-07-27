@@ -40,6 +40,48 @@ for (const file of walk(publicDir).filter((item) => item.endsWith('.html'))) {
   }
 }
 
+const imageToolFile = path.join(publicDir, 'tools', 'image-converter', 'index.html');
+if (!fs.existsSync(imageToolFile)) {
+  failures.add('缺少图片压缩与转换工具生成页面');
+} else {
+  const imageToolHtml = fs.readFileSync(imageToolFile, 'utf8');
+  const requiredFragments = [
+    'id="ic-tool"',
+    'id="ic-files"',
+    'id="ic-format"',
+    'id="ic-mode"',
+    'id="ic-quality"',
+    'id="ic-target"',
+    'id="ic-resize"',
+    'id="ic-process"',
+    'id="ic-list"',
+    'function encodeTarget(',
+  ];
+
+  for (const fragment of requiredFragments) {
+    if (!imageToolHtml.includes(fragment)) {
+      failures.add(`图片工具缺少生成结构：${fragment}`);
+    }
+  }
+
+  if (imageToolHtml.includes('{% image_tool_intro %}') || imageToolHtml.includes('&lt;button class=&quot;ic-btn')) {
+    failures.add('图片工具包含未渲染或被转义的页面内容');
+  }
+
+  const scriptMatch = imageToolHtml.match(
+    /<script>\s*(\(function\(\)\{\s*'use strict';\s*var MAX_FILES[\s\S]*?\}\)\(\);)\s*<\/script>/,
+  );
+  if (!scriptMatch) {
+    failures.add('图片工具脚本未正确生成');
+  } else {
+    try {
+      new Function(scriptMatch[1]);
+    } catch (error) {
+      failures.add(`图片工具脚本语法错误：${error.message}`);
+    }
+  }
+}
+
 if (failures.size) {
   console.error(`生成链接检查失败：\n- ${[...failures].join('\n- ')}`);
   process.exit(1);

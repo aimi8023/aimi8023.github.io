@@ -551,6 +551,11 @@ body:has(.index-card) .header-inner {
   transition: transform 150ms ease, box-shadow 150ms ease;
 }
 
+.garden-tool-list {
+  display: grid;
+  gap: 0.85rem;
+}
+
 .garden-tool:hover {
   transform: translate(-2px, -2px);
   box-shadow: 7px 7px 0 rgba(23, 108, 112, 0.14);
@@ -567,6 +572,13 @@ body:has(.index-card) .header-inner {
   font-family: "SFMono-Regular", Consolas, monospace;
   font-size: 0.9rem;
   font-weight: 750;
+}
+
+.garden-tool-icon-image,
+.tool-catalog-icon-image {
+  background: var(--aimi-coral);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
 }
 
 .garden-tool h3 {
@@ -1020,7 +1032,9 @@ body:has(.index-card) .header-inner {
 }
 
 .tool-catalog {
+  display: grid;
   padding: 0 0 2rem;
+  gap: 1rem;
 }
 
 .tool-catalog-card {

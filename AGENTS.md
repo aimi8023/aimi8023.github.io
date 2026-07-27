@@ -65,6 +65,7 @@ Pushes built site to gh-pages branch. Site: https://aimi8023.github.io/
 | 工具 | 路径 | 功能 |
 |------|------|------|
 | JSON 格式化 | /tools/json-formatter/ | 格式化/校验 JSON，树形视图，折叠/编辑/搜索/导航 |
+| 图片压缩与转换 | /tools/image-converter/ | 本地批量转换 JPG/PNG/WebP，质量或目标体积压缩、等比例缩放 |
 
 ## Notes
 

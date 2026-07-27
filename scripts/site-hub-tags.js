@@ -112,15 +112,26 @@ hexo.extend.tag.register('home_index', () => `
         </div>
         <a href="/tools/">全部工具</a>
       </header>
-      <a class="garden-tool" href="/tools/json-formatter/">
-        <span class="garden-tool-icon" aria-hidden="true">{ }</span>
-        <div>
-          <span class="garden-tool-status">在线可用 · 本地处理</span>
-          <h3>JSON 格式化</h3>
-          <p>格式化、校验、树形编辑、搜索、复制、文件导入与下载。</p>
-        </div>
-        <span class="garden-tool-action">打开工具 ↗</span>
-      </a>
+      <div class="garden-tool-list">
+        <a class="garden-tool" href="/tools/image-converter/">
+          <span class="garden-tool-icon garden-tool-icon-image" aria-hidden="true">IMG</span>
+          <div>
+            <span class="garden-tool-status">新工具 · 本地处理</span>
+            <h3>图片压缩与转换</h3>
+            <p>批量转换 JPG、PNG 与 WebP，调整尺寸、压缩质量或目标体积。</p>
+          </div>
+          <span class="garden-tool-action">打开工具 ↗</span>
+        </a>
+        <a class="garden-tool" href="/tools/json-formatter/">
+          <span class="garden-tool-icon" aria-hidden="true">{ }</span>
+          <div>
+            <span class="garden-tool-status">在线可用 · 本地处理</span>
+            <h3>JSON 格式化</h3>
+            <p>格式化、校验、树形编辑、搜索、复制、文件导入与下载。</p>
+          </div>
+          <span class="garden-tool-action">打开工具 ↗</span>
+        </a>
+      </div>
     </section>
   </div>
 `);
@@ -236,6 +247,16 @@ hexo.extend.tag.register('tools_index', () => `
     </section>
 
     <div class="tool-catalog">
+      <a class="tool-catalog-card" href="/tools/image-converter/">
+        <span class="tool-catalog-icon tool-catalog-icon-image" aria-hidden="true">IMG</span>
+        <div>
+          <span class="tool-catalog-status">新工具 · 浏览器本地运行</span>
+          <h2>图片压缩与转换</h2>
+          <p>批量转换 JPG、PNG 与 WebP，支持质量压缩、目标体积和等比例缩放。</p>
+          <ul><li>格式转换</li><li>批量压缩</li><li>目标体积</li><li>尺寸调整</li></ul>
+        </div>
+        <span class="tool-catalog-arrow">打开工具 ↗</span>
+      </a>
       <a class="tool-catalog-card" href="/tools/json-formatter/">
         <span class="tool-catalog-icon" aria-hidden="true">{ }</span>
         <div>
@@ -255,5 +276,13 @@ hexo.extend.tag.register('json_tool_intro', () => `
     <p class="page-overline">LOCAL BROWSER TOOL</p>
     <h1>JSON 格式化</h1>
     <p>格式化、校验、搜索和编辑 JSON 数据。所有操作都在当前浏览器中完成。</p>
+  </header>
+`);
+
+hexo.extend.tag.register('image_tool_intro', () => `
+  <header class="tool-page-lead">
+    <p class="page-overline">LOCAL IMAGE TOOL</p>
+    <h1>图片压缩与转换</h1>
+    <p>批量转换、压缩和缩放图片。文件只在当前浏览器中处理，不会上传到服务器。</p>
   </header>
 `);
