@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <author>
+    <name>艾米</name>
+  </author>
+  <generator uri="https://hexo.io/">Hexo</generator>
+  <id>https://aimi8023.github.io/</id>
+  <link href="https://aimi8023.github.io/" rel="alternate"/>
+  <link href="https://aimi8023.github.io/atom.xml" rel="self"/>
+  <rights>All rights reserved 2026, 艾米</rights>
+  <subtitle>全栈与 AI 学习笔记</subtitle>
+  <title>艾米</title>
+  <updated>2026-10-14T08:54:00.000Z</updated>
+  <entry>
+    <author>
+      <name>艾米</name>
+    </author>
+    <category term="后端" scheme="https://aimi8023.github.io/categories/%E5%90%8E%E7%AB%AF/"/>
+    <category term="MCP" scheme="https://aimi8023.github.io/tags/MCP/"/>
+    <category term="LLM" scheme="https://aimi8023.github.io/tags/LLM/"/>
+    <category term="Agent" scheme="https://aimi8023.github.io/tags/Agent/"/>
+    <category term="部署" scheme="https://aimi8023.github.io/tags/%E9%83%A8%E7%BD%B2/"/>
+    <id>https://aimi8023.github.io/2026/10/14/MCP%E6%9C%8D%E5%8A%A1%E6%90%AD%E5%BB%BA/</id>
+    <link href="https://aimi8023.github.io/2026/10/14/MCP%E6%9C%8D%E5%8A%A1%E6%90%AD%E5%BB%BA/"/>
+    <published>2026-10-14T08:54:00.000Z</published>
+    <summary>从 MCP 协议基础讲到实战，把中文到 Danbooru 标签的检索站点包装成 Streamable HTTP 远程 MCP 服务，部署到 ModelScope 创空间并接入编辑器，附完整踩坑记录。</summary>
+    <title>搭建自己的 MCP 服务——Danbooru 标签搜索示例</title>
+    <updated>2026-10-14T08:54:00.000Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>艾米</name>
+    </author>
+    <category term="后端" scheme="https://aimi8023.github.io/categories/%E5%90%8E%E7%AB%AF/"/>
+    <category term="Spring Cloud" scheme="https://aimi8023.github.io/tags/Spring-Cloud/"/>
+    <category term="Nacos" scheme="https://aimi8023.github.io/tags/Nacos/"/>
+    <id>https://aimi8023.github.io/2025/10/24/Spring%20Cloud%20%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0%EF%BC%9ANacos/</id>
+    <link href="https://aimi8023.github.io/2025/10/24/Spring%20Cloud%20%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0%EF%BC%9ANacos/"/>
+    <published>2025-10-24T15:18:25.000Z</published>
+    <summary>使用 Spring Cloud Alibaba 与 Nacos 搭建服务注册和发现示例，包含环境准备、项目结构与核心配置。</summary>
+    <title>Spring Cloud 服务注册与发现：Nacos</title>
+    <updated>2026-07-27T13:00:00.000Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>艾米</name>
+    </author>
+    <category term="后端" scheme="https://aimi8023.github.io/categories/%E5%90%8E%E7%AB%AF/"/>
+    <category term="Spring Cloud" scheme="https://aimi8023.github.io/tags/Spring-Cloud/"/>
+    <category term="微服务" scheme="https://aimi8023.github.io/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+    <id>https://aimi8023.github.io/2025/10/24/Spring%20Cloud%20%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/</id>
+    <link href="https://aimi8023.github.io/2025/10/24/Spring%20Cloud%20%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/"/>
+    <published>2025-10-24T12:47:25.000Z</published>
+    <summary>从服务注册、远程调用、容错、网关和配置中心五个模块建立 Spring Cloud 微服务学习路线。</summary>
+    <title>Spring Cloud 微服务入门学习</title>
+    <updated>2026-07-27T13:00:00.000Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>艾米</name>
+    </author>
+    <category term="后端" scheme="https://aimi8023.github.io/categories/%E5%90%8E%E7%AB%AF/"/>
+    <category term="Java" scheme="https://aimi8023.github.io/tags/Java/"/>
+    <category term="数据库" scheme="https://aimi8023.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    <id>https://aimi8023.github.io/2025/10/11/Java%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%A6%E4%B9%A0/</id>
+    <link href="https://aimi8023.github.io/2025/10/11/Java%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%A6%E4%B9%A0/"/>
+    <published>2025-10-11T14:50:00.000Z</published>
+    <summary>从 JDBC、DataSource 到 MyBatis 与 Spring Boot，梳理 Java 数据库访问技术的演进和核心原理。</summary>
+    <title>Java数据库学习</title>
+    <updated>2026-07-27T13:00:00.000Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>艾米</name>
+    </author>
+    <category term="前端" scheme="https://aimi8023.github.io/categories/%E5%89%8D%E7%AB%AF/"/>
+    <category term="BootStrap" scheme="https://aimi8023.github.io/tags/BootStrap/"/>
+    <category term="前端" scheme="https://aimi8023.github.io/tags/%E5%89%8D%E7%AB%AF/"/>
+    <id>https://aimi8023.github.io/2025/09/30/BootStrap%20%E5%B8%B8%E7%94%A8%E6%A0%87%E7%AD%BE/</id>
+    <link href="https://aimi8023.github.io/2025/09/30/BootStrap%20%E5%B8%B8%E7%94%A8%E6%A0%87%E7%AD%BE/"/>
+    <published>2025-09-30T14:53:17.000Z</published>
+    <summary>Bootstrap 5 常用布局、组件与交互写法速查，包含容器、表单、Toast 和 Modal 等示例。</summary>
+    <title>BootStrap 常用标签</title>
+    <updated>2026-07-27T13:00:00.000Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>艾米</name>
+    </author>
+    <category term="后端" scheme="https://aimi8023.github.io/categories/%E5%90%8E%E7%AB%AF/"/>
+    <category term="SpringBoot" scheme="https://aimi8023.github.io/tags/SpringBoot/"/>
+    <id>https://aimi8023.github.io/2025/09/26/SpringBoot%20%E5%9B%BD%E9%99%85%E5%8C%96%E9%85%8D%E7%BD%AE%EF%BC%88%E4%B8%AD%E8%8B%B1%E6%96%87%E5%88%87%E6%8D%A2%EF%BC%89/</id>
+    <link href="https://aimi8023.github.io/2025/09/26/SpringBoot%20%E5%9B%BD%E9%99%85%E5%8C%96%E9%85%8D%E7%BD%AE%EF%BC%88%E4%B8%AD%E8%8B%B1%E6%96%87%E5%88%87%E6%8D%A2%EF%BC%89/"/>
+    <published>2025-09-26T05:58:10.000Z</published>
+    <summary>在 Spring Boot 与 Thymeleaf 项目中配置中英文切换，涵盖资源文件、LocaleResolver 和页面改造。</summary>
+    <title>SpringBoot 国际化配置（中英文切换）</title>
+    <updated>2026-07-27T13:00:00.000Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>艾米</name>
+    </author>
+    <category term="工具" scheme="https://aimi8023.github.io/categories/%E5%B7%A5%E5%85%B7/"/>
+    <category term="Typora" scheme="https://aimi8023.github.io/tags/Typora/"/>
+    <category term="图床" scheme="https://aimi8023.github.io/tags/%E5%9B%BE%E5%BA%8A/"/>
+    <category term="工具" scheme="https://aimi8023.github.io/tags/%E5%B7%A5%E5%85%B7/"/>
+    <id>https://aimi8023.github.io/2025/09/25/Typora%E5%9B%BE%E5%BA%8A%E9%85%8D%E7%BD%AE/</id>
+    <link href="https://aimi8023.github.io/2025/09/25/Typora%E5%9B%BE%E5%BA%8A%E9%85%8D%E7%BD%AE/"/>
+    <published>2025-09-25T06:57:16.000Z</published>
+    <summary>使用 PicGo 为 Typora 配置 GitHub 或 Gitee 图床，并通过占位符安全管理访问令牌。</summary>
+    <title>Typora图床配置</title>
+    <updated>2026-07-27T13:00:00.000Z</updated>
+  </entry>
+</feed>

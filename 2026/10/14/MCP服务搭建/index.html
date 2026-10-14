@@ -1,0 +1,1055 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+    <link rel="canonical" href="https://aimi8023.github.io/2026/10/14/MCP服务搭建/"/>
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#173f45">
+  <meta name="author" content="艾米">
+  <meta name="keywords" content="Java,Spring Cloud,LLM,计算机视觉,AI,前端开发,学习笔记">
+  
+    <meta name="description" content="从 MCP 协议基础讲到实战，把中文到 Danbooru 标签的检索站点包装成 Streamable HTTP 远程 MCP 服务，部署到 ModelScope 创空间并接入编辑器，附完整踩坑记录。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搭建自己的 MCP 服务——Danbooru 标签搜索示例">
+<meta property="og:url" content="https://aimi8023.github.io/2026/10/14/MCP%E6%9C%8D%E5%8A%A1%E6%90%AD%E5%BB%BA/index.html">
+<meta property="og:site_name" content="艾米">
+<meta property="og:description" content="从 MCP 协议基础讲到实战，把中文到 Danbooru 标签的检索站点包装成 Streamable HTTP 远程 MCP 服务，部署到 ModelScope 创空间并接入编辑器，附完整踩坑记录。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://aimi8023.github.io/images/brand/calm-night-background.webp">
+<meta property="article:published_time" content="2026-10-14T08:54:00.000Z">
+<meta property="article:modified_time" content="2026-10-14T08:54:00.000Z">
+<meta property="article:author" content="艾米">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="MCP">
+<meta property="article:tag" content="部署">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://aimi8023.github.io/images/brand/calm-night-background.webp">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>搭建自己的 MCP 服务——Danbooru 标签搜索示例 - 艾米</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"aimi8023.github.io","root":"/","version":"1.9.9","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="艾米" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 34vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>艾米</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/articles/" target="_self">
+                
+                <span>文章</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/projects/" target="_self">
+                
+                <span>作品</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tools/" target="_self">
+                
+                <span>工具箱</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://github.com/aimi8023" target="_blank">
+                <i class="iconfont icon-github-fill"></i>
+                <span>GitHub</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-link-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/articles/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-link-fill"></i>
+                  <span>文章</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/projects/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-link-fill"></i>
+                  <span>作品</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/tools/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-link-fill"></i>
+                  <span>工具箱</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-link-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="https://github.com/aimi8023" target="_blank">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-github-fill"></i>
+                  <span>GitHub</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/images/brand/calm-night-background.webp') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.2)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">搭建自己的 MCP 服务——Danbooru 标签搜索示例</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        艾米
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-10-14 16:54" pubdate>
+          2026年10月14日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          59 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">搭建自己的 MCP 服务——Danbooru 标签搜索示例</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="搭建自己的-MCP-服务——Danbooru-标签搜索示例"><a href="#搭建自己的-MCP-服务——Danbooru-标签搜索示例" class="headerlink" title="搭建自己的 MCP 服务——Danbooru 标签搜索示例"></a>搭建自己的 MCP 服务——Danbooru 标签搜索示例</h1><blockquote>
+<p>把「中文描述 → Danbooru 标签」的检索站点，包装成远程 MCP 服务，让任何 agent 挂上就能用。<br>实测环境：本地 Windows + RTX 3050 Ti（PyTorch fp16）；云端 ModelScope 创空间免费实例（2 vCPU &#x2F; 16GB，CPU ONNX fp32）。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="1-了解-MCP"><a href="#1-了解-MCP" class="headerlink" title="1 了解 MCP"></a>1 了解 MCP</h2><h3 id="1-1-MCP-是什么"><a href="#1-1-MCP-是什么" class="headerlink" title="1.1 MCP 是什么"></a>1.1 MCP 是什么</h3><p><strong>MCP（Model Context Protocol，模型上下文协议）</strong> 是 Anthropic 推出并开源的标准化协议，用于在大语言模型应用与外部数据源、工具之间建立安全的双向连接。</p>
+<p>可以理解为 <strong>AI 领域的”Type-C 通用接口”</strong>：接 MCP 之前，每个 AI 客户端（Claude、Cursor、Codex……）要接入不同数据源都得单独写集成代码；有了 MCP，开发者按同一套协议写一次 <strong>MCP Server</strong>，任何支持 MCP 的客户端都能接入。</p>
+<p>核心架构三个角色：</p>
+<table>
+<thead>
+<tr>
+<th>角色</th>
+<th>职责</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MCP Host（宿主应用）</td>
+<td>发起连接的 AI 应用</td>
+<td>Claude Desktop、Cursor、Cline、自研 Agent</td>
+</tr>
+<tr>
+<td>MCP Client（客户端）</td>
+<td>内置于宿主，与 Server 维持 1:1 协议连接</td>
+<td>Host 内部组件</td>
+</tr>
+<tr>
+<td>MCP Server（服务端）</td>
+<td>封装本地数据或远程 API，暴露标准化能力</td>
+<td><strong>各种MCP服务，如网络搜索、Github连接等，也是本文要搭的Danbooru 标签搜索服务</strong></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>备注：搭 MCP 服务，实际就是做好 MCP Server 的部署；部署成功后可供任意 agent 调用。</p>
+</blockquote>
+<h3 id="1-2-MCP-的分类"><a href="#1-2-MCP-的分类" class="headerlink" title="1.2 MCP 的分类"></a>1.2 MCP 的分类</h3><p>三个维度：<strong>通信传输方式</strong>（最核心，直接决定部署形态）、<strong>提供的服务类型</strong>、<strong>部署位置</strong>。</p>
+<h4 id="维度一：通信传输机制"><a href="#维度一：通信传输机制" class="headerlink" title="维度一：通信传输机制"></a>维度一：通信传输机制</h4><table>
+<thead>
+<tr>
+<th>传输类型</th>
+<th>通信机制</th>
+<th>适用场景</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Stdio</strong></td>
+<td>本地进程管道（<code>stdin</code>&#x2F;<code>stdout</code>）交换 JSON-RPC</td>
+<td>本机工具、桌面客户端插件</td>
+<td>零网络配置、低延迟，但仅限单机单客户端</td>
+</tr>
+<tr>
+<td><strong>SSE</strong></td>
+<td>HTTP 长连接：<code>/sse</code> 收 + <code>/messages</code> 发，双端点</td>
+<td>早期远程部署</td>
+<td>2024-11-05 引入，<strong>已废弃</strong>的过渡方案</td>
+</tr>
+<tr>
+<td><strong>Streamable HTTP</strong></td>
+<td>单一 HTTP 端点（<code>/mcp</code>），按需升级为流式</td>
+<td>云原生、远程服务</td>
+<td>2025-03-26 引入，<strong>远程部署的推荐标准</strong></td>
+</tr>
+</tbody></table>
+<h4 id="维度二：服务类型"><a href="#维度二：服务类型" class="headerlink" title="维度二：服务类型"></a>维度二：服务类型</h4><ul>
+<li><strong>Tools（工具型）</strong>：由<strong>模型决定何时调用</strong>的函数接口，类似 Function Calling——本文实现的就是这种。</li>
+<li><strong>Resources（资源型）</strong>：由<strong>应用或用户选择挂载</strong>的只读数据源（文件、文档、数据库 schema），类似 GET 上下文。</li>
+<li><strong>Prompts（提示词模板型）</strong>：由<strong>用户主动触发</strong>的预设工作流，类似 <code>/search_character</code> 快捷指令。</li>
+</ul>
+<h4 id="维度三：部署形态"><a href="#维度三：部署形态" class="headerlink" title="维度三：部署形态"></a>维度三：部署形态</h4><ul>
+<li><strong>本地 MCP 服务</strong>：宿主在本机拉起子进程（<code>uvx</code> &#x2F; <code>npx</code> &#x2F; <code>python</code>），走 stdio。</li>
+<li><strong>远程 MCP 服务</strong>：独立部署在云上，多客户端通过 URL 接入，走 Streamable HTTP。<strong>本文属于这种。</strong></li>
+</ul>
+<h2 id="2-Danbooru-Search-MCP-服务搭建示例"><a href="#2-Danbooru-Search-MCP-服务搭建示例" class="headerlink" title="2 Danbooru_Search MCP 服务搭建示例"></a>2 Danbooru_Search MCP 服务搭建示例</h2><blockquote>
+<p>背景：Danbooru 是二次元图片站的”标签体系”，几十万个标签、全英文。二次元生图模型如Anima，SDXL，NovelAI等模型生图所需提示词依赖于Danbooru的英文标签，想让 agent 在需要选标签时能直接查，就需要把Danbooru标签搜索包装成一个MCP服务，供agent使用。</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.modelscope.cn/studios/Zdh2722714532/Danbooru_Search">https://www.modelscope.cn/studios/Zdh2722714532/Danbooru_Search</a></p>
+<h3 id="2-1-它用来做什么"><a href="#2-1-它用来做什么" class="headerlink" title="2.1 它用来做什么"></a>2.1 它用来做什么</h3><p>输入一句中文画面描述，可以为词、短语或短句，返回 Danbooru 英文标签。</p>
+<p>如：</p>
+<table>
+<thead>
+<tr>
+<th align="center">输入</th>
+<th align="left">返回结果（节选）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">胡桃</td>
+<td align="left"><code>hu_tao_(genshin_impact)_(cosplay)</code>、<code>hu_tao_(genshin_impact)</code>（胡桃·原神，character 类第 1）、<code>kyuubi</code>（九尾狐）、<code>cherry_blossoms</code>（樱花）</td>
+</tr>
+<tr>
+<td align="center">身穿水手服的少女</td>
+<td align="left"><code>sailor</code>（水手服）、<code>sailor_senshi_uniform</code>（水手战士服）、<code>sailor_dress</code>（水手连衣裙）、<code>girl_scout</code>（女童子军）</td>
+</tr>
+<tr>
+<td align="center">在雨中奔跑的黑发女孩</td>
+<td align="left"><code>rain</code>（雨）、<code>running</code>（跑步）、<code>black_hair</code>（黑发）、<code>1girl</code>（单人女性）</td>
+</tr>
+</tbody></table>
+<p>检索原理：（Qwen3-Embedding 向量 + 领域词典分词的混合召回）不是本文重点，细节见另一篇；这里只需要知道：<strong>服务端有一个 <code>run_search()</code> 函数，输入中文、输出结构化标签</strong>——<mark>MCP 要做的就是把这个函数包装成服务暴露出去。</mark></p>
+<h3 id="2-2-架构选型"><a href="#2-2-架构选型" class="headerlink" title="2.2 架构选型"></a>2.2 架构选型</h3><p>选型不纠结理论，就看两件事：能不能跑通、成本多低。最后定了四条：</p>
+<ul>
+<li><strong>传输方式</strong>：Streamable HTTP。stdio 只能本机调用，满足不了”远程服务”这个前提；SSE 是已经过时的旧方案，不用。</li>
+<li><strong>云托管</strong>：ModelScope 创空间（Docker SDK）。原本想上 Hugging Face，但 HF 免费账号现在开不了 CPU 空间（创建直接报 402），只能开跑不动模型的 Static 空间；魔搭免费实例 2 vCPU &#x2F; 16GB &#x2F; 50GB 磁盘，够用。</li>
+<li><strong>推理后端</strong>（和 MCP 本身无关，一句带过）：免费实例只有 CPU，实测 fp32 精度最稳、单次查询约 1s；量化方案虽然快但会把检索排序打乱，不用。</li>
+<li><strong>鉴权</strong>：静态 Bearer token（就是魔搭的 token）。</li>
+</ul>
+<h3 id="2-3-搭建：一个检索函数，两个入口"><a href="#2-3-搭建：一个检索函数，两个入口" class="headerlink" title="2.3 搭建：一个检索函数，两个入口"></a>2.3 搭建：一个检索函数，两个入口</h3><p>架构一句话：<strong><code>run_search()</code> 是唯一实现，网页 API 和 MCP 工具都只是它的壳</strong>——不存在两套逻辑要同步。</p>
+<p><img src="/images/mcp/image-20261014143435399.png" srcset="/img/loading.gif" lazyload alt="MCP 服务架构：run_search() 唯一实现，网页 API 与 MCP 工具两个入口"></p>
+<p>核心代码就这么几段（完整源码见仓库）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> contextlib <span class="hljs-keyword">import</span> asynccontextmanager<br><span class="hljs-keyword">from</span> mcp.server.mcpserver <span class="hljs-keyword">import</span> MCPServer<br><span class="hljs-keyword">from</span> mcp.server.transport_security <span class="hljs-keyword">import</span> TransportSecuritySettings<br><br>mcp = MCPServer(<span class="hljs-string">&quot;danbooru-query&quot;</span>)<br><br><span class="hljs-meta">@mcp.tool()</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">search_danbooru_tags</span>(<span class="hljs-params">query: <span class="hljs-built_in">str</span>, general_k: <span class="hljs-built_in">int</span> = <span class="hljs-number">10</span>, other_k: <span class="hljs-built_in">int</span> = <span class="hljs-number">2</span></span>) -&gt; <span class="hljs-built_in">dict</span>:<br>    <span class="hljs-string">&quot;&quot;&quot;用中文自然语言描述语义搜索 Danbooru 标签。（参数说明略）&quot;&quot;&quot;</span><br>    <span class="hljs-keyword">return</span> run_search(query, general_k, other_k)<br><br><span class="hljs-comment"># 关掉 SDK 默认的 Host 校验：云上请求由网关转发，Host 不是 localhost，不关会被 421 拒绝</span><br>mcp_app = mcp.streamable_http_app(<br>    transport_security=TransportSecuritySettings(enable_dns_rebinding_protection=<span class="hljs-literal">False</span>))<br><br><span class="hljs-comment"># 挂到 FastAPI 上要做两件事：会话管理在启动流程里跑起来、挂载放在所有路由之后</span><br><span class="hljs-meta">@asynccontextmanager</span><br><span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">lifespan</span>(<span class="hljs-params">_app</span>):<br>    <span class="hljs-keyword">async</span> <span class="hljs-keyword">with</span> mcp.session_manager.run():<br>        <span class="hljs-keyword">yield</span><br><br>app.router.lifespan_context = lifespan<br>app.mount(<span class="hljs-string">&quot;/&quot;</span>, mcp_app)<br></code></pre></td></tr></table></figure>
+
+<p>两个容易被忽略的点：</p>
+<ol>
+<li><strong>工具函数的 docstring 就是给大模型看的说明书</strong>。模型靠它决定”什么时候调这个工具、参数怎么填”，写清楚中文描述和参数含义，比代码本身更重要。</li>
+<li><strong>依赖锁精确版本</strong>：本项目写死 <code>mcp==2.3.0</code>。SDK 大版本会改名字（2.x 把 <code>FastMCP</code> 改名为 <code>MCPServer</code>），而容器每次构建都会重新装依赖——不锁死，某天构建完直接 ImportError。</li>
+</ol>
+<h3 id="2-4-部署：git-push-网页点重启"><a href="#2-4-部署：git-push-网页点重启" class="headerlink" title="2.4 部署：git push + 网页点重启"></a>2.4 部署：git push + 网页点重启</h3><p>Dockerfile 只装依赖 + 准备向量库，模型不进镜像：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> modelscope-registry.cn-beijing.cr.aliyuncs.com/modelscope-repo/python:<span class="hljs-number">3.10</span><br><span class="hljs-keyword">WORKDIR</span><span class="language-bash"> /home/user/app</span><br><span class="hljs-keyword">COPY</span><span class="language-bash"> ./ /home/user/app</span><br><span class="hljs-keyword">RUN</span><span class="language-bash"> pip install --no-cache-dir -r requirements.txt</span><br><span class="hljs-comment"># 构建期把向量库拉进镜像（运行时下载会被平台审核回滚，见坑一）</span><br><span class="hljs-keyword">RUN</span><span class="language-bash"> python -c <span class="hljs-string">&quot;import urllib.request as u; u.urlretrieve(&#x27;&lt;向量库地址&gt;&#x27;, &#x27;/home/user/app/tag_vectors.npz&#x27;)&quot;</span> \</span><br><span class="language-bash">    &amp;&amp; python -c <span class="hljs-string">&quot;import os; s = os.path.getsize(&#x27;/home/user/app/tag_vectors.npz&#x27;); assert s &gt; 1000000, s&quot;</span></span><br><span class="hljs-keyword">EXPOSE</span> <span class="hljs-number">7860</span><br><span class="hljs-keyword">ENTRYPOINT</span><span class="language-bash"> [<span class="hljs-string">&quot;python&quot;</span>, <span class="hljs-string">&quot;-u&quot;</span>, <span class="hljs-string">&quot;app.py&quot;</span>]</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>必须监听 <code>0.0.0.0:7860</code></strong>——魔搭约定端口 7860，8080 被平台本身占用。</p>
+<p><strong>大文件怎么进容器</strong>（两条路，各有取舍）：</p>
+<ul>
+<li><strong>模型（2.4GB）走运行时下载</strong>：容器首次启动时从魔搭模型库拉到 <code>/mnt/workspace</code> 持久卷，重启不重下；代价是每次启动的会话加载&#x2F;预热省不掉（约几十秒）。</li>
+<li><strong>向量库（138MB）走构建期下载</strong>：打进镜像，<code>app.py</code> 直接读同目录文件（运行时下载那套代码会被平台自动审核回滚，见坑一）；代价是镜像大 139MB、每次构建重下一次。</li>
+</ul>
+<p><strong>更新流程</strong>：改代码 → <code>git push</code> → 网页「设置 → 重启创空间」。平台没有公开的部署触发 API，这一步只能手点。</p>
+<h3 id="2-5-测试与接入"><a href="#2-5-测试与接入" class="headerlink" title="2.5 测试与接入"></a>2.5 测试与接入</h3><h4 id="先用脚本把-MCP-握手跑通"><a href="#先用脚本把-MCP-握手跑通" class="headerlink" title="先用脚本把 MCP 握手跑通"></a>先用脚本把 MCP 握手跑通</h4><p>MCP 客户端做的事就四步，手写脚本就能验证，不用装任何客户端：</p>
+<ol>
+<li><code>initialize</code>：发起连接，拿回服务端信息和会话 ID</li>
+<li><code>notifications/initialized</code>：告诉服务端”我准备好了”</li>
+<li><code>tools/list</code>：看服务端有哪些工具（名字、说明、参数）</li>
+<li><code>tools/call</code>：带上参数调用工具，拿回结果</li>
+</ol>
+<p>四步走的是同一个 HTTP 请求：往 <code>/mcp</code> POST 一段 JSON-RPC，从第 2 步起把上一步拿到的会话 ID 放进 <code>mcp-session-id</code> 请求头：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs python">H = &#123;<span class="hljs-string">&quot;Authorization&quot;</span>: <span class="hljs-string">&quot;Bearer &lt;你的魔搭 token&gt;&quot;</span>, <span class="hljs-string">&quot;Content-Type&quot;</span>: <span class="hljs-string">&quot;application/json&quot;</span>,<br>     <span class="hljs-string">&quot;Accept&quot;</span>: <span class="hljs-string">&quot;application/json, text/event-stream&quot;</span>&#125;<br>r = requests.post(<span class="hljs-string">&quot;&lt;BASE&gt;/mcp&quot;</span>, json=&#123;<span class="hljs-string">&quot;jsonrpc&quot;</span>: <span class="hljs-string">&quot;2.0&quot;</span>, <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-number">1</span>, <span class="hljs-string">&quot;method&quot;</span>: <span class="hljs-string">&quot;initialize&quot;</span>,<br>    <span class="hljs-string">&quot;params&quot;</span>: &#123;<span class="hljs-string">&quot;protocolVersion&quot;</span>: <span class="hljs-string">&quot;2025-03-26&quot;</span>, <span class="hljs-string">&quot;capabilities&quot;</span>: &#123;&#125;,<br>               <span class="hljs-string">&quot;clientInfo&quot;</span>: &#123;<span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;probe&quot;</span>, <span class="hljs-string">&quot;version&quot;</span>: <span class="hljs-string">&quot;0.1&quot;</span>&#125;&#125;&#125;, headers=H)<br>sid = r.headers.get(<span class="hljs-string">&quot;mcp-session-id&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>两个小细节：响应是 SSE 格式，要按 <code>data:</code> 行取出 JSON 再解析；中文要按 UTF-8 解码（requests 对 <code>text/event-stream</code> 默认用 latin-1，中文会全是乱码）。</p>
+<h4 id="再配进客户端"><a href="#再配进客户端" class="headerlink" title="再配进客户端"></a>再配进客户端</h4><p>以在用的编辑器（Qoder，配置在 user 级 <code>settings.json</code>）为例：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;mcpServers&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;Danbooru_Search标签搜索&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-attr">&quot;timeout&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">30000</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;http&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;url&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;https://studio-&lt;your&gt;-&lt;studio&gt;.api-inference.modelscope.net/mcp&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;headers&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span> <span class="hljs-attr">&quot;Authorization&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Bearer &lt;你的魔搭 token&gt;&quot;</span> <span class="hljs-punctuation">&#125;</span><br>    <span class="hljs-punctuation">&#125;</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>三个关键点：<code>type</code> 必须是 <code>http</code>（Streamable HTTP），不是 <code>sse</code>；认证靠 <code>headers</code> 里的 Bearer，服务端没有 OAuth 端点，指望自动授权会失败（见踩坑 #6）；<code>timeout</code> 给足 30 秒（云端冷启动 + 多源检索能到几秒）。</p>
+<p>配好后 <code>@</code> 这个连接器就能用，实测一次完整调用：<code>mcp__danbooru_search__search_danbooru_tags</code>，返回 <code>miko</code>（巫女，原句锚定）、<code>white_hair</code>（0.728，白发源）、<code>cherry_tree</code>（0.796，樱花树源）等分组结果。</p>
+<h2 id="3-踩坑清单"><a href="#3-踩坑清单" class="headerlink" title="3 踩坑清单"></a>3 踩坑清单</h2><h3 id="坑一：代码被平台悄悄回滚，重启才发现服务起不来了"><a href="#坑一：代码被平台悄悄回滚，重启才发现服务起不来了" class="headerlink" title="坑一：代码被平台悄悄回滚，重启才发现服务起不来了"></a>坑一：代码被平台悄悄回滚，重启才发现服务起不来了</h3><ul>
+<li><strong>遇到的问题</strong>：我把”启动时下载向量库”的代码推上去，push 提示成功。过几分钟去仓库看，<code>app.py</code> 却变回了旧版本——多出来一个提交，作者是平台管理员，说明是”文件内容敏感，已回滚”。整个过程我<strong>没收到任何通知</strong>。</li>
+<li><strong>导致了什么</strong>：我以为改动生效了，实际线上跑的是被回滚后的旧代码；而那个版本要读的向量库文件已经不在仓库里了，所以一重启就直接启动失败。</li>
+<li><strong>原因是什么</strong>：做了几组对照实验才弄清楚——平台审核只看<strong>本次新增的代码</strong>，拦的是”程序在<strong>运行时</strong>去外部下载文件”这类行为（大概是怕绕过平台的文件分发和审核）。我改措辞、换仓库名都没用（连续三次被回滚）；但只加一行无害注释、或者把下载放到 Dockerfile 里构建期执行，就都能过。同理，原来那段下载 2.4GB 模型的代码一直没事——它是最早提交的旧代码，不在这次改动范围里，不会被重新审。</li>
+<li><strong>怎么解决的</strong>：把”下载向量库”从运行时代码挪到 Dockerfile 构建期（构建镜像时下载进镜像），<code>app.py</code> 只负责读同目录的文件，一行网络代码都不加。顺手加了下载后的大小校验：文件没下全就构建失败，不会把坏文件带上线。</li>
+<li>两条经验：① 平台的自动回滚<strong>没有通知</strong>，只能自己定期 <code>git fetch</code> 看远端历史才发现；② 遇到”改了没生效”这种怪事，用<strong>每次只改一个变量的对照实验</strong>去缩小范围，比瞎猜快得多。</li>
+</ul>
+<h3 id="坑二：客户端连不上——“拒绝了-Qoder-的-OAuth-客户端注册（401）”"><a href="#坑二：客户端连不上——“拒绝了-Qoder-的-OAuth-客户端注册（401）”" class="headerlink" title="坑二：客户端连不上——“拒绝了 Qoder 的 OAuth 客户端注册（401）”"></a>坑二：客户端连不上——“拒绝了 Qoder 的 OAuth 客户端注册（401）”</h3><ul>
+<li><strong>现象</strong>：在编辑器里添加远程 MCP 服务器，添加失败，提示 OAuth 客户端注册被拒（401）；可服务用脚本测明明是好的。</li>
+<li><strong>原因</strong>：两个默认值叠加。①<strong>传输类型</strong>：编辑器界面默认给的是 <code>sse</code>，而我们的服务只实现了 Streamable HTTP 的单端点 <code>/mcp</code>（SSE 是已废弃的旧协议，端点和握手方式都不同）；②<strong>认证方式</strong>：配置里没给认证头，客户端就按 MCP 规范去尝试 OAuth 动态注册流程，而我们的服务&#x2F;平台不提供 OAuth 端点，于是 401。</li>
+<li><strong>修法</strong>：手工把配置改成 Streamable HTTP + Bearer 头，别用界面默认值：</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;mcpServers&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;Danbooru_Search标签搜索&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-attr">&quot;timeout&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">30000</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;http&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;url&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;https://studio-&lt;your&gt;-&lt;studio&gt;.api-inference.modelscope.net/mcp&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;headers&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span> <span class="hljs-attr">&quot;Authorization&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Bearer &lt;你的魔搭 token&gt;&quot;</span> <span class="hljs-punctuation">&#125;</span><br>    <span class="hljs-punctuation">&#125;</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>教训</strong>：远程 MCP 的<strong>传输类型</strong>和<strong>认证方式</strong>是两个必须显式确认的字段。服务端没有 OAuth，就只有静态 token 一条路；客户端的”自动授权”只会给你一个看不懂的 401。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/MCP/" class="print-no-link">#MCP</a>
+      
+        <a href="/tags/LLM/" class="print-no-link">#LLM</a>
+      
+        <a href="/tags/Agent/" class="print-no-link">#Agent</a>
+      
+        <a href="/tags/%E9%83%A8%E7%BD%B2/" class="print-no-link">#部署</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>搭建自己的 MCP 服务——Danbooru 标签搜索示例</div>
+      <div>https://aimi8023.github.io/2026/10/14/MCP服务搭建/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>艾米</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年10月14日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/10/24/Spring%20Cloud%20%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0%EF%BC%9ANacos/" title="Spring Cloud 服务注册与发现：Nacos">
+                        <span class="hidden-mobile">Spring Cloud 服务注册与发现：Nacos</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <span>© 2026 艾米</span> <span class="footer-separator">·</span> <a href="/atom.xml"><span>RSS</span></a> <span class="footer-separator">·</span> <a href="https://github.com/aimi8023" target="_blank" rel="nofollow noopener"><span>GitHub</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    function isExpandAllEnabled() {
+      return CONFIG.toc && CONFIG.toc.expand_all === true;
+    }
+    function expandAllToc() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
+    }
+    function updateTocToggle($li, $childList) {
+      var $toggle = $li.children('.toc-toggle');
+      if ($toggle.length === 0) { return; }
+      var collapsed = $childList.hasClass('tocbot-is-collapsed');
+      $toggle
+        .toggleClass('toc-toggle-collapsed', collapsed)
+        .toggleClass('toc-toggle-expanded', !collapsed);
+    }
+    function bindTocToggle() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .toc-list-item').each(function() {
+        var $li = jQuery(this);
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) {
+          if ($li.children('.toc-toggle').length === 0) {
+            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
+          }
+          return;
+        }
+
+        if ($li.children('.toc-toggle').length === 0) {
+          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
+        }
+        updateTocToggle($li, $childList);
+      });
+      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = jQuery(this).parent('.toc-list-item');
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) { return; }
+        $childList.toggleClass('tocbot-is-collapsed');
+        updateTocToggle($li, $childList);
+      });
+      if (!window.__tocToggleObserver) {
+        window.__tocToggleObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
+            var $list = jQuery(mutation.target);
+            var $li = $list.parent('.toc-list-item');
+            if ($li.length === 0) { return; }
+            updateTocToggle($li, $list);
+          });
+        });
+        jQuery('#toc-body ol').each(function() {
+          window.__tocToggleObserver.observe(this, { attributes: true });
+        });
+      }
+    }
+    var tocConfig = Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc);
+    if (isExpandAllEnabled()) {
+      tocConfig.collapseDepth = 6;
+    }
+    window.tocbot.init(tocConfig);
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+    expandAllToc();
+    bindTocToggle();
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+        expandAllToc();
+        bindTocToggle();
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

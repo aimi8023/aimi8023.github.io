@@ -1,0 +1,670 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+    <link rel="canonical" href="https://aimi8023.github.io"/>
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#173f45">
+  <meta name="author" content="艾米">
+  <meta name="keywords" content="Java,Spring Cloud,LLM,计算机视觉,AI,前端开发,学习笔记">
+  
+    <meta name="description" content="艾米的个人知识站，记录技术学习、项目实践与实用工具。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="艾米">
+<meta property="og:url" content="https://aimi8023.github.io/index.html">
+<meta property="og:site_name" content="艾米">
+<meta property="og:description" content="艾米的个人知识站，记录技术学习、项目实践与实用工具。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://aimi8023.github.io/images/brand/calm-night-background.webp">
+<meta property="article:published_time" content="2026-10-14T09:01:40.368Z">
+<meta property="article:modified_time" content="2026-10-14T09:01:40.368Z">
+<meta property="article:author" content="艾米">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="Spring Cloud">
+<meta property="article:tag" content="前端开发">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="计算机视觉">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://aimi8023.github.io/images/brand/calm-night-background.webp">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>艾米 - 艾米</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"aimi8023.github.io","root":"/","version":"1.9.9","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="艾米" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 32vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>艾米</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/articles/" target="_self">
+                
+                <span>文章</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/projects/" target="_self">
+                
+                <span>作品</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tools/" target="_self">
+                
+                <span>工具箱</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://github.com/aimi8023" target="_blank">
+                <i class="iconfont icon-github-fill"></i>
+                <span>GitHub</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-link-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/articles/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-link-fill"></i>
+                  <span>文章</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/projects/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-link-fill"></i>
+                  <span>作品</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/tools/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-link-fill"></i>
+                  <span>工具箱</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-link-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="https://github.com/aimi8023" target="_blank">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-github-fill"></i>
+                  <span>GitHub</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/images/brand/calm-night-background.webp') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.18)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">艾米</span>
+          
+        </div>
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div id="board"
+          >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+<article class="page-content">
+  
+  <div class="garden-home">
+    <section class="garden-hero">
+      <div class="garden-hero-copy">
+        <p class="garden-overline">WELCOME TO MY CORNER OF THE WEB</p>
+        <h1 id="嗨，我是艾米。">嗨，我是艾米。</h1>
+        <p class="garden-intro">计算机专业硕士研究生，关注后端工程、人工智能和实用开发工具。这是我的个人知识站，用来分享我学到的东西，也展示我真正动手完成的作品。</p>
+        <div class="garden-actions">
+          <a class="garden-button garden-button-primary" href="/about/">关于我</a>
+          <a class="garden-button" target="_blank" rel="noopener" href="https://github.com/aimi8023">GitHub ↗</a>
+        </div>
+      </div>
+      <aside class="garden-profile" aria-label="关注方向">
+        <span class="garden-profile-mark" aria-hidden="true">A</span>
+        <p>主要关注</p>
+        <ul>
+          <li>Java 与 Spring 生态</li>
+          <li>LLM 与计算机视觉</li>
+          <li>简单可靠的开发工具</li>
+        </ul>
+      </aside>
+    </section>
+
+    <section class="garden-section">
+      <header class="garden-heading">
+        <div>
+          <span class="garden-heading-mark garden-mark-writing" aria-hidden="true"></span>
+          <h2>文章</h2>
+          <p>技术笔记、实践过程和能够复现的解决方案。</p>
+        </div>
+        <a href="/articles/">查看全部</a>
+      </header>
+      <div class="garden-posts">
+        
+    <a class="garden-post" href="/2026/10/14/MCP服务搭建/">
+      <time datetime="2026-10-14">
+        <span>10.14</span>
+        <small>2026</small>
+      </time>
+      <div class="garden-post-copy">
+        <span class="garden-post-category">后端</span>
+        <h3>搭建自己的 MCP 服务——Danbooru 标签搜索示例</h3>
+        <p>从 MCP 协议基础讲到实战，把中文到 Danbooru 标签的检索站点包装成 Streamable HTTP 远程 MCP 服务，部署到 ModelScope 创空间并接入编辑器，附完整踩坑记录。</p>
+      </div>
+      <span class="garden-row-arrow" aria-hidden="true">↗</span>
+    </a>
+  
+    <a class="garden-post" href="/2025/10/24/Spring Cloud 服务注册与发现：Nacos/">
+      <time datetime="2025-10-24">
+        <span>10.24</span>
+        <small>2025</small>
+      </time>
+      <div class="garden-post-copy">
+        <span class="garden-post-category">后端</span>
+        <h3>Spring Cloud 服务注册与发现：Nacos</h3>
+        <p>使用 Spring Cloud Alibaba 与 Nacos 搭建服务注册和发现示例，包含环境准备、项目结构与核心配置。</p>
+      </div>
+      <span class="garden-row-arrow" aria-hidden="true">↗</span>
+    </a>
+  
+    <a class="garden-post" href="/2025/10/24/Spring Cloud 微服务入门学习/">
+      <time datetime="2025-10-24">
+        <span>10.24</span>
+        <small>2025</small>
+      </time>
+      <div class="garden-post-copy">
+        <span class="garden-post-category">后端</span>
+        <h3>Spring Cloud 微服务入门学习</h3>
+        <p>从服务注册、远程调用、容错、网关和配置中心五个模块建立 Spring Cloud 微服务学习路线。</p>
+      </div>
+      <span class="garden-row-arrow" aria-hidden="true">↗</span>
+    </a>
+  
+    <a class="garden-post" href="/2025/10/11/Java数据库学习/">
+      <time datetime="2025-10-11">
+        <span>10.11</span>
+        <small>2025</small>
+      </time>
+      <div class="garden-post-copy">
+        <span class="garden-post-category">后端</span>
+        <h3>Java数据库学习</h3>
+        <p>从 JDBC、DataSource 到 MyBatis 与 Spring Boot，梳理 Java 数据库访问技术的演进和核心原理。</p>
+      </div>
+      <span class="garden-row-arrow" aria-hidden="true">↗</span>
+    </a>
+  
+    <a class="garden-post" href="/2025/09/30/BootStrap 常用标签/">
+      <time datetime="2025-09-30">
+        <span>09.30</span>
+        <small>2025</small>
+      </time>
+      <div class="garden-post-copy">
+        <span class="garden-post-category">前端</span>
+        <h3>BootStrap 常用标签</h3>
+        <p>Bootstrap 5 常用布局、组件与交互写法速查，包含容器、表单、Toast 和 Modal 等示例。</p>
+      </div>
+      <span class="garden-row-arrow" aria-hidden="true">↗</span>
+    </a>
+  
+      </div>
+    </section>
+
+    <section class="garden-section">
+      <header class="garden-heading">
+        <div>
+          <span class="garden-heading-mark garden-mark-project" aria-hidden="true"></span>
+          <h2>作品</h2>
+          <p>不只展示结果，也记录问题、选择与实现过程。</p>
+        </div>
+        <a href="/projects/">项目归档</a>
+      </header>
+      <article class="garden-project">
+        <a class="garden-project-hitarea" target="_blank" rel="noopener" href="https://anime.zhanghome.qzz.io/" aria-label="访问作品：追番记录"></a>
+        <a class="garden-project-source" target="_blank" rel="noopener" href="https://github.com/aimi8023/anime-diary">查看源码 ↗</a>
+        <div class="garden-project-year">2026</div>
+        <div class="garden-project-copy">
+          <span class="garden-project-label">在线运行</span>
+          <h3>追番记录</h3>
+          <p>按季度整理和浏览追过的番剧，支持全局搜索、多条件筛选、标签、评分，以及带密码保护的管理后台。</p>
+          <ul>
+            <li>Next.js 16</li>
+            <li>TypeScript</li>
+            <li>Upstash Redis</li>
+          </ul>
+        </div>
+        <span class="garden-project-action" aria-hidden="true">访问作品 ↗</span>
+      </article>
+    </section>
+
+    <section class="garden-section garden-tools-section">
+      <header class="garden-heading">
+        <div>
+          <span class="garden-heading-mark garden-mark-tool" aria-hidden="true"></span>
+          <h2>工具箱</h2>
+          <p>在浏览器本地运行，解决开发过程中的具体小问题。</p>
+        </div>
+        <a href="/tools/">全部工具</a>
+      </header>
+      <div class="garden-tool-list">
+        <a class="garden-tool" href="/tools/image-converter/">
+          <span class="garden-tool-icon garden-tool-icon-image" aria-hidden="true">IMG</span>
+          <div>
+            <span class="garden-tool-status">新工具 · 本地处理</span>
+            <h3>图片压缩与转换</h3>
+            <p>批量转换 JPG、PNG 与 WebP，调整尺寸、压缩质量或目标体积。</p>
+          </div>
+          <span class="garden-tool-action">打开工具 ↗</span>
+        </a>
+        <a class="garden-tool" href="/tools/json-formatter/">
+          <span class="garden-tool-icon" aria-hidden="true">{ }</span>
+          <div>
+            <span class="garden-tool-status">在线可用 · 本地处理</span>
+            <h3>JSON 格式化</h3>
+            <p>格式化、校验、树形编辑、搜索、复制、文件导入与下载。</p>
+          </div>
+          <span class="garden-tool-action">打开工具 ↗</span>
+        </a>
+      </div>
+    </section>
+  </div>
+
+
+
+  
+
+</article>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <span>© 2026 艾米</span> <span class="footer-separator">·</span> <a href="/atom.xml"><span>RSS</span></a> <span class="footer-separator">·</span> <a href="https://github.com/aimi8023" target="_blank" rel="nofollow noopener"><span>GitHub</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,1001 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+    <link rel="canonical" href="https://aimi8023.github.io/2025/09/26/SpringBoot 国际化配置（中英文切换）/"/>
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#173f45">
+  <meta name="author" content="艾米">
+  <meta name="keywords" content="Java,Spring Cloud,LLM,计算机视觉,AI,前端开发,学习笔记">
+  
+    <meta name="description" content="在 Spring Boot 与 Thymeleaf 项目中配置中英文切换，涵盖资源文件、LocaleResolver 和页面改造。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot 国际化配置（中英文切换）">
+<meta property="og:url" content="https://aimi8023.github.io/2025/09/26/SpringBoot%20%E5%9B%BD%E9%99%85%E5%8C%96%E9%85%8D%E7%BD%AE%EF%BC%88%E4%B8%AD%E8%8B%B1%E6%96%87%E5%88%87%E6%8D%A2%EF%BC%89/index.html">
+<meta property="og:site_name" content="艾米">
+<meta property="og:description" content="在 Spring Boot 与 Thymeleaf 项目中配置中英文切换，涵盖资源文件、LocaleResolver 和页面改造。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://aimi8023.github.io/images/brand/calm-night-background.webp">
+<meta property="article:published_time" content="2025-09-26T05:58:10.000Z">
+<meta property="article:modified_time" content="2026-07-27T13:00:00.000Z">
+<meta property="article:author" content="艾米">
+<meta property="article:tag" content="SpringBoot">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://aimi8023.github.io/images/brand/calm-night-background.webp">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>SpringBoot 国际化配置（中英文切换） - 艾米</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"aimi8023.github.io","root":"/","version":"1.9.9","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="艾米" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 34vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>艾米</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/articles/" target="_self">
+                
+                <span>文章</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/projects/" target="_self">
+                
+                <span>作品</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tools/" target="_self">
+                
+                <span>工具箱</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://github.com/aimi8023" target="_blank">
+                <i class="iconfont icon-github-fill"></i>
+                <span>GitHub</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-link-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/articles/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-link-fill"></i>
+                  <span>文章</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/projects/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-link-fill"></i>
+                  <span>作品</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/tools/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-link-fill"></i>
+                  <span>工具箱</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-link-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="https://github.com/aimi8023" target="_blank">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-github-fill"></i>
+                  <span>GitHub</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/images/brand/calm-night-background.webp') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.2)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">SpringBoot 国际化配置（中英文切换）</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        艾米
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-09-26 13:58" pubdate>
+          2025年9月26日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          17k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          140 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">SpringBoot 国际化配置（中英文切换）</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2026-07-27
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="SpringBoot-国际化配置（中英文切换）"><a href="#SpringBoot-国际化配置（中英文切换）" class="headerlink" title="SpringBoot 国际化配置（中英文切换）"></a>SpringBoot 国际化配置（中英文切换）</h1><p>本文记录 Spring Boot + Thymeleaf 项目实现中英文切换的完整过程，包括资源文件、区域解析器和页面文本替换。</p>
+<span id="more"></span>
+
+<h3 id="1-Idea新建springboot项目"><a href="#1-Idea新建springboot项目" class="headerlink" title="1.Idea新建springboot项目"></a>1.Idea新建springboot项目</h3><pre><code class="hljs">				- 环境：**Java17+Springboot6**
+</code></pre>
+<p>1.1选择Springboot项目名称和类型</p>
+<img src="https://raw.githubusercontent.com/2722714532/Typora/main/image20250925195119.png" srcset="/img/loading.gif" lazyload alt="image-20250925195116571" style="zoom: 67%;" />
+
+<h4 id="1-2-勾选Web支持-和-模板引擎（Thymeleaf）"><a href="#1-2-勾选Web支持-和-模板引擎（Thymeleaf）" class="headerlink" title="1.2 勾选Web支持 和 模板引擎（Thymeleaf）"></a>1.2 勾选Web支持 和 模板引擎（Thymeleaf）</h4><p><img src="https://raw.githubusercontent.com/2722714532/Typora/main/image20250925202039.png" srcset="/img/loading.gif" lazyload alt="image-20250925201955357" style="zoom:80%;" /><img src="https://raw.githubusercontent.com/2722714532/Typora/main/image20250925225907.png" srcset="/img/loading.gif" lazyload alt="image-20250925201959255" style="zoom:80%;" /></p>
+<h4 id="1-3进入Springboot项目"><a href="#1-3进入Springboot项目" class="headerlink" title="1.3进入Springboot项目"></a>1.3进入Springboot项目</h4><p><img src="https://raw.githubusercontent.com/2722714532/Typora/main/image20250925202407.png" srcset="/img/loading.gif" lazyload alt="image-20250925202319562" style="zoom: 80%;" /> <strong>→</strong> <img src="https://raw.githubusercontent.com/2722714532/Typora/main/image20250925202418.png" srcset="/img/loading.gif" lazyload alt="image-20250925202349290" style="zoom:67%;" /></p>
+<ul>
+<li>得到一个看起来很干净的项目:slightly_smiling_face:</li>
+</ul>
+<hr>
+<h3 id="2-建文件和引入静态资源"><a href="#2-建文件和引入静态资源" class="headerlink" title="2.建文件和引入静态资源"></a>2.建文件和引入静态资源</h3><img src="https://raw.githubusercontent.com/2722714532/Typora/main/image20250925225853.png" srcset="/img/loading.gif" lazyload alt="image-20250925210725526" style="zoom:67%;" />
+
+<ul>
+<li><p><strong>i18n</strong> 为单词 <strong>internationalization</strong>(国际化)的缩写:smile: 是实现国际化的必要文件.</p>
+<pre><code class="hljs">- 需要创建在**src/main/resources/**目录下
+  
+ - login,login_en_US,login_zh_CN三个配置文件均为 **properties**，yml配置国际化暂不支持（我不会）
+ - 创建成功后三个文件会直接被Springboot识别为资源包&#39;login&#39;
+</code></pre>
+</li>
+<li><p>静态资源css和images需放在**static&#x2F;**目录下</p>
+</li>
+<li><p>首页index.html需放在**templates&#x2F;**目录下</p>
+</li>
+</ul>
+<p><mark>将 <code>css/style.css</code>、<code>index.html</code> 放在文章末尾，<code>images/banner.jpg</code> 可以替换为自己的图片。</mark></p>
+<hr>
+<h3 id="3-测试项目运行成功，再进行国际化配置"><a href="#3-测试项目运行成功，再进行国际化配置" class="headerlink" title="3.测试项目运行成功，再进行国际化配置"></a>3.测试项目运行成功，再进行国际化配置</h3><h4 id="3-1新建config-MyWebMvcConfig配置类，添加首页访问路径"><a href="#3-1新建config-MyWebMvcConfig配置类，添加首页访问路径" class="headerlink" title="3.1新建config&#x2F;MyWebMvcConfig配置类，添加首页访问路径"></a>3.1新建config&#x2F;MyWebMvcConfig配置类，添加首页访问路径</h4><p><img src="https://raw.githubusercontent.com/2722714532/Typora/main/image20250925225847.png" srcset="/img/loading.gif" lazyload alt="image-20250925211927545"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs JAVA"><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyWebMvcConfig</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">WebMvcConfigurer</span> &#123;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addViewControllers</span><span class="hljs-params">(ViewControllerRegistry registry)</span> &#123;<br>        registry.addViewController(<span class="hljs-string">&quot;/&quot;</span>).setViewName(<span class="hljs-string">&quot;index&quot;</span>);<br>        registry.addViewController(<span class="hljs-string">&quot;/index.html&quot;</span>).setViewName(<span class="hljs-string">&quot;index&quot;</span>);<br>    &#125;<br><br>   <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>首页访问也可以如下直接新建一个类直接进行路径映射，不过这里采用继承<mark>WebMvcConfigurer接口</mark>的方式是为了接下来的国际化配置</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs JAVA"><span class="hljs-comment">//  不采用该方式</span><br><span class="hljs-comment">//	  @Component</span><br><span class="hljs-comment">//   public class HelloController &#123;</span><br><span class="hljs-comment">//      @RequestMapping(&#123;&quot;/&quot;,&quot;/index.html&quot;&#125;)</span><br><span class="hljs-comment">//       public String index() &#123;</span><br><span class="hljs-comment">//           return &quot;index&quot;;</span><br><span class="hljs-comment">//       &#125;</span><br><span class="hljs-comment">//   &#125;                                                              </span><br><br></code></pre></td></tr></table></figure>
+
+<h4 id="3-2-运行程序-访问localhost-8080-即可访问index-html首页"><a href="#3-2-运行程序-访问localhost-8080-即可访问index-html首页" class="headerlink" title="3.2 运行程序,访问localhost:8080 即可访问index.html首页"></a>3.2 运行程序,访问<a href="localhost:8080">localhost:8080</a> 即可访问index.html首页</h4><p><img src="https://raw.githubusercontent.com/2722714532/Typora/main/image20250925215617.png" srcset="/img/loading.gif" lazyload alt="image-20250925215606289"></p>
+<hr>
+<h3 id="4-login文件配置"><a href="#4-login文件配置" class="headerlink" title="4 login文件配置"></a>4 login文件配置</h3><h4 id="4-1-三个文件的配置"><a href="#4-1-三个文件的配置" class="headerlink" title="4.1 三个文件的配置"></a>4.1 三个文件的配置</h4><p>实现国际化配置，我们需要替换首页中的所有中文，使其点击中英文按钮时可以切换中文和英文，实现方法就是将<mark>中文文本</mark><strong>替换</strong>为<mark>Login配置文件中的变量</mark>，通过控制变量的解析文件即可实现中英文配置</p>
+<p>以下为三个文件的配置，应该不用解释，很好理解，login为默认配置，zh_CN为中文,en_US为英文</p>
+<ul>
+<li><p><span style="fontsize:22px;color:red;">注意：打开项目setting-&gt;fileEncoding,需要更改properties为UTF-8格式，否则中文乱码</span></p>
+<img src="https://raw.githubusercontent.com/2722714532/Typora/main/image20250925220917.png" srcset="/img/loading.gif" lazyload alt="image-20250925220629880" style="zoom:50%;" /></li>
+</ul>
+<p><strong>login.properties</strong></p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">login.title</span>=<span class="hljs-string">欢迎使用</span><br><span class="hljs-attr">login.msg</span>=<span class="hljs-string">登录</span><br><span class="hljs-attr">login.userid</span>=<span class="hljs-string">用户名</span><br><span class="hljs-attr">login.forget</span>=<span class="hljs-string">忘记密码</span><br><span class="hljs-attr">login.login</span>=<span class="hljs-string">登录</span><br><span class="hljs-attr">login.new</span>=<span class="hljs-string">新用户</span><br><span class="hljs-attr">login.register</span>=<span class="hljs-string">注册</span><br><span class="hljs-attr">login.here</span>=<span class="hljs-string">点击这里</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>login_zh_CN.properties</strong></p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">login.title</span>=<span class="hljs-string">欢迎使用</span><br><span class="hljs-attr">login.msg</span>=<span class="hljs-string">登录</span><br><span class="hljs-attr">login.userid</span>=<span class="hljs-string">用户名</span><br><span class="hljs-attr">login.forget</span>=<span class="hljs-string">忘记密码</span><br><span class="hljs-attr">login.login</span>=<span class="hljs-string">登录</span><br><span class="hljs-attr">login.new</span>=<span class="hljs-string">新用户</span><br><span class="hljs-attr">login.register</span>=<span class="hljs-string">注册</span><br><span class="hljs-attr">login.here</span>=<span class="hljs-string">点击这里</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>login_en_US.properties</strong></p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">login.title</span>=<span class="hljs-string">Welcome To Use</span><br><span class="hljs-attr">login.msg</span>=<span class="hljs-string">LOGIN FORM</span><br><span class="hljs-attr">login.userid</span>=<span class="hljs-string">User Id</span><br><span class="hljs-attr">login.forget</span>=<span class="hljs-string">forget Password</span><br><span class="hljs-attr">login.login</span>=<span class="hljs-string">Login</span><br><span class="hljs-attr">login.new</span>=<span class="hljs-string">New User</span><br><span class="hljs-attr">login.register</span>=<span class="hljs-string">Register</span><br><span class="hljs-attr">login.here</span>=<span class="hljs-string">Here</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="4-2-application-properties-或-applicationyml-配置"><a href="#4-2-application-properties-或-applicationyml-配置" class="headerlink" title="4.2 application.properties 或 applicationyml 配置"></a>4.2 application.properties 或 applicationyml 配置</h4><ul>
+<li>需要在配置文件中声明i18n的位置</li>
+</ul>
+<p>如果为<strong>application.properties</strong></p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">spring.messages.basename</span>=<span class="hljs-string">i18n.login</span><br></code></pre></td></tr></table></figure>
+
+<p>如果为<strong>applicationyml</strong></p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs yml"><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">messages:</span><br>    <span class="hljs-attr">basename:</span> <span class="hljs-string">i18n.login</span><br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="5-实现中英文切换"><a href="#5-实现中英文切换" class="headerlink" title="5.实现中英文切换"></a>5.实现中英文切换</h3><h4 id="5-1替换index-html中的中文文本，需要thymeleaf模板引擎解析"><a href="#5-1替换index-html中的中文文本，需要thymeleaf模板引擎解析" class="headerlink" title="5.1替换index.html中的中文文本，需要thymeleaf模板引擎解析"></a>5.1替换index.html中的中文文本，需要thymeleaf模板引擎解析</h4><img src="https://raw.githubusercontent.com/2722714532/Typora/main/image20250925221300.png" srcset="/img/loading.gif" lazyload alt="修改前" style="zoom:50%;" />
+
+<img src="https://raw.githubusercontent.com/2722714532/Typora/main/image20250925225833.png" srcset="/img/loading.gif" lazyload alt="修改后" style="zoom: 67%;" />
+
+<p>代码修改前：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs HTML"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;login&quot;</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>欢迎使用<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;login-top&quot;</span>&gt;</span><br>		<span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>登录<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span><br>		<span class="hljs-tag">&lt;<span class="hljs-name">form</span>&gt;</span><br>			<span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;用户名&quot;</span> <span class="hljs-attr">onfocus</span>=<span class="hljs-string">&quot;this.value = &#x27;&#x27;;&quot;</span> <span class="hljs-attr">onblur</span>=<span class="hljs-string">&quot;if (this.value == &#x27;&#x27;) &#123;this.value = &#x27;User Id&#x27;;&#125;&quot;</span>&gt;</span><br>			<span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;password&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;password&quot;</span> <span class="hljs-attr">onfocus</span>=<span class="hljs-string">&quot;this.value = &#x27;&#x27;;&quot;</span> <span class="hljs-attr">onblur</span>=<span class="hljs-string">&quot;if (this.value == &#x27;&#x27;) &#123;this.value = &#x27;password&#x27;;&#125;&quot;</span>&gt;</span><br>			<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;forgot&quot;</span>&gt;</span><br>				<span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>&gt;</span>忘记密码<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br>				<span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;submit&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;登录&quot;</span> &gt;</span><br>			<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>		<span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span><br><br>	<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;login-bottom&quot;</span>&gt;</span><br>		<span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>新用户<span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>&gt;</span>注册<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-symbol">&amp;nbsp;</span>点击这里<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span><br>	<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;login-change&quot;</span>&gt;</span><br>		<span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;lang-btn&quot;</span> <span class="hljs-attr">th:href</span>=<span class="hljs-string">&quot;@&#123;/(language=zh_CN)&#125;&quot;</span>&gt;</span>中文<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br>		<span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;lang-btn&quot;</span> <span class="hljs-attr">th:href</span>=<span class="hljs-string">&quot;@&#123;/(language=en_US)&#125;&quot;</span>&gt;</span>English<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br>	<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><br><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>修改后：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs HTML"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;login&quot;</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">h2</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;#&#123;login.title&#125;&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;login-top&quot;</span>&gt;</span><br>		<span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>[[#&#123;login.msg&#125;]]<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span><br>		<span class="hljs-tag">&lt;<span class="hljs-name">form</span>&gt;</span><br>			<span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span> <span class="hljs-attr">th:value</span>=<span class="hljs-string">&quot;#&#123;login.userid&#125;&quot;</span> <span class="hljs-attr">onfocus</span>=<span class="hljs-string">&quot;this.value = &#x27;&#x27;;&quot;</span> <span class="hljs-attr">onblur</span>=<span class="hljs-string">&quot;if (this.value == &#x27;&#x27;) &#123;this.value = &#x27;User Id&#x27;;&#125;&quot;</span>&gt;</span><br>			<span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;password&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;password&quot;</span> <span class="hljs-attr">onfocus</span>=<span class="hljs-string">&quot;this.value = &#x27;&#x27;;&quot;</span> <span class="hljs-attr">onblur</span>=<span class="hljs-string">&quot;if (this.value == &#x27;&#x27;) &#123;this.value = &#x27;password&#x27;;&#125;&quot;</span>&gt;</span><br>			<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;forgot&quot;</span>&gt;</span><br>				<span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;#&#123;login.forget&#125;&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br>				<span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;submit&quot;</span> <span class="hljs-attr">th:value</span>=<span class="hljs-string">&quot;#&#123;login.login&#125;&quot;</span> &gt;</span><br>			<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>		<span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span><br><br>	<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;login-bottom&quot;</span>&gt;</span><br>		<span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>[[#&#123;login.new&#125;]]<span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;#&#123;login.register&#125;&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-symbol">&amp;nbsp;</span>[[#&#123;login.here&#125;]]<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span><br>	<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;login-change&quot;</span>&gt;</span><br>		<span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;lang-btn&quot;</span> <span class="hljs-attr">th:href</span>=<span class="hljs-string">&quot;@&#123;/(language=zh_CN)&#125;&quot;</span>&gt;</span>中文<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br>		<span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;lang-btn&quot;</span> <span class="hljs-attr">th:href</span>=<span class="hljs-string">&quot;@&#123;/(language=en_US)&#125;&quot;</span>&gt;</span>English<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br>	<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><br><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>	<br></code></pre></td></tr></table></figure>
+
+<h4 id="5-2增加MyLocalResoverConfig类"><a href="#5-2增加MyLocalResoverConfig类" class="headerlink" title="5.2增加MyLocalResoverConfig类"></a>5.2增加MyLocalResoverConfig类</h4><p>仔细观察中英文切换的链接，他会传给后端不同的language参数</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;login-change&quot;</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;lang-btn&quot;</span> <span class="hljs-attr">th:href</span>=<span class="hljs-string">&quot;@&#123;/(language=zh_CN)&#125;&quot;</span>&gt;</span>中文<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;lang-btn&quot;</span> <span class="hljs-attr">th:href</span>=<span class="hljs-string">&quot;@&#123;/(language=en_US)&#125;&quot;</span>&gt;</span>English<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/2722714532/Typora/main/image20250925222002.png" srcset="/img/loading.gif" lazyload alt="image-20250925222000029"></p>
+<p><strong>MyLocalResoverConfig</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyLocalResoverConfig</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">LocaleResolver</span> &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> Locale <span class="hljs-title function_">resolveLocale</span><span class="hljs-params">(HttpServletRequest request)</span> &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">language</span> <span class="hljs-operator">=</span> request.getParameter(<span class="hljs-string">&quot;language&quot;</span>);<br>        System.out.println(language);<br>        <span class="hljs-type">Locale</span> <span class="hljs-variable">locale</span> <span class="hljs-operator">=</span> Locale.getDefault();<span class="hljs-comment">//默认配置</span><br>        <span class="hljs-comment">//如果携带参数</span><br>        <span class="hljs-keyword">if</span> (language != <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-comment">//zh_CN 或 en_US</span><br>            String[] split = language.split(<span class="hljs-string">&quot;_&quot;</span>);<br>            locale = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Locale</span>(split[<span class="hljs-number">0</span>], split[<span class="hljs-number">1</span>]);<br>        &#125;<br>        <span class="hljs-keyword">return</span> locale;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setLocale</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response, Locale locale)</span> &#123;<br><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>继承LocaleResolver接口，必须重写两个方法，通过解析不同的参数实现中英文切换</li>
+</ul>
+<h4 id="5-3-在MyWebMvcConfig中添加-MyLocalResoverConfig的-bean解析"><a href="#5-3-在MyWebMvcConfig中添加-MyLocalResoverConfig的-bean解析" class="headerlink" title="5.3 在MyWebMvcConfig中添加 MyLocalResoverConfig的@bean解析"></a>5.3 在MyWebMvcConfig中添加 MyLocalResoverConfig的@bean解析</h4><p><strong>MyWebMvcConfig</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs JAVA"><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyWebMvcConfig</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">WebMvcConfigurer</span> &#123;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addViewControllers</span><span class="hljs-params">(ViewControllerRegistry registry)</span> &#123;<br>        registry.addViewController(<span class="hljs-string">&quot;/&quot;</span>).setViewName(<span class="hljs-string">&quot;index&quot;</span>);<br>        registry.addViewController(<span class="hljs-string">&quot;/index.html&quot;</span>).setViewName(<span class="hljs-string">&quot;index&quot;</span>);<br>    &#125;<br><br>    <span class="hljs-comment">//localeResolver名字必须相同  	</span><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> LocaleResolver <span class="hljs-title function_">localeResolver</span><span class="hljs-params">()</span> &#123; <br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyLocalResoverConfig</span>();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="5-4重新运行项目，清一下浏览器缓存或-ctrl-F5-强制刷新"><a href="#5-4重新运行项目，清一下浏览器缓存或-ctrl-F5-强制刷新" class="headerlink" title="5.4重新运行项目，清一下浏览器缓存或  ctrl+F5 强制刷新"></a>5.4重新运行项目，清一下浏览器缓存或  <strong>ctrl+F5</strong> 强制刷新</h4><ul>
+<li><p>点击中文 和 English 按钮即可实现切换</p>
+<p><img src="https://raw.githubusercontent.com/2722714532/Typora/main/image20250925230546.png" srcset="/img/loading.gif" lazyload alt="image-20250925223903982"></p>
+</li>
+</ul>
+<p><strong>记录和分享学习过程，如有错误，请指正。</strong></p>
+<hr>
+<p><strong>style.css</strong></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-tag">html</span>,<span class="hljs-selector-tag">body</span>,<span class="hljs-selector-tag">div</span>,<span class="hljs-selector-tag">span</span>,applet,<span class="hljs-selector-tag">object</span>,<span class="hljs-selector-tag">iframe</span>,<span class="hljs-selector-tag">h1</span>,<span class="hljs-selector-tag">h2</span>,<span class="hljs-selector-tag">h3</span>,<span class="hljs-selector-tag">h4</span>,<span class="hljs-selector-tag">h5</span>,<span class="hljs-selector-tag">h6</span>,<span class="hljs-selector-tag">p</span>,<span class="hljs-selector-tag">blockquote</span>,pre,<span class="hljs-selector-tag">a</span>,<span class="hljs-selector-tag">abbr</span>,acronym,<span class="hljs-selector-tag">address</span>,big,<span class="hljs-selector-tag">cite</span>,<span class="hljs-selector-tag">code</span>,<span class="hljs-selector-tag">del</span>,<span class="hljs-selector-tag">dfn</span>,<span class="hljs-selector-tag">em</span>,<span class="hljs-selector-tag">img</span>,<span class="hljs-selector-tag">ins</span>,<span class="hljs-selector-tag">kbd</span>,<span class="hljs-selector-tag">q</span>,s,<span class="hljs-selector-tag">samp</span>,small,strike,<span class="hljs-selector-tag">strong</span>,sub,<span class="hljs-selector-tag">sup</span>,tt,<span class="hljs-selector-tag">var</span>,<span class="hljs-selector-tag">b</span>,u,<span class="hljs-selector-tag">i</span>,<span class="hljs-selector-tag">dl</span>,<span class="hljs-selector-tag">dt</span>,<span class="hljs-selector-tag">dd</span>,<span class="hljs-selector-tag">ol</span>,<span class="hljs-selector-tag">nav</span> <span class="hljs-selector-tag">ul</span>,<span class="hljs-selector-tag">nav</span> <span class="hljs-selector-tag">li</span>,<span class="hljs-selector-tag">fieldset</span>,<span class="hljs-selector-tag">form</span>,<span class="hljs-selector-tag">label</span>,<span class="hljs-selector-tag">legend</span>,<span class="hljs-selector-tag">table</span>,<span class="hljs-selector-tag">caption</span>,<span class="hljs-selector-tag">tbody</span>,<span class="hljs-selector-tag">tfoot</span>,<span class="hljs-selector-tag">thead</span>,<span class="hljs-selector-tag">tr</span>,<span class="hljs-selector-tag">th</span>,<span class="hljs-selector-tag">td</span>,<span class="hljs-selector-tag">article</span>,<span class="hljs-selector-tag">aside</span>,<span class="hljs-selector-tag">canvas</span>,<span class="hljs-selector-tag">details</span>,embed,<span class="hljs-selector-tag">figure</span>,<span class="hljs-selector-tag">figcaption</span>,<span class="hljs-selector-tag">footer</span>,<span class="hljs-selector-tag">header</span>,<span class="hljs-selector-tag">hgroup</span>,<span class="hljs-selector-tag">menu</span>,<span class="hljs-selector-tag">nav</span>,output,ruby,<span class="hljs-selector-tag">section</span>,<span class="hljs-selector-tag">summary</span>,<span class="hljs-selector-tag">time</span>,<span class="hljs-selector-tag">mark</span>,<span class="hljs-selector-tag">audio</span>,<span class="hljs-selector-tag">video</span>&#123;<span class="hljs-attribute">margin</span>:<span class="hljs-number">0</span>;<span class="hljs-attribute">padding</span>:<span class="hljs-number">0</span>;<span class="hljs-attribute">border</span>:<span class="hljs-number">0</span>;<span class="hljs-attribute">font-size</span>:<span class="hljs-number">100%</span>;<span class="hljs-attribute">font</span>:inherit;<span class="hljs-attribute">vertical-align</span>:baseline;&#125;<br><span class="hljs-selector-tag">article</span>, <span class="hljs-selector-tag">aside</span>, <span class="hljs-selector-tag">details</span>, <span class="hljs-selector-tag">figcaption</span>, <span class="hljs-selector-tag">figure</span>,<span class="hljs-selector-tag">footer</span>, <span class="hljs-selector-tag">header</span>, <span class="hljs-selector-tag">hgroup</span>, <span class="hljs-selector-tag">menu</span>, <span class="hljs-selector-tag">nav</span>, <span class="hljs-selector-tag">section</span> &#123;<span class="hljs-attribute">display</span>: block;&#125;<br><span class="hljs-selector-tag">ol</span>,<span class="hljs-selector-tag">ul</span>&#123;<span class="hljs-attribute">list-style</span>:none;<span class="hljs-attribute">margin</span>:<span class="hljs-number">0</span>;<span class="hljs-attribute">padding</span>:<span class="hljs-number">0</span>;&#125;<br><span class="hljs-selector-tag">blockquote</span>,<span class="hljs-selector-tag">q</span>&#123;<span class="hljs-attribute">quotes</span>:none;&#125;<br><span class="hljs-selector-tag">blockquote</span><span class="hljs-selector-pseudo">:before</span>,<span class="hljs-selector-tag">blockquote</span><span class="hljs-selector-pseudo">:after</span>,<span class="hljs-selector-tag">q</span><span class="hljs-selector-pseudo">:before</span>,<span class="hljs-selector-tag">q</span><span class="hljs-selector-pseudo">:after</span>&#123;<span class="hljs-attribute">content</span>:<span class="hljs-string">&#x27;&#x27;</span>;<span class="hljs-attribute">content</span>:none;&#125;<br><span class="hljs-selector-tag">table</span>&#123;<span class="hljs-attribute">border-collapse</span>:collapse;<span class="hljs-attribute">border-spacing</span>:<span class="hljs-number">0</span>;&#125;<br><span class="hljs-comment">/* start editing from here */</span><br><span class="hljs-selector-tag">a</span>&#123;<span class="hljs-attribute">text-decoration</span>:none;&#125;<br><span class="hljs-selector-class">.txt-rt</span>&#123;<span class="hljs-attribute">text-align</span><span class="hljs-selector-pseudo">:right</span>;&#125;<span class="hljs-comment">/* text align right */</span><br><span class="hljs-selector-class">.txt-lt</span>&#123;<span class="hljs-attribute">text-align</span><span class="hljs-selector-pseudo">:left</span>;&#125;<span class="hljs-comment">/* text align left */</span><br><span class="hljs-selector-class">.txt-center</span>&#123;<span class="hljs-attribute">text-align</span>:center;&#125;<span class="hljs-comment">/* text align center */</span><br><span class="hljs-selector-class">.float-rt</span>&#123;<span class="hljs-attribute">float</span><span class="hljs-selector-pseudo">:right</span>;&#125;<span class="hljs-comment">/* float right */</span><br><span class="hljs-selector-class">.float-lt</span>&#123;<span class="hljs-attribute">float</span><span class="hljs-selector-pseudo">:left</span>;&#125;<span class="hljs-comment">/* float left */</span><br><span class="hljs-selector-class">.clear</span>&#123;<span class="hljs-attribute">clear</span>:both;&#125;<span class="hljs-comment">/* clear float */</span><br><span class="hljs-selector-class">.pos-relative</span>&#123;<span class="hljs-attribute">position</span>:relative;&#125;<span class="hljs-comment">/* Position Relative */</span><br><span class="hljs-selector-class">.pos-absolute</span>&#123;<span class="hljs-attribute">position</span>:absolute;&#125;<span class="hljs-comment">/* Position Absolute */</span><br><span class="hljs-selector-class">.vertical-base</span>&#123;	<span class="hljs-attribute">vertical-align</span>:baseline;&#125;<span class="hljs-comment">/* vertical align baseline */</span><br><span class="hljs-selector-class">.vertical-top</span>&#123;	<span class="hljs-attribute">vertical-align</span>:top;&#125;<span class="hljs-comment">/* vertical align top */</span><br><span class="hljs-selector-class">.underline</span>&#123;	<span class="hljs-attribute">padding-bottom</span>:<span class="hljs-number">5px</span>;	<span class="hljs-attribute">border-bottom</span>: <span class="hljs-number">1px</span> solid <span class="hljs-number">#eee</span>; <span class="hljs-attribute">margin</span>:<span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">20px</span> <span class="hljs-number">0</span>;&#125;<span class="hljs-comment">/* Add 5px bottom padding and a underline */</span><br><span class="hljs-selector-tag">nav</span><span class="hljs-selector-class">.vertical</span> <span class="hljs-selector-tag">ul</span> <span class="hljs-selector-tag">li</span>&#123;	<span class="hljs-attribute">display</span>:block;&#125;<span class="hljs-comment">/* vertical menu */</span><br><span class="hljs-selector-tag">nav</span><span class="hljs-selector-class">.horizontal</span> <span class="hljs-selector-tag">ul</span> <span class="hljs-selector-tag">li</span>&#123;	<span class="hljs-attribute">display</span>: inline-block;&#125;<span class="hljs-comment">/* horizontal menu */</span><br><span class="hljs-selector-tag">img</span>&#123;<span class="hljs-attribute">max-width</span>:<span class="hljs-number">100%</span>;&#125;<br><span class="hljs-comment">/*end reset*/</span><br><span class="hljs-comment">/*--login start here--*/</span><br><span class="hljs-selector-tag">body</span>&#123;<br>   <span class="hljs-attribute">background</span>: <span class="hljs-built_in">url</span>(<span class="hljs-string">../images/banner.jpg</span>);<br>   <span class="hljs-attribute">padding</span>:<span class="hljs-number">100px</span> <span class="hljs-number">0px</span> <span class="hljs-number">30px</span> <span class="hljs-number">0px</span>;<br>   <span class="hljs-attribute">font-family</span>: <span class="hljs-string">&#x27;Roboto&#x27;</span>, sans-serif;<br>   <span class="hljs-attribute">font-size</span>: <span class="hljs-number">100%</span>;<br>&#125;<br><span class="hljs-selector-class">.login</span> &#123;<br>  <span class="hljs-attribute">width</span>: <span class="hljs-number">32%</span>;<br>  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span> auto;<br>&#125;<br><span class="hljs-selector-class">.login</span> <span class="hljs-selector-tag">h2</span> &#123;<br>  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">30px</span>;<br>  <span class="hljs-attribute">font-weight</span>: <span class="hljs-number">700</span>;<br>  <span class="hljs-attribute">color</span>: <span class="hljs-number">#fff</span>;<br>  <span class="hljs-attribute">text-align</span>: center;<br>  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0px</span> <span class="hljs-number">0px</span> <span class="hljs-number">50px</span> <span class="hljs-number">0px</span>;<br>  <span class="hljs-attribute">font-family</span>: <span class="hljs-string">&#x27;Droid Serif&#x27;</span>, serif;<br>&#125;<br><span class="hljs-selector-class">.login-top</span> &#123;<br>  <span class="hljs-attribute">background</span>: <span class="hljs-number">#E1E1E1</span>;<br>  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">25px</span> <span class="hljs-number">25px</span> <span class="hljs-number">0px</span> <span class="hljs-number">0px</span>;<br>  -webkit-<span class="hljs-attribute">border-radius</span>:  <span class="hljs-number">25px</span> <span class="hljs-number">25px</span> <span class="hljs-number">0px</span> <span class="hljs-number">0px</span>;<br>  -moz-<span class="hljs-attribute">border-radius</span>: <span class="hljs-number">25px</span> <span class="hljs-number">25px</span> <span class="hljs-number">0px</span> <span class="hljs-number">0px</span>;<br>  -o-<span class="hljs-attribute">border-radius</span>: <span class="hljs-number">25px</span> <span class="hljs-number">25px</span> <span class="hljs-number">0px</span> <span class="hljs-number">0px</span>;<br>  <span class="hljs-attribute">padding</span>: <span class="hljs-number">40px</span> <span class="hljs-number">60px</span>;<br>&#125;<br><span class="hljs-selector-class">.login-top</span> <span class="hljs-selector-tag">h1</span> &#123;<br>  <span class="hljs-attribute">text-align</span>: center;<br>  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">27px</span>;<br>  <span class="hljs-attribute">font-weight</span>: <span class="hljs-number">500</span>;<br>  <span class="hljs-attribute">color</span>: <span class="hljs-number">#F45B4B</span>;<br>  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0px</span> <span class="hljs-number">0px</span> <span class="hljs-number">20px</span> <span class="hljs-number">0px</span>;<br>&#125;<br><span class="hljs-selector-class">.login-top</span> <span class="hljs-selector-tag">input</span><span class="hljs-selector-attr">[type=<span class="hljs-string">&quot;text&quot;</span>]</span> &#123;<br>	<span class="hljs-attribute">outline</span>: none;<br>  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">15px</span>;<br>  <span class="hljs-attribute">font-weight</span>: <span class="hljs-number">500</span>;<br>  <span class="hljs-attribute">color</span>: <span class="hljs-number">#818181</span>;<br>  <span class="hljs-attribute">padding</span>: <span class="hljs-number">15px</span> <span class="hljs-number">20px</span>;<br>  <span class="hljs-attribute">background</span>: <span class="hljs-number">#CACACA</span>;<br>  <span class="hljs-attribute">border</span>: <span class="hljs-number">1px</span> solid <span class="hljs-number">#ccc</span>;<br>  <span class="hljs-attribute">border-radius</span>:<span class="hljs-number">25px</span>;<br>  -webkit-<span class="hljs-attribute">border-radius</span>: <span class="hljs-number">25px</span>;<br>  -moz-<span class="hljs-attribute">border-radius</span>: <span class="hljs-number">25px</span>;<br>  -o-<span class="hljs-attribute">border-radius</span>: <span class="hljs-number">25px</span>;<br>  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0px</span> <span class="hljs-number">0px</span> <span class="hljs-number">12px</span> <span class="hljs-number">0px</span>;<br>  <span class="hljs-attribute">width</span>: <span class="hljs-number">88%</span>;<br>  -webkit-<span class="hljs-attribute">appearance</span>: none;<br>&#125;<br><span class="hljs-selector-class">.login-top</span> <span class="hljs-selector-tag">input</span><span class="hljs-selector-attr">[type=<span class="hljs-string">&quot;password&quot;</span>]</span>&#123;<br>	<span class="hljs-attribute">outline</span>: none;<br>  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">15px</span>;<br>  <span class="hljs-attribute">font-weight</span>: <span class="hljs-number">500</span>;<br>  <span class="hljs-attribute">color</span>: <span class="hljs-number">#818181</span>;<br>  <span class="hljs-attribute">padding</span>: <span class="hljs-number">15px</span> <span class="hljs-number">20px</span>;<br>  <span class="hljs-attribute">background</span>: <span class="hljs-number">#CACACA</span>;<br>  <span class="hljs-attribute">border</span>: <span class="hljs-number">1px</span> solid <span class="hljs-number">#ccc</span>;<br>  <span class="hljs-attribute">border-radius</span>:<span class="hljs-number">25px</span>;<br>  -webkit-<span class="hljs-attribute">border-radius</span>: <span class="hljs-number">25px</span>;<br>  -moz-<span class="hljs-attribute">border-radius</span>: <span class="hljs-number">25px</span>;<br>  -o-<span class="hljs-attribute">border-radius</span>: <span class="hljs-number">25px</span>;<br>  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0px</span> <span class="hljs-number">0px</span> <span class="hljs-number">12px</span> <span class="hljs-number">0px</span>;<br>  <span class="hljs-attribute">width</span>: <span class="hljs-number">88%</span>;<br>  -webkit-<span class="hljs-attribute">appearance</span>: none;<br>&#125;<br><span class="hljs-selector-class">.forgot</span>  <span class="hljs-selector-tag">a</span>&#123;<br>  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">13px</span>;<br>  <span class="hljs-attribute">font-weight</span>: <span class="hljs-number">500</span>;<br>  <span class="hljs-attribute">color</span>: <span class="hljs-number">#F45B4B</span>;<br>  <span class="hljs-attribute">display</span>: inline-block;<br>  <span class="hljs-attribute">border-right</span>: <span class="hljs-number">2px</span> solid <span class="hljs-number">#F45B4B</span>;<br>  <span class="hljs-attribute">padding</span>: <span class="hljs-number">0px</span> <span class="hljs-number">7px</span> <span class="hljs-number">0px</span> <span class="hljs-number">0px</span>;<br>&#125;<br><span class="hljs-selector-class">.forgot</span>  <span class="hljs-selector-tag">a</span><span class="hljs-selector-pseudo">:hover</span>&#123;<br>  <span class="hljs-attribute">color</span>: <span class="hljs-number">#818181</span>;<br>&#125;<br><span class="hljs-selector-class">.forgot</span> <span class="hljs-selector-tag">input</span><span class="hljs-selector-attr">[type=<span class="hljs-string">&quot;submit&quot;</span>]</span> &#123;<br>  <span class="hljs-attribute">background</span>: <span class="hljs-number">#F45B4B</span>;<br>  <span class="hljs-attribute">color</span>: <span class="hljs-number">#FFF</span>;<br>  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">17px</span>;<br>  <span class="hljs-attribute">font-weight</span>: <span class="hljs-number">400</span>;<br>  <span class="hljs-attribute">padding</span>: <span class="hljs-number">8px</span> <span class="hljs-number">7px</span>;<br>  <span class="hljs-attribute">width</span>: <span class="hljs-number">20%</span>;<br>  <span class="hljs-attribute">display</span>: inline-block;<br>  <span class="hljs-attribute">cursor</span>: pointer;<br>  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">6px</span>;<br>  -webkit-<span class="hljs-attribute">border-radius</span>: <span class="hljs-number">19px</span>;<br>  -moz-<span class="hljs-attribute">border-radius</span>: <span class="hljs-number">6px</span>;<br>  -o-<span class="hljs-attribute">border-radius</span>: <span class="hljs-number">6px</span>;<br>  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0px</span> <span class="hljs-number">7px</span> <span class="hljs-number">0px</span> <span class="hljs-number">3px</span>;<br>  <span class="hljs-attribute">outline</span>: none;<br>  <span class="hljs-attribute">border</span>: none;<br>&#125;<br><span class="hljs-selector-class">.forgot</span> <span class="hljs-selector-tag">input</span><span class="hljs-selector-attr">[type=<span class="hljs-string">&quot;submit&quot;</span>]</span><span class="hljs-selector-pseudo">:hover</span> &#123;<br>	<span class="hljs-attribute">background</span>:<span class="hljs-number">#818181</span>;<br>	<span class="hljs-attribute">transition</span>: <span class="hljs-number">0.5s</span> all;<br>  -webkit-<span class="hljs-attribute">transition</span>: <span class="hljs-number">0.5s</span> all;<br>  -moz-<span class="hljs-attribute">transition</span>: <span class="hljs-number">0.5s</span> all;<br>  -o-<span class="hljs-attribute">transition</span>: <span class="hljs-number">0.5s</span> all;<br>&#125;<br><span class="hljs-selector-class">.forgot</span> &#123;<br>  <span class="hljs-attribute">text-align</span>: right;<br>&#125;<br><span class="hljs-selector-class">.login-bottom</span> &#123;<br>  <span class="hljs-attribute">background</span>: <span class="hljs-number">#E15748</span>;<br>  <span class="hljs-attribute">padding</span>: <span class="hljs-number">30px</span> <span class="hljs-number">65px</span>;<br>  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">0px</span> <span class="hljs-number">0px</span> <span class="hljs-number">25px</span> <span class="hljs-number">25px</span>;<br>  -webkit-<span class="hljs-attribute">border-radius</span>:  <span class="hljs-number">0px</span> <span class="hljs-number">0px</span> <span class="hljs-number">25px</span> <span class="hljs-number">25px</span>;<br>  -moz-<span class="hljs-attribute">border-radius</span>: <span class="hljs-number">0px</span> <span class="hljs-number">0px</span> <span class="hljs-number">25px</span> <span class="hljs-number">25px</span>;<br>  -o-<span class="hljs-attribute">border-radius</span>: <span class="hljs-number">0px</span> <span class="hljs-number">0px</span> <span class="hljs-number">25px</span> <span class="hljs-number">25px</span>;<br>  <span class="hljs-attribute">text-align</span>: right;<br>  <span class="hljs-attribute">border-top</span>: <span class="hljs-number">2px</span> solid <span class="hljs-number">#AD4337</span>;<br>&#125;<br><span class="hljs-selector-class">.login-bottom</span> <span class="hljs-selector-tag">h3</span> &#123;<br>  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">14px</span>;<br>  <span class="hljs-attribute">font-weight</span>: <span class="hljs-number">500</span>;<br>  <span class="hljs-attribute">color</span>: <span class="hljs-number">#fff</span>;<br>&#125;<br><span class="hljs-selector-class">.login-bottom</span> <span class="hljs-selector-tag">h3</span> <span class="hljs-selector-tag">a</span> &#123;<br>  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">25px</span>;<br>  <span class="hljs-attribute">font-weight</span>: <span class="hljs-number">500</span>;<br>  <span class="hljs-attribute">color</span>: <span class="hljs-number">#fff</span>;<br>&#125;<br><span class="hljs-selector-class">.login-bottom</span> <span class="hljs-selector-tag">h3</span> <span class="hljs-selector-tag">a</span><span class="hljs-selector-pseudo">:hover</span> &#123;<br>	<span class="hljs-attribute">color</span>:<span class="hljs-number">#696969</span>;<br>	<span class="hljs-attribute">transition</span>: <span class="hljs-number">0.5s</span> all;<br>  -webkit-<span class="hljs-attribute">transition</span>: <span class="hljs-number">0.5s</span> all;<br>  -moz-<span class="hljs-attribute">transition</span>: <span class="hljs-number">0.5s</span> all;<br>  -o-<span class="hljs-attribute">transition</span>: <span class="hljs-number">0.5s</span> all;<br>&#125;<br><span class="hljs-selector-class">.copyright</span> &#123;<br>  <span class="hljs-attribute">padding</span>: <span class="hljs-number">150px</span> <span class="hljs-number">0px</span> <span class="hljs-number">0px</span> <span class="hljs-number">0px</span>;<br>  <span class="hljs-attribute">text-align</span>: center;<br>&#125;<br><span class="hljs-selector-class">.copyright</span> <span class="hljs-selector-tag">p</span> &#123;<br>  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">15px</span>;<br>  <span class="hljs-attribute">font-weight</span>: <span class="hljs-number">400</span>;<br>  <span class="hljs-attribute">color</span>: <span class="hljs-number">#fff</span>;<br>&#125;<br><span class="hljs-selector-class">.copyright</span> <span class="hljs-selector-tag">p</span> <span class="hljs-selector-tag">a</span>&#123;<br>  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">15px</span>;<br>  <span class="hljs-attribute">font-weight</span>: <span class="hljs-number">400</span>;<br>  <span class="hljs-attribute">color</span>: <span class="hljs-number">#E15748</span>;<br>&#125;<br><span class="hljs-selector-class">.copyright</span> <span class="hljs-selector-tag">p</span> <span class="hljs-selector-tag">a</span><span class="hljs-selector-pseudo">:hover</span>&#123;<br>	<span class="hljs-attribute">color</span>: <span class="hljs-number">#fff</span>;<br>	 <span class="hljs-attribute">transition</span>: <span class="hljs-number">0.5s</span> all;<br>  -webkit-<span class="hljs-attribute">transition</span>: <span class="hljs-number">0.5s</span> all;<br>  -moz-<span class="hljs-attribute">transition</span>: <span class="hljs-number">0.5s</span> all;<br>  -o-<span class="hljs-attribute">transition</span>: <span class="hljs-number">0.5s</span> all;<br>&#125;<br><span class="hljs-comment">/*--login end here--*/</span><br><span class="hljs-comment">/*--meadia quiries start here--*/</span><br><span class="hljs-keyword">@media</span>(max-width:1440px)&#123;<br><span class="hljs-selector-class">.login</span> &#123;<br>  <span class="hljs-attribute">width</span>: <span class="hljs-number">35%</span>;<br>&#125;<br>&#125;<br><span class="hljs-keyword">@media</span>(max-width:1366px)&#123;<br><span class="hljs-selector-class">.login</span> &#123;<br>  <span class="hljs-attribute">width</span>: <span class="hljs-number">37%</span>;<br>&#125;<br>&#125;<br><span class="hljs-keyword">@media</span>(max-width:1280px)&#123;<br><span class="hljs-selector-class">.login</span> &#123;<br>  <span class="hljs-attribute">width</span>: <span class="hljs-number">40%</span>;<br>&#125;<br>&#125;<br><span class="hljs-keyword">@media</span>(max-width:1024px)&#123;<br><span class="hljs-selector-class">.login</span> &#123;<br>  <span class="hljs-attribute">width</span>: <span class="hljs-number">48%</span>;<br>&#125;<br><span class="hljs-selector-class">.copyright</span> &#123;<br>  <span class="hljs-attribute">padding</span>: <span class="hljs-number">100px</span> <span class="hljs-number">0px</span> <span class="hljs-number">0px</span> <span class="hljs-number">0px</span>;<br>&#125;<br>&#125;<br><span class="hljs-keyword">@media</span>(max-width:768px)&#123;<br><span class="hljs-selector-class">.login</span> &#123;<br>  <span class="hljs-attribute">width</span>: <span class="hljs-number">65%</span>;<br>&#125;<br><span class="hljs-selector-class">.login-top</span> <span class="hljs-selector-tag">h1</span> &#123;<br>  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">25px</span>;<br>&#125;<br><span class="hljs-selector-class">.login-bottom</span> <span class="hljs-selector-tag">h3</span> <span class="hljs-selector-tag">a</span> &#123;<br>  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">22px</span>;<br>&#125;<br><span class="hljs-selector-class">.copyright</span> &#123;<br>  <span class="hljs-attribute">padding</span>: <span class="hljs-number">250px</span> <span class="hljs-number">0px</span> <span class="hljs-number">0px</span> <span class="hljs-number">0px</span>;<br>&#125;<br><span class="hljs-selector-tag">body</span> &#123;<br>  <span class="hljs-attribute">padding</span>: <span class="hljs-number">100px</span> <span class="hljs-number">0px</span> <span class="hljs-number">0px</span> <span class="hljs-number">0px</span>;<br>&#125;<br><span class="hljs-selector-class">.login</span> <span class="hljs-selector-tag">h2</span> &#123;<br>  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">28px</span>;<br>&#125;<br>&#125;<br><span class="hljs-keyword">@media</span>(max-width:640px)&#123;<br><span class="hljs-selector-class">.login-top</span> <span class="hljs-selector-tag">h1</span> &#123;<br>  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">23px</span>;<br>&#125;<br><span class="hljs-selector-class">.forgot</span> <span class="hljs-selector-tag">input</span><span class="hljs-selector-attr">[type=<span class="hljs-string">&quot;submit&quot;</span>]</span> &#123;<br>  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">15px</span>;<br>  <span class="hljs-attribute">width</span>: <span class="hljs-number">22%</span>;<br>&#125;<br><span class="hljs-selector-class">.login-top</span> <span class="hljs-selector-tag">input</span><span class="hljs-selector-attr">[type=<span class="hljs-string">&quot;text&quot;</span>]</span> &#123;<br>  <span class="hljs-attribute">padding</span>: <span class="hljs-number">12px</span> <span class="hljs-number">20px</span>;<br>&#125;<br><span class="hljs-selector-class">.login-top</span> <span class="hljs-selector-tag">input</span><span class="hljs-selector-attr">[type=<span class="hljs-string">&quot;password&quot;</span>]</span> &#123;<br>  <span class="hljs-attribute">padding</span>: <span class="hljs-number">12px</span> <span class="hljs-number">20px</span>;<br>&#125;<br><span class="hljs-selector-class">.login-bottom</span> <span class="hljs-selector-tag">h3</span> <span class="hljs-selector-tag">a</span> &#123;<br>  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">19px</span>;<br>&#125;<br><span class="hljs-selector-class">.login-bottom</span> <span class="hljs-selector-tag">h3</span> &#123;<br>  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">13px</span>;<br>&#125;<br><span class="hljs-selector-class">.copyright</span> &#123;<br>  <span class="hljs-attribute">padding</span>: <span class="hljs-number">110px</span> <span class="hljs-number">0px</span> <span class="hljs-number">0px</span> <span class="hljs-number">0px</span>;<br>&#125;<br><span class="hljs-selector-tag">body</span> &#123;<br>  <span class="hljs-attribute">padding</span>: <span class="hljs-number">110px</span> <span class="hljs-number">0px</span> <span class="hljs-number">0px</span> <span class="hljs-number">0px</span>;<br>&#125;<br>&#125;<br><span class="hljs-keyword">@media</span>(max-width:480px)&#123;<br><span class="hljs-selector-class">.login</span> &#123;<br>  <span class="hljs-attribute">width</span>: <span class="hljs-number">80%</span>;<br>&#125;<br><span class="hljs-selector-class">.login-top</span> <span class="hljs-selector-tag">h1</span> &#123;<br>  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">21px</span>;<br>&#125;<br><span class="hljs-selector-class">.login-top</span> <span class="hljs-selector-tag">input</span><span class="hljs-selector-attr">[type=<span class="hljs-string">&quot;text&quot;</span>]</span> &#123;<br>  <span class="hljs-attribute">width</span>: <span class="hljs-number">85%</span>;<br>&#125;<br><span class="hljs-selector-class">.login-top</span> &#123;<br>  <span class="hljs-attribute">padding</span>: <span class="hljs-number">30px</span> <span class="hljs-number">40px</span>;<br>&#125;<br><span class="hljs-selector-class">.login-top</span> <span class="hljs-selector-tag">input</span><span class="hljs-selector-attr">[type=<span class="hljs-string">&quot;password&quot;</span>]</span> &#123;<br>  <span class="hljs-attribute">width</span>: <span class="hljs-number">85%</span>;<br>&#125;<br><span class="hljs-selector-class">.login</span> <span class="hljs-selector-tag">h2</span> &#123;<br>  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">25px</span>;<br>&#125;<br>&#125;<br><span class="hljs-keyword">@media</span>(max-width:320px)&#123;<br><span class="hljs-selector-class">.login</span> &#123;<br>  <span class="hljs-attribute">width</span>: <span class="hljs-number">90%</span>;<br>&#125;<br><span class="hljs-selector-class">.login-top</span> &#123;<br>  <span class="hljs-attribute">padding</span>: <span class="hljs-number">20px</span> <span class="hljs-number">25px</span>;<br>&#125;<br><span class="hljs-selector-class">.login-top</span> <span class="hljs-selector-tag">input</span><span class="hljs-selector-attr">[type=<span class="hljs-string">&quot;text&quot;</span>]</span> &#123;<br>  <span class="hljs-attribute">width</span>: <span class="hljs-number">81%</span>;<br>  <span class="hljs-attribute">padding</span>: <span class="hljs-number">10px</span> <span class="hljs-number">20px</span>;<br>  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">13px</span>;<br>  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0px</span> <span class="hljs-number">0px</span> <span class="hljs-number">7px</span> <span class="hljs-number">0px</span>;<br>&#125;<br><span class="hljs-selector-class">.login-top</span> <span class="hljs-selector-tag">input</span><span class="hljs-selector-attr">[type=<span class="hljs-string">&quot;password&quot;</span>]</span> &#123;<br>  <span class="hljs-attribute">width</span>: <span class="hljs-number">81%</span>;<br>  <span class="hljs-attribute">padding</span>: <span class="hljs-number">10px</span> <span class="hljs-number">20px</span>;<br>  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">13px</span>;<br>  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0px</span> <span class="hljs-number">0px</span> <span class="hljs-number">7px</span> <span class="hljs-number">0px</span>;<br>&#125;<br><span class="hljs-selector-class">.forgot</span> <span class="hljs-selector-tag">input</span><span class="hljs-selector-attr">[type=<span class="hljs-string">&quot;submit&quot;</span>]</span> &#123;<br>  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">11px</span>;<br>  <span class="hljs-attribute">width</span>: <span class="hljs-number">25%</span>;<br>  <span class="hljs-attribute">padding</span>: <span class="hljs-number">6px</span> <span class="hljs-number">7px</span>;<br>&#125;<br><span class="hljs-selector-class">.forgot</span>  <span class="hljs-selector-tag">a</span> &#123;<br>  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">11px</span>;<br>&#125;<br><span class="hljs-selector-class">.login-bottom</span> &#123;<br>  <span class="hljs-attribute">padding</span>: <span class="hljs-number">20px</span> <span class="hljs-number">25px</span>;<br>&#125;<br><span class="hljs-selector-class">.login-bottom</span> <span class="hljs-selector-tag">h3</span> &#123;<br>  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">11px</span>;<br>&#125;<br><span class="hljs-selector-class">.login-bottom</span> <span class="hljs-selector-tag">h3</span> <span class="hljs-selector-tag">a</span> &#123;<br>  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">17px</span>;<br>&#125;<br><span class="hljs-selector-tag">body</span> &#123;<br>  <span class="hljs-attribute">padding</span>: <span class="hljs-number">50px</span> <span class="hljs-number">0px</span> <span class="hljs-number">0px</span> <span class="hljs-number">0px</span>;<br>&#125;<br><span class="hljs-selector-class">.copyright</span> <span class="hljs-selector-tag">p</span> &#123;<br>  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">13px</span>;<br>&#125;<br><span class="hljs-selector-class">.copyright</span> <span class="hljs-selector-tag">p</span> <span class="hljs-selector-tag">a</span>&#123;<br>  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">13px</span>;<br>&#125;<br><span class="hljs-selector-class">.login</span> <span class="hljs-selector-tag">h2</span> &#123;<br>  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">23px</span>;<br>  <span class="hljs-attribute">margin</span>:<span class="hljs-number">0px</span> <span class="hljs-number">0px</span> <span class="hljs-number">35px</span> <span class="hljs-number">0px</span>;<br>&#125;<br><span class="hljs-selector-class">.copyright</span> &#123;<br>  <span class="hljs-attribute">padding</span>: <span class="hljs-number">75px</span> <span class="hljs-number">0px</span> <span class="hljs-number">0px</span> <span class="hljs-number">0px</span>;<br>&#125;<br>&#125;<br><span class="hljs-selector-class">.login-change</span> &#123;<br>  <span class="hljs-attribute">text-align</span>: center;       <span class="hljs-comment">/* 按钮整体居中 */</span><br>  <span class="hljs-attribute">margin-top</span>: <span class="hljs-number">20px</span>;         <span class="hljs-comment">/* 距离上方留点空间 */</span><br>&#125;<br><br><span class="hljs-selector-class">.login-change</span> <span class="hljs-selector-class">.lang-btn</span> &#123;<br>  <span class="hljs-attribute">height</span>: <span class="hljs-number">45px</span>;<br>  <span class="hljs-attribute">background</span>: transparent;  <span class="hljs-comment">/* 背景透明 */</span><br>  <span class="hljs-attribute">color</span>: white;             <span class="hljs-comment">/* 白色文字 */</span><br>  <span class="hljs-attribute">border</span>: <span class="hljs-number">2px</span> solid white;  <span class="hljs-comment">/* 白色边框 */</span><br>  <span class="hljs-attribute">padding</span>: <span class="hljs-number">8px</span> <span class="hljs-number">16px</span>;        <span class="hljs-comment">/* 内边距 */</span><br>  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span> <span class="hljs-number">10px</span>;           <span class="hljs-comment">/* 两个按钮之间间距 */</span><br>  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">6px</span>;       <span class="hljs-comment">/* 圆角边框 */</span><br>  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">18px</span>;          <span class="hljs-comment">/* 字体大小 */</span><br>  <span class="hljs-attribute">cursor</span>: pointer;          <span class="hljs-comment">/* 鼠标悬停小手 */</span><br>  <span class="hljs-attribute">transition</span>: all <span class="hljs-number">0.3s</span> ease;<br>  <span class="hljs-attribute">line-height</span>: <span class="hljs-number">1</span>;<br>&#125;<br><br><span class="hljs-selector-class">.login-change</span> <span class="hljs-selector-class">.lang-btn</span><span class="hljs-selector-pseudo">:hover</span> &#123;<br>  <span class="hljs-attribute">color</span>: black;             <span class="hljs-comment">/* 文字变黑 */</span><br>&#125;<br><span class="hljs-comment">/*--meadia quiries end here--*/</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>index.html</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span> <span class="hljs-attr">xmlns:th</span>=<span class="hljs-string">&quot;http://www.thymeleaf.org&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Home<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br><span class="hljs-comment">&lt;!-- Custom Theme files --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">th:href</span>=<span class="hljs-string">&quot;@&#123;/css/style.css&#125;&quot;</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;stylesheet&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text/css&quot;</span> <span class="hljs-attr">media</span>=<span class="hljs-string">&quot;all&quot;</span>/&gt;</span><br><span class="hljs-comment">&lt;!-- Custom Theme files --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">&quot;Content-Type&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span> /&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1, maximum-scale=1&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">&quot;Content-Type&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span> /&gt;</span> <br><span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;keywords&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;Login form web template, Sign up Web Templates, Flat Web Templates, Login signup Responsive web template, Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design&quot;</span> /&gt;</span><br><span class="hljs-comment">&lt;!--Google Fonts--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;https://fonts.googleapis.com/css?family=Roboto:400,500,700,900&amp;display=swap&quot;</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;stylesheet&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&#x27;https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic&#x27;</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&#x27;stylesheet&#x27;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&#x27;text/css&#x27;</span>&gt;</span><br><span class="hljs-comment">&lt;!--Google Fonts--&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;login&quot;</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>欢迎使用<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;login-top&quot;</span>&gt;</span><br>		<span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>登录<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span><br>		<span class="hljs-tag">&lt;<span class="hljs-name">form</span>&gt;</span><br>			<span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;用户名&quot;</span> <span class="hljs-attr">onfocus</span>=<span class="hljs-string">&quot;this.value = &#x27;&#x27;;&quot;</span> <span class="hljs-attr">onblur</span>=<span class="hljs-string">&quot;if (this.value == &#x27;&#x27;) &#123;this.value = &#x27;User Id&#x27;;&#125;&quot;</span>&gt;</span><br>			<span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;password&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;password&quot;</span> <span class="hljs-attr">onfocus</span>=<span class="hljs-string">&quot;this.value = &#x27;&#x27;;&quot;</span> <span class="hljs-attr">onblur</span>=<span class="hljs-string">&quot;if (this.value == &#x27;&#x27;) &#123;this.value = &#x27;password&#x27;;&#125;&quot;</span>&gt;</span><br>			<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;forgot&quot;</span>&gt;</span><br>				<span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>&gt;</span>忘记密码<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br>				<span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;submit&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;登录&quot;</span> &gt;</span><br>			<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>		<span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span><br><br>	<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;login-bottom&quot;</span>&gt;</span><br>		<span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>新用户<span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span>&gt;</span>注册<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-symbol">&amp;nbsp;</span>点击这里<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span><br>	<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;login-change&quot;</span>&gt;</span><br>		<span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;lang-btn&quot;</span> <span class="hljs-attr">th:href</span>=<span class="hljs-string">&quot;@&#123;/(language=zh_CN)&#125;&quot;</span>&gt;</span>中文<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br>		<span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;lang-btn&quot;</span> <span class="hljs-attr">th:href</span>=<span class="hljs-string">&quot;@&#123;/(language=en_US)&#125;&quot;</span>&gt;</span>English<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br>	<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><br><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>	<br><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;copyright&quot;</span>&gt;</span><br><br><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><br><br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br>&lt;/html<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/SpringBoot/" class="print-no-link">#SpringBoot</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>SpringBoot 国际化配置（中英文切换）</div>
+      <div>https://aimi8023.github.io/2025/09/26/SpringBoot 国际化配置（中英文切换）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>艾米</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年9月26日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/09/30/BootStrap%20%E5%B8%B8%E7%94%A8%E6%A0%87%E7%AD%BE/" title="BootStrap 常用标签">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">BootStrap 常用标签</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/09/25/Typora%E5%9B%BE%E5%BA%8A%E9%85%8D%E7%BD%AE/" title="Typora图床配置">
+                        <span class="hidden-mobile">Typora图床配置</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <span>© 2026 艾米</span> <span class="footer-separator">·</span> <a href="/atom.xml"><span>RSS</span></a> <span class="footer-separator">·</span> <a href="https://github.com/aimi8023" target="_blank" rel="nofollow noopener"><span>GitHub</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    function isExpandAllEnabled() {
+      return CONFIG.toc && CONFIG.toc.expand_all === true;
+    }
+    function expandAllToc() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
+    }
+    function updateTocToggle($li, $childList) {
+      var $toggle = $li.children('.toc-toggle');
+      if ($toggle.length === 0) { return; }
+      var collapsed = $childList.hasClass('tocbot-is-collapsed');
+      $toggle
+        .toggleClass('toc-toggle-collapsed', collapsed)
+        .toggleClass('toc-toggle-expanded', !collapsed);
+    }
+    function bindTocToggle() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .toc-list-item').each(function() {
+        var $li = jQuery(this);
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) {
+          if ($li.children('.toc-toggle').length === 0) {
+            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
+          }
+          return;
+        }
+
+        if ($li.children('.toc-toggle').length === 0) {
+          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
+        }
+        updateTocToggle($li, $childList);
+      });
+      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = jQuery(this).parent('.toc-list-item');
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) { return; }
+        $childList.toggleClass('tocbot-is-collapsed');
+        updateTocToggle($li, $childList);
+      });
+      if (!window.__tocToggleObserver) {
+        window.__tocToggleObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
+            var $list = jQuery(mutation.target);
+            var $li = $list.parent('.toc-list-item');
+            if ($li.length === 0) { return; }
+            updateTocToggle($li, $list);
+          });
+        });
+        jQuery('#toc-body ol').each(function() {
+          window.__tocToggleObserver.observe(this, { attributes: true });
+        });
+      }
+    }
+    var tocConfig = Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc);
+    if (isExpandAllEnabled()) {
+      tocConfig.collapseDepth = 6;
+    }
+    window.tocbot.init(tocConfig);
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+    expandAllToc();
+    bindTocToggle();
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+        expandAllToc();
+        bindTocToggle();
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
